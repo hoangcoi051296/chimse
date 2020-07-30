@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login V1</title>
+    <title>Manager Login </title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -33,7 +33,7 @@
             <form method="post" action="{{route('manager.postLogin')}}" class="login100-form validate-form">
                 @csrf
 					<span class="login100-form-title">
-						Member Login
+						Manager Login
 					</span>
 
                 <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
@@ -57,7 +57,7 @@
                         Login
                     </button>
                 </div>
-s
+
                 <div class="text-center p-t-12">
 						<span class="txt1">
 							Forgot
@@ -66,6 +66,13 @@ s
                         Username / Password?
                     </a>
                 </div>
+                @if (session()->has('error'))
+                    <div class="alert alert-danger">
+                        <ul>
+                            {{session('error')}}
+                        </ul>
+                    </div>
+                @endif
 
                 <div class="text-center p-t-136">
                     <a class="txt2" href="#">

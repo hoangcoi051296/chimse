@@ -48,8 +48,17 @@ return [
         ],
         'manager' => [
             'driver' => 'session',
-            'provider' => 'managers',
+            'provider' => 'manager',
         ],
+        'helper' => [
+            'driver' => 'session',
+            'provider' => 'helper',
+        ],
+        'customer' => [
+            'driver' => 'session',
+            'provider' => 'customer',
+        ],
+
     ],
 
     /*
@@ -79,9 +88,17 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
-        'managers' => [
+        'manager' => [
             'driver' => 'eloquent',
             'model' => App\Manager::class,
+        ],
+        'helper' => [
+            'driver' => 'eloquent',
+            'model' => App\Helper::class,
+        ],
+        'customer' => [
+            'driver' => 'eloquent',
+            'model' => App\Customer::class,
         ],
     ],
 

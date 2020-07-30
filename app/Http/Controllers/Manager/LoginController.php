@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
+use App\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,16 +15,15 @@ class LoginController extends Controller
     public function postLogin(Request $request)
     {
 
-        //lấy thông tin email và mật khẩu của người dùng
-        $credentials = $request->only('email', 'password');
+        $this->validate($request, [
+            'email'   => 'required|email',
+            'password' => 'required'
+        ]);
         // kiểm tra thông tin đăng nhập
-        $checkLogin = Auth::guard('manager')->attempt($credentials);
-        // kiểm tra điều kiên
-        if ($checkLogin) {
-            // đúng đăng nhập thành công
-            return redirect()->route('manager.login');
-        } else {
-            //sai thông báo lỗi
-            return redirect()->route('manager.test')->with("success", "The account or password is incorrect!")->withInput();
-        }}
+        if (Auth::guard('manager')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            // if successful, then redirect to their intended location
+           dd('ok');
+        }
+            return redirect()->route('manager.login')->with("error", "The account or password is incorrect!")->withInput();
+        }
 }

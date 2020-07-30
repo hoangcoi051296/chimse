@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/',function(){
+   return view('welcome');
+});
 Route::group(['prefix' => 'manager','namespace'=>'Manager'], function () {
     Route::get('/login', 'LoginController@login')->name('manager.login');
     Route::get('/test', 'LoginController@login')->name('manager.test');
