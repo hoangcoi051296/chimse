@@ -48,12 +48,17 @@ return [
         ],
         'manager' => [
             'driver' => 'session',
-            'provider' => 'managers',
+            'provider' => 'manager',
+        ],
+        'helper' => [
+            'driver' => 'session',
+            'provider' => 'helper',
         ],
         'customer' => [
             'driver' => 'session',
             'provider' => 'customer',
         ],
+
     ],
 
     /*
@@ -74,18 +79,23 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
-        ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
-        'managers' => [
+
+         'users' => [
+            'driver' => 'database',
+             'table' => 'users',
+         ],
+        'manager' => [
             'driver' => 'eloquent',
-            'model' => App\Manager::class,
+            'model' => App\Models\Manager::class,
+        ],
+        'helper' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Helper::class,
+        ],
+        'customer' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Customer::class,
         ],
         'customer' => [
             'driver' => 'eloquent',

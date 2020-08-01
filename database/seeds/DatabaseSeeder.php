@@ -24,5 +24,10 @@ class DatabaseSeeder extends Seeder
            'price' => '1000$',
            'address' => 'Đà Nẵng'
         ]);
+        DB::table('managers')->insert([
+            'name' => 'thaihoang',
+            'email' => 'thaihoangdo0512@gmail.com',
+            'password' => bcrypt('12345678'),
+        ]);
     }
 }
