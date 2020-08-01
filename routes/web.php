@@ -10,17 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::group(['prefix' => 'manager','namespace'=>'Manager'], function () {
-    Route::get('/login', 'LoginController@login')->name('manager.login');
-    Route::get('/test', 'LoginController@login')->name('manager.test');
-    Route::post('/login','LoginController@postLogin')->name('manager.postLogin');
-
-
-
-    });
 Route::group(['prefix' => 'customer','namespace'=>'Customer'], function () {
-
-
-
+    Route::get('login', 'CustomerController@getLogin')->name('login');
+    Route::post('login', 'CustomerController@postLogin');
+    Route::get('register', 'CustomerController@getRegister')->name('register');
+    Route::post('register', 'CustomerController@postRegister');
+    Route::group(['prefix' => 'admin'], function (){
+        Route::get('/index', 'CustomerController@index')->name('customer.index');
+    });
 });
+

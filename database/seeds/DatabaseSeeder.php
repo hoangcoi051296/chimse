@@ -12,10 +12,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('managers')->insert([
-            'name' => 'thangcon',
-            'email' => 'thangcon@gmail.com',
-            'password' => bcrypt('12345678'),
+//        DB::table('customer')->insert([
+//            'name' => 'thangcon',
+//            'email' => 'thangcon@gmail.com',
+//            'password' => bcrypt('12345678'),
+//        ]);
+        DB::table('post')->insert([
+           'titler' => 'dọn nhà',
+           'status' => 'dọn gấp',
+           'description' => 'việc nhẹ lương cao',
+           'price' => '1000$',
+           'address' => 'Đà Nẵng'
         ]);
     }
 }
