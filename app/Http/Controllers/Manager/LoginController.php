@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
-use App\Manager;
+use App\Models\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +22,7 @@ class LoginController extends Controller
         // kiểm tra thông tin đăng nhập
         if (Auth::guard('manager')->attempt(['email' => $request->email, 'password' => $request->password])) {
             // if successful, then redirect to their intended location
-           dd('ok');
+           return redirect()->route('manager.index');
         }
             return redirect()->route('manager.login')->with("error", "The account or password is incorrect!")->withInput();
         }

@@ -79,26 +79,23 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
-        ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+
+         'users' => [
+            'driver' => 'database',
+             'table' => 'users',
+         ],
         'manager' => [
             'driver' => 'eloquent',
-            'model' => App\Manager::class,
+            'model' => App\Models\Manager::class,
         ],
         'helper' => [
             'driver' => 'eloquent',
-            'model' => App\Helper::class,
+            'model' => App\Models\Helper::class,
         ],
         'customer' => [
             'driver' => 'eloquent',
-            'model' => App\Customer::class,
+            'model' => App\Models\Customer::class,
         ],
     ],
 
