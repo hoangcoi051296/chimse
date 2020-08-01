@@ -1,0 +1,102 @@
+.ytd-playlist-panel-video-renderer {
+    display: -webkit-box;
+    margin: 0 0 4px 0;
+    max-height: 3.2rem;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.6rem;
+	
+}
+
+#byline .ytd-playlist-panel-video-renderer {
+    display: block;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+    color: var(--yt-spec-text-primary);
+    display: block;
+    max-height: 1.8rem;
+    overflow: hidden;
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.8rem;
+    text-transform: none;
+    --yt-endpoint-color: var(--yt-spec-text-primary);
+}
+.list-server .server {
+    margin-bottom: 10px;
+}
+#container{
+	border:solid 1px Silver;
+	height: 400px;
+	overflow-y:auto;
+}
+.list-episode {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.list-episode .episode {
+    float: left;
+    margin: 0 1px 1px 1px;
+}
+.list-server .server .server-name {
+    background: url(../img/_server.png) no-repeat;
+    height: 16px;
+    padding-left: 22px;
+    padding-top: 2px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0px 0px 5px;
+}
+img:hover{
+    background: red;
+}
+.btn3d:hover {
+    color: #702526;
+    text-shadow: 0 1px #ea8f99;
+    background-color: #e46565;
+    background-image: none;
+}
+.btn3d.black {
+    color: #f1f1f1;
+    text-shadow: 0 1px #111;
+    border-color: #252525;
+    background-color: #393939;
+}
+
+.btn3d {
+    margin: 1px 1px 1px 0;
+    line-height: 28px;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #555555;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #cecece;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    outline: none;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    display: inline-block;
+    vertical-align: baseline;
+    zoom: 1;
+    background-color: #dfdfdf;
+}
+a {
+    color: #46E1FF;
+    text-decoration: none;
+}
+.item-video{
+    height: 80px;
+}
