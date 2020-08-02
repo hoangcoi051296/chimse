@@ -17,13 +17,13 @@ class DatabaseSeeder extends Seeder
 //            'email' => 'thangcon@gmail.com',
 //            'password' => bcrypt('12345678'),
 //        ]);
-        DB::table('post')->insert([
-           'titler' => 'dọn nhà',
-           'status' => 'dọn gấp',
-           'description' => 'việc nhẹ lương cao',
-           'price' => '1000$',
-           'address' => 'Đà Nẵng'
-        ]);
+        // DB::table('post')->insert([
+        //    'title' => 'dọn nhà',
+        //    'status' => 'dọn gấp',
+        //    'description' => 'việc nhẹ lương cao',
+        //    'price' => '1000$',
+        //    'address' => 'Đà Nẵng'
+        // ]);
         DB::table('managers')->insert([
             'name' => 'thaihoang',
             'email' => 'thaihoangdo0512@gmail.com',

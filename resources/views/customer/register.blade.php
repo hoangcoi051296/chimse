@@ -76,9 +76,16 @@
 
                 <div class="container-login100-form-btn">
                     <button class="login100-form-btn">
-                        Login
+                        Register
                     </button>
                 </div>
+                @if (session()->has('error'))
+                    <div class="alert alert-danger">
+                        <ul>
+                            {{session('error')}}
+                        </ul>
+                    </div>
+                @endif
             </form>
         </div>
     </div>
