@@ -57,7 +57,7 @@ class Helper extends Model implements Authenticatable
         }
         return Arr::add($validate,'password','sometimes|nullable|min:6|confirmed') ;
     }
-    public $perPage = 5;
+    public $perPage = 10;
     public function create($request){
         $data =$request->all();
         $data['password']=bcrypt($request->password);
