@@ -70,6 +70,13 @@
                         Login
                     </button>
                 </div>
+                @if (session()->has('error'))
+                    <div class="alert alert-danger">
+                        <ul>
+                            {{session('error')}}
+                        </ul>
+                    </div>
+                @endif
             </form>
         </div>
     </div>

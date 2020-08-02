@@ -15,7 +15,7 @@ return [
             ],
         ],
         'customer'=>[
-            'name'=>'Người giúp việc',
+            'name'=>'Người thuê',
             'child'=>[
                 [
                     'name'=>'Danh sách',

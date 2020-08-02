@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Danh sách người thuê</h1>
+                <h1 class="m-0 text-dark">Danh sách công việc</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -23,13 +23,13 @@
         <div class="row">
             <div class="col-md-12">
 
-                <form class=" ml-3" action="{{route('customer.index')}}" method="GET">
+                <form class="ml-3" action="{{route('customer.post.index')}}" method="GET">
                     <div class="card">
                         <div class="input-group input-group-lg">
-                            <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                aria-label="Search" name="search">
+                            <input class="form-control form-control-navbar" placeholder="Search" aria-label="Search"
+                                name="search" id="search">
                             <div class="input-group-append">
-                                <button class="btn btn-navbar" type="submit">
+                                <button class="btn btn-navbar" id="searchPost" type="submit">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
@@ -37,8 +37,9 @@
                     </div>
                 </form>
 
-                <a href="{{route('customer.create')}}" class="btn btn-success float-right "
-                    style="margin-bottom: 10px">Tạo người thuê</a>
+                <a href="{{route('customer.post.create')}}" class="btn btn-success float-right "
+                    style="margin-bottom: 10px">Tạo
+                    bài đăng</a>
             </div>
             <div class="col-md-12">
                 <div class="card">
@@ -47,31 +48,33 @@
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>Name</th>
-                                    <th>email</th>
-                                    <th>phone</th>
-                                    <th>address</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Address</th>
+                                    <th>Customer</th>
+                                    <th>Category</th>
                                     <th style="width: 113px">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($customers as $key => $customer)
+                                @foreach($posts as $key => $post)
                                 <tr>
                                     <td>{{$key + 1}}</td>
-                                    <td>{{ $customer->name}}</td>
+                                    <td>{{ $post->title}}</td>
                                     <td>
-                                        {{$customer->email}}
+                                        {{$post->description}}
                                     </td>
-                                    <td>{{$customer->phone}}</td>
-                                    <td>{{$customer->address}}</td>
+                                    <td>{{$post->price}}</td>
+                                    <td>{{$post->address}}</td>
+                                    <td>{{$post->customer->name}}</td>
+                                    <td>{{$post->category->name}}</td>
                                     <td>
-                                        <a href="{{ route('customer.edit',['id' => $customer->id])}}"
+                                        <a href="{{ route('customer.post.edit',['id' => $post->id])}}"
                                             class="btn btn-primary"><i class="fa fa-edit"></i></a>
-                                        <a href="{{ route('customer.delete',['id'=> $customer->id])}}"
+                                        <a href="{{ route('customer.post.delete',['id'=> $post->id])}}"
                                             onclick="return confirm('Bạn muốn xóa không?');" class="btn btn-danger"><i
                                                 class="fa fa-trash"></i></a>
-                                        <a href="{{route('customer.post',['id' => $customer->id])}}"
-                                            class="btn btn-default">Danh sách bài đăng</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -80,7 +83,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        {{$customers->links()}}
+                        {{$posts->links()}}
                     </div>
                 </div>
                 <!-- /.card -->
@@ -90,4 +93,20 @@
     </div><!-- /.container-fluid -->
 </section>
 <!-- /.content -->
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script>
+    $(()=>{
+        $('#searchPost').click(() => {
+            console.log("ok");
+            $.ajax({
+                url: "{{ route('customer.post.index')}}",
+method: 'get',
+data: $('#search').val(),
+success: function(response){
+console.log(response);
+}});
+});
+});
+</script> --}}
 @endsection
