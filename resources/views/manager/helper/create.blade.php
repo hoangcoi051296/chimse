@@ -11,7 +11,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Danh sách</li>
+                        <li class="breadcrumb-item active">Tạo mới</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -45,21 +45,25 @@
                                 <input name="email" type="email"  class="form-control" >
                             </div>
                             <div class="form-group">
+                                <label for="inputEmail">Phone Number</label>
+                                <input name="phone" type="text"  class="form-control" >
+                            </div>
+                            <div class="form-group">
+                                <label for="inputStatus">Address</label>
+                                <select id="inputStatus" class="form-control custom-select" name="address">
+                                    <option selected="" disabled="">Address</option>
+                                    @foreach($address as $a)
+                                        <option value="{{$a->maqh}}">{{$a->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="inputPassword">Password</label>
                                 <input type="password" name="password" id="inputClientCompany" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="inputProjectLeader">Repeat Password</label>
                                 <input type="password" name="password_confirmation" id="inputProjectLeader" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputStatus">Status</label>
-                                <select id="inputStatus" class="form-control custom-select">
-                                    <option selected="" disabled="">Select one</option>
-                                    <option>On Hold</option>
-                                    <option>Canceled</option>
-                                    <option>Success</option>
-                                </select>
                             </div>
                         </div>
                         <!-- /.card-body -->

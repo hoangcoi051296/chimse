@@ -17,7 +17,10 @@ class CreateTableHelperTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email');
+            $table->string('phone');
             $table->string('password');
+            $table->unsignedBigInteger('address');
+            $table->foreign('address')->references('maqh')->on('devvn_quanhuyen');
             $table->timestamps();
         });
     }

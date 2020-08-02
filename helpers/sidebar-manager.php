@@ -6,6 +6,7 @@ if(!function_exists("sidebarManager")){
             'manager'=>[
                 'helper'=>[
                     'name'=>'Người giúp việc',
+                    'route'=>route('manager.helper.index'),
                     'child'=>[
                         [
                             'name'=>'Danh sách',
@@ -19,10 +20,11 @@ if(!function_exists("sidebarManager")){
                 ],
                 'customer'=>[
                     'name'=>'Người thuê',
+                    'route'=>'#',
                     'child'=>[
                         [
                             'name'=>'Danh sách',
-                            'route'=>'manager/helper'
+                            'route'=>'#'
                         ],
                         [
                             'name'=>'Tạo mới',

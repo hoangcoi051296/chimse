@@ -25,15 +25,27 @@
                 <div class="col-md-12">
 
                         <form class=" ml-3">
-                            <div class="card">
+
                             <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
+                                <div class="form-group">
+                                    <select class="form-control" name="address">
+                                        <option value="">Địa chỉ</option>
+                                        @foreach($address as $a)
+                                        <option {{Request::get('address')==$a->maqh ?"selected='selected'":''}}  value="{{$a->maqh}}">{{$a->name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
+
                             </div>
+                            <div class="card">
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group input-group-sm">
+                                        <input value="{{Request::get('search')}}" placeholder="Tìm kiếm" type="text" class="form-control" name="search">
+                                        <span class="input-group-append">
+                                     <button type="submit" class="btn btn-info btn-flat">Go!</button>
+                                     </span>
+                                    </div>
+                                </div>
                             </div>
                         </form>
 
@@ -46,52 +58,31 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>Task</th>
-                                    <th>Progress</th>
-                                    <th style="width: 40px">Label</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>PhoneNumber</th>
+                                    <th>Address</th>
+                                    <th>Rating</th>
+                                    <th style="width: 40px">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @forelse($helpers as $helper)
                                 <tr>
-                                    <td>1.</td>
-                                    <td>Update software</td>
+                                    <td>{{$helper->id}}</td>
+                                    <td>{{$helper->name}}</td>
+                                    <td>{{$helper->email}}</td>
+                                    <td>{{$helper->phone}}</td>
+                                    <td>{{$helper->Address->name}}</td>
+                                    <td></td>
                                     <td>
-                                        <div class="progress progress-xs">
-                                            <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                        </div>
+                                        <a href="{{route('manager.helper.edit',['id'=>$helper->id])}}" >Edit</a>
+                                        <a href="{{route('manager.helper.delete',['id'=>$helper->id])}}" >Delete</a>
                                     </td>
-                                    <td><span class="badge bg-danger">55%</span></td>
                                 </tr>
-                                <tr>
-                                    <td>2.</td>
-                                    <td>Clean database</td>
-                                    <td>
-                                        <div class="progress progress-xs">
-                                            <div class="progress-bar bg-warning" style="width: 70%"></div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-warning">70%</span></td>
-                                </tr>
-                                <tr>
-                                    <td>3.</td>
-                                    <td>Cron job running</td>
-                                    <td>
-                                        <div class="progress progress-xs progress-striped active">
-                                            <div class="progress-bar bg-primary" style="width: 30%"></div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-primary">30%</span></td>
-                                </tr>
-                                <tr>
-                                    <td>4.</td>
-                                    <td>Fix and squish bugs</td>
-                                    <td>
-                                        <div class="progress progress-xs progress-striped active">
-                                            <div class="progress-bar bg-success" style="width: 90%"></div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-success">90%</span></td>
-                                </tr>
+                                @empty
+                                    <p>Không tìm thấy</p>
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>

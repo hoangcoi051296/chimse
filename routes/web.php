@@ -27,11 +27,16 @@ Route::group(['prefix' => 'manager', 'namespace' => 'Manager'], function () {
     });
     Route::group(['middleware' => 'checkLogin'], function () {
         Route::get('/', 'ManagerController@index')->name('manager.index');
-    });
 
-    Route::get('helper','HelperController@index')->name('manager.helper.index');
-    Route::get('helper/create','HelperController@create')->name('manager.helper.create');
-    Route::post('helper/store','HelperController@store')->name('manager.helper.store');
+        Route::group(['prefix' => 'helper'], function () {
+            Route::get('/','HelperController@index')->name('manager.helper.index');
+            Route::get('create','HelperController@create')->name('manager.helper.create');
+            Route::post('store','HelperController@store')->name('manager.helper.store');
+            Route::get('edit/{id}','HelperController@edit')->name('manager.helper.edit');
+            Route::post('update/{id}','HelperController@update')->name('manager.helper.update');
+            Route::get('delete/{id}','HelperController@delete')->name('manager.helper.delete');
+        });
+    });
 
 });
 Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
