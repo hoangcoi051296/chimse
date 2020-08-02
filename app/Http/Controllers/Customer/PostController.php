@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\PostDec;
 use App\Category;
+use App\Http\Requests\PostCreated;
 
 class PostController extends Controller
 {
@@ -33,7 +34,7 @@ class PostController extends Controller
         return view('post.create',compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(PostCreated $request)
     {
         $user = Auth::guard('customer')->user();
         $data = $request->all();
