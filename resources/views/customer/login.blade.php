@@ -39,7 +39,7 @@
 					</span>
             </div>
 
-            <form action="" method="POST" class="login100-form validate-form">
+            <form action="{{route("customer.postLogin")}}" method="POST" class="login100-form validate-form">
                 @csrf
                 <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
                     <span class="label-input100">Username</span>
@@ -61,7 +61,7 @@
                         </label>
                     </div>
                     <div class="contact100-form">
-                        <a href="{{route('register')}}">No account? Register here</a>
+                        <a href="{{route('customer.register')}}">No account? Register here</a>
                     </div>
                 </div>
 

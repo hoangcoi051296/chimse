@@ -21,7 +21,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form method="post" action="{{route('customer.store')}}">
+            <form method="post" action="{{route('manager.customer.store')}}">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
@@ -49,8 +49,13 @@
                                     <input name="phone" type="phone"  class="form-control" >
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputEmail">Address</label>
-                                    <input name="address" type="text"  class="form-control" >
+                                    <label for="inputStatus">Address</label>
+                                    <select id="inputStatus" class="form-control custom-select" name="address">
+                                        <option selected="" disabled="">Address</option>
+                                        @foreach($address as $a)
+                                            <option value="{{$a->maqh}}">{{$a->name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPassword">Password</label>

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Manager;
+namespace App\Http\Controllers\Auth\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class ManagerLoginController extends Controller
 {
     public function login(){
         return view('manager.auth.login');

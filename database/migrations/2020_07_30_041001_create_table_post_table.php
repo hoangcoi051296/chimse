@@ -19,7 +19,8 @@ class CreateTablePostTable extends Migration
             $table->string('status');
             $table->string('description');
             $table->float('price');
-            $table->string('address');
+            $table->unsignedBigInteger('address');
+            $table->foreign('address')->references('maqh')->on('devvn_quanhuyen');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('helper_id');
             $table->unsignedBigInteger('customer_id');

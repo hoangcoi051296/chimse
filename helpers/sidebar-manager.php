@@ -25,11 +25,11 @@ if (!function_exists("sidebarManager")) {
                     'child' => [
                         [
                             'name' => 'Danh sách',
-                            'route' => route('customer.index')
+                            'route' => route('manager.customer.index')
                         ],
                         [
                             'name' => 'Tạo mới',
-                            'route' => route('customer.create')
+                            'route' => route('manager.customer.create')
                         ],
                     ],
                 ],
@@ -38,11 +38,11 @@ if (!function_exists("sidebarManager")) {
                     'child' => [
                         [
                             'name' => 'Danh sách',
-                            'route' => route('customer.post.index')
+                            'route' => '#'
                         ],
                         [
                             'name' => 'Tạo mới',
-                            'route' => route('customer.post.create')
+                            'route' => '#'
                         ],
                     ],
                 ]

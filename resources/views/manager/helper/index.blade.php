@@ -1,5 +1,13 @@
 @extends('manager.layout.layout')
-
+<style type="text/css">
+    .delete{
+        color: red;
+        text-decoration: none;
+    }
+    .delete:hover{
+        color: indianred;
+    }
+</style>
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -58,11 +66,11 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>Name</th>
+                                    <th>Tên</th>
                                     <th>Email</th>
-                                    <th>PhoneNumber</th>
-                                    <th>Address</th>
-                                    <th>Rating</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Đánh giá</th>
                                     <th style="width: 40px">Action</th>
                                 </tr>
                                 </thead>
@@ -76,8 +84,8 @@
                                     <td>{{$helper->Address->name}}</td>
                                     <td></td>
                                     <td>
-                                        <a href="{{route('manager.helper.edit',['id'=>$helper->id])}}" >Edit</a>
-                                        <a href="{{route('manager.helper.delete',['id'=>$helper->id])}}" >Delete</a>
+                                        <a class="edit" href="{{route('manager.helper.edit',['id'=>$helper->id])}}" ><i class="fas fa-edit"></i></a>
+                                        <a class="delete" href="{{route('manager.helper.delete',['id'=>$helper->id])}}" ><i class="far fa-trash-alt"></i></a>
                                     </td>
                                 </tr>
                                 @empty

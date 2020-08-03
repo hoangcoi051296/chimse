@@ -39,7 +39,7 @@
 					</span>
             </div>
 
-            <form action="" method="POST" class="login100-form validate-form">
+            <form action="{{route('customer.postRegister')}}" method="POST" class="login100-form validate-form">
                 @csrf
                 <div class="wrap-input100 validate-input m-b-26" data-validate="name is required">
                     <span class="label-input100">Username</span>
@@ -70,7 +70,7 @@
 
                 <div class="flex-sb-m w-full p-b-30">
                     <div class="contact100-form-checkbox">
-                        <a href="{{route('login')}}">Already account? Login now</a>
+                        <a href="{{route('customer.login')}}">Already account? Login now</a>
                     </div>
                 </div>
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Helper;
+namespace App\Http\Controllers\Auth\Employee;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class EmployeeLoginController extends Controller
 {
     public function login(){
         return view('helper.auth.login');
@@ -24,8 +24,5 @@ class LoginController extends Controller
             return redirect()->route('helper.index');
         }
         return redirect()->route('helper.login')->with("error", "The account or password is incorrect!")->withInput();
-    }
-    public function register(){
-        return view('helper.auth.register');
     }
 }

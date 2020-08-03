@@ -9,7 +9,7 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('manager.index')}}">Home</a></li>
                     <li class="breadcrumb-item active"><a href="{{url('/')}}"></a>Danh sách</li>
                 </ol>
             </div><!-- /.col -->
@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-md-12">
 
-                <form class=" ml-3" action="{{route('customer.index')}}" method="GET">
+                <form class=" ml-3" >
                     <div class="card">
                         <div class="input-group input-group-lg">
                             <input class="form-control form-control-navbar" type="search" placeholder="Search"
@@ -37,7 +37,7 @@
                     </div>
                 </form>
 
-                <a href="{{route('customer.create')}}" class="btn btn-success float-right "
+                <a href="{{route('manager.customer.create')}}" class="btn btn-success float-right "
                     style="margin-bottom: 10px">Tạo người thuê</a>
             </div>
             <div class="col-md-12">
@@ -65,13 +65,11 @@
                                     <td>{{$customer->phone}}</td>
                                     <td>{{$customer->address}}</td>
                                     <td>
-                                        <a href="{{ route('customer.edit',['id' => $customer->id])}}"
+                                        <a href="{{ route('manager.customer.edit',['id' => $customer->id])}}"
                                             class="btn btn-primary"><i class="fa fa-edit"></i></a>
-                                        <a href="{{ route('customer.delete',['id'=> $customer->id])}}"
+                                        <a href="{{ route('manager.customer.delete',['id'=> $customer->id])}}"
                                             onclick="return confirm('Bạn muốn xóa không?');" class="btn btn-danger"><i
                                                 class="fa fa-trash"></i></a>
-                                        <a href="{{route('customer.post',['id' => $customer->id])}}"
-                                            class="btn btn-default">Danh sách bài đăng</a>
                                     </td>
                                 </tr>
                                 @endforeach
