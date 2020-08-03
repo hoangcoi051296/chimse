@@ -58,12 +58,16 @@ class Helper extends Model implements Authenticatable
         return Arr::add($validate,'password','sometimes|nullable|min:6|confirmed') ;
     }
     public $perPage = 10;
-    public function create($request){
+    public function createData($request){
         $data =$request->all();
         $data['password']=bcrypt($request->password);
-        return $this->fill($data)->save();
+//        return $this->fill($data)->save();
+        if ($this->fill($data)->save()){
+            return true;
+        }
+        return false;
     }
-    public function updatee($request,$id){
+    public function updateData($request,$id){
         $data =$request->all();
         if (!$request->password) {
             return
@@ -72,7 +76,7 @@ class Helper extends Model implements Authenticatable
         $data['password']=bcrypt($request->password);
         $this->find($id)->fill($data)->save();
     }
-    public function deletee($id){
+    public function deleteData($id){
         $this->find($id)->delete();
     }
 

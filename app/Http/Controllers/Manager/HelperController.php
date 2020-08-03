@@ -44,12 +44,15 @@ class HelperController extends Controller
     public function store(Request $request)
     {
         $request->validate($this->helper->rules());
-        $this->helper->create($request);
-        try {
 
-        } catch (\Exception $e) {
-            return redirect()->back()->with("error", $e->getMessage());
+        if (!$this->helper->createData($request)){
+            return redirect()->back();
         }
+//        try {
+//            $this->helper->createData($request);
+//        } catch (\Exception $e) {
+//            return redirect()->back()->with("error", $e->getMessage());
+//        }
         return redirect()->route('manager.helper.index')->with("success", "Create Success");
     }
 
@@ -59,11 +62,11 @@ class HelperController extends Controller
         return view('manager.helper.edit', compact('helper'));
     }
 
-    public function update(Request $request, $id)
+    public function updateData(Request $request, $id)
     {
         $request->validate($this->helper->rules($id));
         try {
-            $this->helper->updatee($request, $id);
+            $this->helper->updateData($request, $id);
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
@@ -73,7 +76,7 @@ class HelperController extends Controller
     public function delete($id)
     {
         try {
-            $this->helper->deletee($id);
+            $this->helper->deleteData($id);
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
