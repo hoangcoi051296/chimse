@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Models;
-use http\Env\Request;
+use App\Mail\AccountCreated;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Console\Helper\Table;
 
 class Helper extends Model implements Authenticatable
@@ -63,6 +64,7 @@ class Helper extends Model implements Authenticatable
         $data['password']=bcrypt($request->password);
 //        return $this->fill($data)->save();
         if ($this->fill($data)->save()){
+            Mail::to($data['email'])->send(new AccountCreated());
             return true;
         }
         return false;

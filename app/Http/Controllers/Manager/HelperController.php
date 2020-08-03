@@ -3,12 +3,14 @@
 
 namespace App\Http\Controllers\Manager;
 
+use App\Mail\AccountCreated;
 use App\Models\Address;
 use App\Models\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 use App\Models\TinhTP;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class HelperController extends Controller
 {
