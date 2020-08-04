@@ -57,7 +57,7 @@
                             </div>
                         </form>
 
-                    <a  href="{{route('manager.helper.create')}}" class="btn btn-success float-right " style="margin-bottom: 10px">Tạo người giúp việc</a>
+                    <a  href="{{route('manager.employee.create')}}" class="btn btn-success float-right " style="margin-bottom: 10px">Tạo người giúp việc</a>
                 </div>
                 <div class="col-md-12">
                     <div class="card">
@@ -84,8 +84,8 @@
                                     <td>{{$helper->Address->name}}</td>
                                     <td></td>
                                     <td>
-                                        <a class="edit" href="{{route('manager.helper.edit',['id'=>$helper->id])}}" ><i class="fas fa-edit"></i></a>
-                                        <a class="delete" href="{{route('manager.helper.delete',['id'=>$helper->id])}}" ><i class="far fa-trash-alt"></i></a>
+                                        <a class="edit" href="{{route('manager.employee.edit',['id'=>$helper->id])}}" ><i class="fas fa-edit"></i></a>
+                                        <a class="delete" href="{{route('manager.employee.delete',['id'=>$helper->id])}}" ><i class="far fa-trash-alt"></i></a>
                                     </td>
                                 </tr>
                                 @empty

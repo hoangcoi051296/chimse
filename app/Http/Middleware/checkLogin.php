@@ -19,6 +19,7 @@ class checkLogin
         if(Auth::guard('manager')->guest()){
             return redirect()->route('manager.login');
         }
+
         return $next($request);
     }
 }

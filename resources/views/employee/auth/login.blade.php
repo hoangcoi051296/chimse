@@ -32,7 +32,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-85 p-b-20">
-				<form class="login100-form validate-form" method="post" action="{{route("helper.postLogin")}}">
+				<form class="login100-form validate-form" method="post" action="{{route("employee.postLogin")}}">
                     @csrf
 					<span class="login100-form-title p-b-50">
 						Welcome
@@ -60,16 +60,6 @@
 
 							<a href="#" class="txt2">
 								Username / Password?
-							</a>
-						</li>
-
-						<li>
-							<span class="txt1">
-								Don’t have an account?
-							</span>
-
-							<a href="{{route('helper.register')}}" class="txt2">
-								Sign up
 							</a>
 						</li>
 					</ul>

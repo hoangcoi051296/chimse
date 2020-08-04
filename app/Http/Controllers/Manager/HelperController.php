@@ -4,8 +4,9 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Mail\AccountCreated;
+use App\Mail\AccountHelperCreated;
 use App\Models\Address;
-use App\Models\Helper;
+use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 use App\Models\TinhTP;
@@ -19,7 +20,7 @@ class HelperController extends Controller
 
     public function __construct(
         Manager $manager,
-        Helper $helper
+        Employee $helper
     ) {
         $this->manager = $manager;
         $this->helper = $helper;
@@ -34,33 +35,31 @@ class HelperController extends Controller
 //            1,2,3
 //        ];
         $helpers = $this->helper->getData($condition, $request)->paginate($this->helper->perPage);
-        return view('manager.helper.index', compact('helpers'));
+        return view('manager.employee.index', compact('helpers'));
     }
 
     public function create()
     {
-        return view('manager.helper.create');
+        return view('manager.employee.create');
     }
 
     public function store(Request $request)
     {
         $request->validate($this->helper->rules());
-
-        if (!$this->helper->createData($request)){
-            return redirect()->back();
+        try {
+            $this->helper->createData($request);
+        } catch (\Exception $e) {
+            return redirect()->back()->with("error", $e->getMessage());
         }
-//        try {
-//            $this->helper->createData($request);
-//        } catch (\Exception $e) {
-//            return redirect()->back()->with("error", $e->getMessage());
-//        }
-        return redirect()->route('manager.helper.index')->with("success", "Create Success");
+        $employee =$request->all();
+        Mail::to($request->email)->send( new AccountHelperCreated($employee));
+        return redirect()->route('manager.employee.index')->with("success", "Create Success");
     }
 
     public function edit($id)
     {
-        $helper = Helper::find($id);
-        return view('manager.helper.edit', compact('helper'));
+        $helper = Employee::find($id);
+        return view('manager.employee.edit', compact('helper'));
     }
 
     public function updateData(Request $request, $id)
@@ -71,7 +70,7 @@ class HelperController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.helper.index')->with("success", "Create Success");
+        return redirect()->route('manager.employee.index')->with("success", "Create Success");
     }
 
     public function delete($id)
@@ -81,6 +80,6 @@ class HelperController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.helper.index')->with("success", "Delete Success");
+        return redirect()->route('manager.employee.index')->with("success", "Delete Success");
     }
 }

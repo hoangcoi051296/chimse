@@ -804,7 +804,7 @@
 
   // STRING STREAM
 
-  // Fed to the mode parsers, provides helper functions to make
+  // Fed to the mode parsers, provides employee functions to make
   // parsers more succinct.
 
   var StringStream = function(string, tabSize, lineOracle) {
@@ -5585,7 +5585,7 @@
       this.lines.splice(at, n);
     },
 
-    // Helper used to collapse a small branch into a single leaf.
+    // Employee used to collapse a small branch into a single leaf.
     collapse: function(lines) {
       lines.push.apply(lines, this.lines);
     },
@@ -6796,7 +6796,7 @@
     return typeof val == "string" ? keyMap[val] : val
   }
 
-  // Helper for deleting text near the selection(s), used to implement
+  // Employee for deleting text near the selection(s), used to implement
   // backspace, delete, and similar functionality.
   function deleteNearSelection(cm, compute) {
     var ranges = cm.doc.sel.ranges, kill = [];

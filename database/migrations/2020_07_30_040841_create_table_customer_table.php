@@ -17,6 +17,7 @@ class CreateTableCustomerTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email');
+            $table->string('avatar')->nullable();
             $table->string('password');
             $table->string('phone');
             $table->unsignedBigInteger('address');

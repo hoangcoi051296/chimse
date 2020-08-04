@@ -20,7 +20,7 @@ class CreateTableFeedback extends Migration
             $table->string('comment');
             $table->tinyInteger('rating');
             $table->foreign('customer_id')->references('id')->on('customer');
-            $table->foreign('helper_id')->references('id')->on('helper');
+            $table->foreign('helper_id')->references('id')->on('employee');
             $table->timestamps();
         });
     }

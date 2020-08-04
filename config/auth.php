@@ -50,9 +50,9 @@ return [
             'driver' => 'session',
             'provider' => 'manager',
         ],
-        'helper' => [
+        'employee' => [
             'driver' => 'session',
-            'provider' => 'helper',
+            'provider' => 'employee',
         ],
         'customer' => [
             'driver' => 'session',
@@ -89,9 +89,9 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Manager::class,
         ],
-        'helper' => [
+        'employee' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Helper::class,
+            'model' => App\Models\Employee::class,
         ],
         'customer' => [
             'driver' => 'eloquent',

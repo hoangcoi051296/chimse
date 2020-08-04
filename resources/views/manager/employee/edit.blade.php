@@ -21,7 +21,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form method="post" action="{{route('manager.helper.update',['id'=>$helper->id])}}">
+            <form method="post" action="{{route('manager.employee.update',['id'=>$helper->id])}}">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">

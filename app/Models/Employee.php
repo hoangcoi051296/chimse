@@ -10,17 +10,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Console\Helper\Table;
 
-class Helper extends Model implements Authenticatable
+class Employee extends Model implements Authenticatable
 {
     use AuthenticableTrait;
-    protected $table = 'helper';
+    protected $table = 'employee';
     protected $fillable = ['id','name','email','phone','password','address'];
     protected $hidden = [
         'password', 'remember_token',
     ];
-//    public function getAddress($id){
-//        return DB::table('devvn_quanhuyen')->where('maqh',$id)->first()->name;
-//    }
     public function getData($condition ,$request){
         $helpers=$this->query() ;
         if (!$condition){
@@ -49,8 +46,8 @@ class Helper extends Model implements Authenticatable
     {
         $validate=[
             'name' => "required| string| max:255",
-            'email' => "required|string|email|regex:^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$^|unique:helper,email,".$id,
-            'phone'=>'required|unique:helper,phone,'.$id,
+            'email' => "required|string|email|regex:^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$^|unique:employee,email,".$id,
+            'phone'=>'required|unique:employee,phone,'.$id,
             'address'=>'required',
         ];
         if (!$id){
@@ -62,12 +59,12 @@ class Helper extends Model implements Authenticatable
     public function createData($request){
         $data =$request->all();
         $data['password']=bcrypt($request->password);
-//        return $this->fill($data)->save();
-        if ($this->fill($data)->save()){
-            Mail::to($data['email'])->send(new AccountCreated());
-            return true;
-        }
-        return false;
+        return $this->fill($data)->save();
+//        if ($this->fill($data)->save()){
+//            Mail::to($data['email'])->send(new AccountCreated());
+//            return true;
+//        }
+//        return false;
     }
     public function updateData($request,$id){
         $data =$request->all();

@@ -22,8 +22,8 @@ class checkLogout
         if (Auth::guard("customer")->check()) {
             return redirect()->route('customer.index');
         }
-        if (Auth::guard("helper")->check()) {
-            return redirect()->route('helper.index');
+        if (Auth::guard("employee")->check()) {
+            return redirect()->route('employee.index');
         }
         return $next($request);
     }

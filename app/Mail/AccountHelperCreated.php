@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class AccountCreated extends Mailable
+class AccountHelperCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,9 +16,10 @@ class AccountCreated extends Mailable
      *
      * @return void
      */
-
-    public function __construct()
+    public $employee;
+    public function __construct($employee)
     {
+        $this->employee=$employee;
     }
 
     /**
@@ -28,6 +29,6 @@ class AccountCreated extends Mailable
      */
     public function build()
     {
-        return $this->markdown('Mail/AccountCreated');
+        return $this->markdown('Mail/AccountHelperCreated')->with(['$employee'=>$this->employee]);
     }
 }

@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Customer;
-use App\Post;
+use App\Models\Customer;
+use App\Models\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,24 +15,15 @@ use App\Post;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
-    Route::group(['prefix' => 'admin'], function () {
-
-    });
-});
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::group(['prefix' => 'manager', 'namespace' => 'Manager', 'middleware' => 'checkLogin'], function () {
     Route::get('/', 'ManagerController@index')->name('manager.index');
-    Route::group(['prefix' => 'helper'], function () {
-        Route::get('/', 'HelperController@index')->name('manager.helper.index');
-        Route::get('create', 'HelperController@create')->name('manager.helper.create');
-        Route::post('store', 'HelperController@store')->name('manager.helper.store');
-        Route::get('edit/{id}', 'HelperController@edit')->name('manager.helper.edit');
-        Route::post('update/{id}', 'HelperController@update')->name('manager.helper.update');
-        Route::get('delete/{id}', 'HelperController@delete')->name('manager.helper.delete');
+    Route::group(['prefix' => 'employee'], function () {
+        Route::get('/', 'HelperController@index')->name('manager.employee.index');
+        Route::get('create', 'HelperController@create')->name('manager.employee.create');
+        Route::post('store', 'HelperController@store')->name('manager.employee.store');
+        Route::get('edit/{id}', 'HelperController@edit')->name('manager.employee.edit');
+        Route::post('update/{id}', 'HelperController@update')->name('manager.employee.update');
+        Route::get('delete/{id}', 'HelperController@delete')->name('manager.employee.delete');
     });
     Route::group(['prefix' => 'customer'], function () {
         Route::get('/', 'CustomerController@index')->name('manager.customer.index');
@@ -63,20 +54,24 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
         })->name('customer.post.delete');
     });
 });
+Route::group(['prefix'=>'employee','namespace'=>'Employee'],function (){
+    Route::get('/','EmployeeController@index')->name('employee.index');
+    Route::group(['prefix'=>'account'],function (){
+        Route::get('/edit/{id}', 'EmployeeController@editAccount')->name('employee.account.edit');
+        Route::post('/edit/{id}', 'EmployeeController@updateAccount')->name('employee.account.update');
+    });
+});
 
 
 
-
-
-
-Route::group(['prefix' => 'helper', 'namespace' => 'Auth\Employee'], function () {
-    Route::get('/login', 'EmployeeLoginController@login')->name('helper.login')->middleware('checkLogout');
-    Route::post('/login', 'EmployeeLoginController@postLogin')->name('helper.postLogin');
+Route::group(['prefix' => 'employee', 'namespace' => 'Auth\Employee'], function () {
+    Route::get('/login', 'EmployeeLoginController@login')->name('employee.login')->middleware('checkLogout');
+    Route::post('/login', 'EmployeeLoginController@postLogin')->name('employee.postLogin');
     Route::get('logout', function () {
         Auth::logout();
         session()->flush();
-        return redirect()->route('helper.login');
-    });
+        return redirect()->route('employee.login');
+    })->name('employee.logout');
 });
 Route::group(['prefix' => 'customer', 'namespace' => 'Auth\Customer'], function () {
     Route::get('/login', 'CustomerLoginController@getLogin')->name('customer.login')->middleware('checkLogout');
@@ -86,7 +81,7 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Auth\Customer'], function 
     Route::get('logout', function () {
         Auth::logout();
         session()->flush();
-        return redirect()->route('helper.login');
+        return redirect()->route('employee.login');
     });
 });
 Route::group(['prefix' => 'manager', 'namespace' => 'Auth\Manager'], function () {

@@ -7,16 +7,16 @@ if (!function_exists("sidebarManager")) {
     {
         return [
             'manager' => [
-                'helper' => [
+                'employee' => [
                     'name' => 'Người giúp việc',
                     'child' => [
                         [
                             'name' => 'Danh sách',
-                            'route' => route('manager.helper.index')
+                            'route' => route('manager.employee.index')
                         ],
                         [
                             'name' => 'Tạo mới',
-                            'route' => route('manager.helper.create')
+                            'route' => route('manager.employee.create')
                         ],
                     ],
                 ],
@@ -52,4 +52,37 @@ if (!function_exists("sidebarManager")) {
             ]
         ];
     }
+
+}
+if (!function_exists("sidebarEmployee")) {
+    function sidebarEmployee()
+    {
+        return [
+            'employee' => [
+                'post' => [
+                    'name' => 'Quản lý công việc',
+                    'child' => [
+                        [
+                            'name' => 'Danh sách',
+                            'route' => '#'
+                        ],
+                    ],
+                ],
+                'feedback' => [
+                    'name' => 'Đánh giá',
+                    'child' => [
+                        [
+                            'name' => 'Danh sách',
+                            'route' => "#"
+                        ],
+                    ],
+                ],
+            ],
+
+            'report' => [
+
+            ]
+        ];
+    }
+
 }

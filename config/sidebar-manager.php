@@ -1,12 +1,12 @@
 <?php
 return [
     'manager'=>[
-        'helper'=>[
+        'employee'=>[
             'name'=>'Người giúp việc',
             'child'=>[
                 [
                     'name'=>'Danh sách',
-                    'route'=>'manager/helper'
+                    'route'=>'manager/employee'
                 ],
                 [
                     'name'=>'Tạo mới',
@@ -19,7 +19,7 @@ return [
             'child'=>[
                 [
                     'name'=>'Danh sách',
-                    'route'=>'manager/helper'
+                    'route'=>'manager/employee'
                 ],
                 [
                     'name'=>'Tạo mới',

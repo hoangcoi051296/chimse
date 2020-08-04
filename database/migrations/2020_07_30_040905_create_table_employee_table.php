@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableHelperTable extends Migration
+class CreateTableEmployeeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateTableHelperTable extends Migration
      */
     public function up()
     {
-        Schema::create('helper', function (Blueprint $table) {
+        Schema::create('employee', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email');
+            $table->string('avatar')->nullable();
             $table->string('phone');
             $table->string('password');
             $table->unsignedBigInteger('address');
@@ -32,6 +33,6 @@ class CreateTableHelperTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('helper');
+        Schema::dropIfExists('employee');
     }
 }
