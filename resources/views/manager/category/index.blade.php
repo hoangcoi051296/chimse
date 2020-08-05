@@ -37,8 +37,8 @@
                     </div>
                 </form>
 
-                <a href="{{route('manager.category.create')}}" class="btn btn-success float-right "
-                    style="margin-bottom: 10px">Tạo Danh Mục</a>
+                <a href="{{route('manager.customer.create')}}" class="btn btn-success float-right "
+                    style="margin-bottom: 10px">Tạo người thuê</a>
             </div>
             <div class="col-md-12">
                 <div class="card">
@@ -47,7 +47,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>Tên</th>
+                                    <th>Name</th>
                                     <th>email</th>
                                     <th>phone</th>
                                     <th>address</th>

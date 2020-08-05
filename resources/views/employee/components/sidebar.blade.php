@@ -33,7 +33,7 @@
                 @foreach($sideEmployee['employee'] as $sidebar)
                     <li class="nav-item @foreach($sidebar['child'] as $child){{$child['route']==URL::current()?'menu-open':'menu-close'}} @endforeach ">
                         <a href="#" class="nav-link @foreach($sidebar['child'] as $child){{$child['route']==URL::current()?'active':''}} @endforeach">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="{{$sidebar['icon']}}"></i>
                             <p>
                                {{$sidebar['name']}}
                                 <i class="right fas fa-angle-left"></i>
@@ -53,29 +53,6 @@
                             @endif
                     </li>
                 @endforeach
-                <li class="nav-item menu-close">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-plus-square"></i>
-                        <p>
-                           Tài khoản
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('employee.account.edit',['id'=>Auth::guard('employee')->user()->id])}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Cập nhật tài khoản</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('employee.logout')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Đăng xuất</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

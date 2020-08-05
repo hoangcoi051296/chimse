@@ -27,13 +27,12 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                     with font-awesome or any other icon font library -->
                 <li class="nav-header">Quản lý</li>
                 @foreach($sideManager['manager'] as $sidebar)
-                    <li class="nav-item @foreach($sidebar['child'] as $child){{$child['route']==URL::current()?'menu-open':'menu-close'}} @endforeach ">
-                        <a href="#" class="nav-link @foreach($sidebar['child'] as $child){{$child['route']==URL::current()?'active':''}} @endforeach">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+
+                    <li class="nav-item @foreach($sidebar['child'] as $child){{$child['route']==URL::current()||$child['route']==getUrlEdit(URL::current())?'menu-open':'menu-close'}} @endforeach ">
+                        <a href="#" class="nav-link @foreach($sidebar['child'] as $child){{$child['route']==URL::current()||$child['route']==getUrlEdit(URL::current())?'active':''}} @endforeach">
+                            <i class="{{$sidebar['icon']}}"></i>
                             <p>
                                {{$sidebar['name']}}
                                 <i class="right fas fa-angle-left"></i>
@@ -54,7 +53,6 @@
 
                     </li>
                 @endforeach
-
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

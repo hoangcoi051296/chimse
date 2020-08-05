@@ -9,7 +9,14 @@ class Post extends Model
     protected $table = 'post';
     protected $fillable = ['title', 'status', 'description', 'price', 'address', 'category_id','helper_id',	'customer_id'];
 
-
+    const DaHuy =0;
+    const ChoDuyet=1;
+    const DaDuyet=2;
+    const TimDuocNGV=3;
+    const NGVXacNhanCV=4;
+    const NGVBatDau=5;
+    const NGVKetThuc=6;
+    const NTXacNhan=7;
     public function getData($request = null)
     {
         $data = $this->query();

@@ -15,8 +15,10 @@ use App\Models\Post;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['prefix' => 'manager', 'namespace' => 'Manager', 'middleware' => 'checkLogin'], function () {
+Route::group(['prefix' => 'manager', 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], function () {
     Route::get('/', 'ManagerController@index')->name('manager.index');
+    Route::get('/edit/{id}', 'ManagerController@editAccount')->name('manager.account.edit');
+    Route::post('/edit/{id}', 'ManagerController@updateAccount')->name('manager.account.update');
     Route::group(['prefix' => 'employee'], function () {
         Route::get('/', 'HelperController@index')->name('manager.employee.index');
         Route::get('create', 'HelperController@create')->name('manager.employee.create');
@@ -33,6 +35,14 @@ Route::group(['prefix' => 'manager', 'namespace' => 'Manager', 'middleware' => '
         Route::post('update/{id}', 'CustomerController@update')->name('manager.customer.update');
         Route::get('delete/{id}', 'CustomerController@delete')->name('manager.customer.delete');
     });
+    Route::group(['prefix'=>'category'],function (){
+        Route::get('/', 'CategoryController@index')->name('manager.category.index');
+        Route::get('create', 'CategoryController@create')->name('manager.category.create');
+        Route::post('store', 'CategoryController@store')->name('manager.category.store');
+        Route::get('edit/{id}', 'CategoryController@edit')->name('manager.category.edit');
+        Route::post('update/{id}', 'CategoryController@update')->name('manager.category.update');
+        Route::get('delete/{id}', 'CategoryController@delete')->name('manager.category.delete');
+    });
 
 });
 Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
@@ -40,7 +50,6 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
         Route::get('/', 'CustomerController@index')->name('customer.index');
         Route::get('/edit/{id}', 'CustomerController@edit')->name('customer.edit');
         Route::post('/edit/{id}', 'CustomerController@update')->name('customer.update');
-        Route::get('/delete/{id}','CustomerController@delete')->name('customer.delete');
     });
     Route::group(['prefix'=>'post'],function (){
         Route::get('/', 'CustomerController@posts')->name('customer.post');
@@ -54,7 +63,7 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Customer'], function () {
         })->name('customer.post.delete');
     });
 });
-Route::group(['prefix'=>'employee','namespace'=>'Employee'],function (){
+Route::group(['prefix'=>'employee','namespace'=>'Employee','middleware'=>'checkLoginEmployee'],function (){
     Route::get('/','EmployeeController@index')->name('employee.index');
     Route::group(['prefix'=>'account'],function (){
         Route::get('/edit/{id}', 'EmployeeController@editAccount')->name('employee.account.edit');
@@ -62,7 +71,10 @@ Route::group(['prefix'=>'employee','namespace'=>'Employee'],function (){
     });
 });
 
-
+Route::get('test',function (){
+    $post= new Post();
+   dd($post::ChoDuyet);
+});
 
 Route::group(['prefix' => 'employee', 'namespace' => 'Auth\Employee'], function () {
     Route::get('/login', 'EmployeeLoginController@login')->name('employee.login')->middleware('checkLogout');
@@ -91,6 +103,6 @@ Route::group(['prefix' => 'manager', 'namespace' => 'Auth\Manager'], function ()
         Auth::logout();
         session()->flush();
         return redirect()->route('manager.login');
-    });
+    })->name('manager.logout');
 });
 

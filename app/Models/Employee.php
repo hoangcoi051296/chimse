@@ -68,10 +68,17 @@ class Employee extends Model implements Authenticatable
     }
     public function updateData($request,$id){
         $data =$request->all();
+        $data['phone']=format_phone_number($data['phone']);
         if (!$request->password) {
             return
-            $this->find($id)->fill(['name'=>$request->name,'email'=>$request->email])->save();
+            $this->find($id)->fill([
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'phone'=>format_phone_number($request->phone),
+                'address'=>$request->address,
+            ])->save();
         }
+
         $data['password']=bcrypt($request->password);
         $this->find($id)->fill($data)->save();
     }

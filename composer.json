@@ -40,7 +40,8 @@
             "database/factories"
         ],
         "files": [
-            "helpers/sidebar-manager.php"
+            "helpers/sidebar-manager.php",
+            "helpers/format_phoneNumber.php"
         ]
     },
     "autoload-dev": {

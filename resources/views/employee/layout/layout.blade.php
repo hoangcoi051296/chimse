@@ -33,5 +33,6 @@
 
 <!-- jQuery -->
     @include('employee.components.js')
+    @yield('script')
 </body>
 </html>

@@ -51,8 +51,8 @@ class HelperController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        $employee =$request->all();
-        Mail::to($request->email)->send( new AccountHelperCreated($employee));
+//        $employee =$request->all();
+//        Mail::to($request->email)->send( new AccountHelperCreated($employee));
         return redirect()->route('manager.employee.index')->with("success", "Create Success");
     }
 
@@ -62,7 +62,7 @@ class HelperController extends Controller
         return view('manager.employee.edit', compact('helper'));
     }
 
-    public function updateData(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $request->validate($this->helper->rules($id));
         try {
@@ -70,7 +70,7 @@ class HelperController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.employee.index')->with("success", "Create Success");
+        return redirect()->route('manager.employee.index')->with("success", "Update Success");
     }
 
     public function delete($id)

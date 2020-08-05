@@ -6,12 +6,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Tạo người thuê</h1>
+                    <h1 class="m-0 text-dark">Tạo danh mục</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('customer.index')}}"></a>Danh sách</li>
+                        <li class="breadcrumb-item"><a href="{{route('manager.index')}}">Home</a></li>
+                        <li class="breadcrumb-item active"><a href="{{route('manager.index')}}"></a>Danh sách</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -21,7 +21,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form method="post" action="{{route('manager.customer.store')}}">
+            <form method="post" action="{{route('manager.category.store')}}">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
@@ -39,31 +39,6 @@
                                 <div class="form-group">
                                     <label for="inputName">Name</label>
                                     <input type="text" name="name" id="inputName" class="form-control ">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputEmail">Email</label>
-                                    <input name="email" type="email"  class="form-control" >
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputEmail">Phone</label>
-                                    <input name="phone" type="phone"  class="form-control" >
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputStatus">Address</label>
-                                    <select id="inputStatus" class="form-control custom-select" name="address">
-                                        <option selected="" disabled="">Address</option>
-                                        @foreach($address as $a)
-                                            <option value="{{$a->maqh}}">{{$a->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputPassword">Password</label>
-                                    <input type="password" name="password" id="inputClientCompany" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputProjectLeader">Repeat Password</label>
-                                    <input type="password" name="password_confirmation" id="inputProjectLeader" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputStatus">Status</label>
@@ -92,7 +67,7 @@
                 </div>
                 <div class="row " style="margin-bottom: 40px" >
                     <div class="col-12">
-                        <input type="submit" value="Create new Porject" class="btn btn-success float-left">
+                        <input type="submit" value="Tạo danh mục" class="btn btn-success float-left">
                     </div>
                 </div>
             </form>

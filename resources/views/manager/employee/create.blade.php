@@ -37,19 +37,24 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="inputName">Name</label>
+                                <label for="inputName">Tên</label>
                                 <input type="text" name="name" id="inputName" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="inputEmail">Email</label>
                                 <input name="email" type="email"  class="form-control" >
                             </div>
+                            @error('email')
+                            <p style="color: red">
+                                        {{ $message }}
+                                    </p>
+                            @enderror
                             <div class="form-group">
-                                <label for="inputEmail">Phone Number</label>
-                                <input name="phone" type="text"  class="form-control" >
+                                <label for="inputEmail">Số điện thoại</label>
+                                <input name="phone" type="number"  class="form-control" >
                             </div>
                             <div class="form-group">
-                                <label for="inputStatus">Address</label>
+                                <label for="inputStatus">Địa chỉ</label>
                                 <select id="inputStatus" class="form-control custom-select" name="address">
                                     <option selected="" disabled="">Address</option>
                                     @foreach($address as $a)
@@ -70,20 +75,20 @@
                     </div>
                     <!-- /.card -->
                 </div>
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        There were some errors with your request.
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+{{--                @if ($errors->any())--}}
+{{--                    <div class="alert alert-danger">--}}
+{{--                        There were some errors with your request.--}}
+{{--                        <ul>--}}
+{{--                            @foreach ($errors->all() as $error)--}}
+{{--                                <li>{{ $error }}</li>--}}
+{{--                            @endforeach--}}
+{{--                        </ul>--}}
+{{--                    </div>--}}
+{{--                @endif--}}
             </div>
             <div class="row " style="margin-bottom: 40px" >
                 <div class="col-12">
-                    <input type="submit" value="Create new Porject" class="btn btn-success float-left">
+                    <input type="submit" value="Tạo " class="btn btn-success float-left">
                 </div>
             </div>
             </form>

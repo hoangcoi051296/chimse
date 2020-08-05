@@ -7,6 +7,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Sửa người giúp việc</h1>
+
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -37,7 +38,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="inputName">Name</label>
+                                    <label for="inputName">Tên </label>
                                     <input type="text" name="name" value="{{$helper->name}}" id="inputName" class="form-control">
                                 </div>
                                 <div class="form-group">
@@ -45,11 +46,24 @@
                                     <input name="email" type="email" value="{{$helper->email}}"  class="form-control" >
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputPassword">Password</label>
+                                    <label for="inputEmail">Số điện thoại</label>
+                                    <input name="phone" value="{{$helper->phone}}" type="number" min="1" max="100"  class="form-control" >
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputStatus">Địa chỉ</label>
+                                    <select id="inputStatus" class="form-control custom-select" name="address">
+                                        <option selected="" disabled="">Địa chỉ </option>
+                                        @foreach($address as $a)
+                                            <option value="{{$a->maqh}}"}} {{$helper->address==$a->maqh?"selected='selected'":''}} >{{$a->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword">Mật khẩu </label>
                                     <input type="password" name="password" id="inputClientCompany" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputProjectLeader">Repeat Password</label>
+                                    <label for="inputProjectLeader">Nhập lại mật khẩu</label>
                                     <input type="password" name="password_confirmation" id="inputProjectLeader" class="form-control">
                                 </div>
                                 <div class="form-group">
@@ -79,7 +93,7 @@
                 </div>
                 <div class="row " style="margin-bottom: 40px" >
                     <div class="col-12">
-                        <input type="submit" value="Create new Porject" class="btn btn-success float-left">
+                        <input type="submit" value="Cập nhật" class="btn btn-success float-left">
                     </div>
                 </div>
             </form>
