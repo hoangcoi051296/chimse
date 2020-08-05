@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Models\Customer;
 use App\Http\Controllers\Controller;
-use App\Post;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;

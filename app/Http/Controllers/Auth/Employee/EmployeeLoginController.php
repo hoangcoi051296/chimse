@@ -1,28 +1,51 @@
 <?php
-
 namespace App\Http\Controllers\Auth\Employee;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class EmployeeLoginController extends Controller
 {
-    public function login(){
-        return view('employee.auth.login');
-    }
-    public function postLogin(Request $request)
-    {
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
 
-        $this->validate($request, [
-            'email'   => 'required|email',
-            'password' => 'required'
-        ]);
-        // kiểm tra thông tin đăng nhập
-        if (Auth::guard('employee')->attempt(['email' => $request->email, 'password' => $request->password])) {
-            // if successful, then redirect to their intended location
-            return redirect()->route('employee.index');
-        }
-        return redirect()->route('employee.login')->with("error", "The account or password is incorrect!")->withInput();
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+
+    protected $redirectTo = '/employee';
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+
+    public function __construct()
+    {
+        $this->middleware('guest:employee')->except('logout');
+    }
+
+    public function guard()
+    {
+        return Auth::guard('employee');
+    }
+
+    public function showLoginForm()
+    {
+        return view('employee.auth.login');
     }
 }

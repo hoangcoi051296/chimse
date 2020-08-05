@@ -1,29 +1,51 @@
 <?php
-
 namespace App\Http\Controllers\Auth\Manager;
 
-use App\Http\Controllers\Controller;
-use App\Models\Manager;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class ManagerLoginController extends Controller
 {
-    public function login(){
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+
+    protected $redirectTo = '/manager';
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+
+    public function __construct()
+    {
+        $this->middleware('guest:manager')->except('logout');
+    }
+
+    public function guard()
+    {
+        return Auth::guard('manager');
+    }
+
+    public function showLoginForm()
+    {
         return view('manager.auth.login');
     }
-    public function postLogin(Request $request)
-    {
-
-        $this->validate($request, [
-            'email'   => 'required|email',
-            'password' => 'required'
-        ]);
-        // kiểm tra thông tin đăng nhập
-        if (Auth::guard('manager')->attempt(['email' => $request->email, 'password' => $request->password])) {
-            // if successful, then redirect to their intended location
-           return redirect()->route('manager.index');
-        }
-            return redirect()->route('manager.login')->with("error", "The account or password is incorrect!")->withInput();
-        }
 }

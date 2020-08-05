@@ -1,30 +1,51 @@
 <?php
-
 namespace App\Http\Controllers\Auth\Customer;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class CustomerLoginController extends Controller
 {
-    public function getLogin()
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+
+    protected $redirectTo = '/employee';
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+
+    public function __construct()
     {
-        return view('customer.login');
+        $this->middleware('guest:customer')->except('logout');
     }
 
-    public function postLogin(Request $request)
+    public function guard()
     {
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-        if (Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->route('customer.index');
-        } else {
-            //sai thông báo lỗi
-//            dd("Loiix");
-            return redirect('customer/login')->with("error", "The account or password is incorrect!")->withInput();
-        }
+        return Auth::guard('customer');
+    }
+
+    public function showLoginForm()
+    {
+        return view('customer.auth.login');
     }
 }

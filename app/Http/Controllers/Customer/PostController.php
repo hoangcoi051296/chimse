@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Customer;
+use App\Models\Customer;
 use App\Http\Controllers\Controller;
-use App\Post;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\PostDec;
