@@ -4,9 +4,9 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Lol</title>
-    </head>
+</head>
 <body>
-{!! url('/')."/customer/verify/".$user->id."/".$activation->token !!}
-<a href="{!!url('/')."/customer/verify/".$user->id."/".$activation->token !!}">CLick vào đây</a>
+{!! url('/')."/customer/complete-password/".$user->id."/".$code !!}
+<a href="{!!url('/')."/customer/complete-password/".$user->id."/".$code !!}">CLick vào đây</a>
 </body>
 </html>

@@ -40,11 +40,11 @@ if (!function_exists("sidebarManager")) {
                     'child' => [
                         [
                             'name' => 'Danh sách',
-                            'route' => '#'
+                            'route' =>route('customer.post.index')
                         ],
                         [
                             'name' => 'Tạo mới',
-                            'route' => '#'
+                            'route' => route('customer.post.create')
                         ],
                     ],
                     'icon'=>'nav-icon fas fa-tachometer-alt'
@@ -125,6 +125,56 @@ if (!function_exists("sidebarEmployee")) {
                         ]
                     ],
                    'icon'=>'nav-icon far fa-plus-square'
+
+                ]
+            ],
+
+            'report' => [
+
+            ]
+        ];
+    }
+
+}
+
+if (!function_exists("sidebarCustomer")) {
+    function sidebarCustomer()
+    {
+        return [
+            'customer' => [
+                'post' => [
+                    'name' => 'Quản lý công việc',
+                    'child' => [
+                        [
+                            'name' => 'Danh sách',
+                            'route' => '#'
+                        ],
+                    ],
+                    'icon'=>'nav-icon fas fa-tachometer-alt'
+                ],
+                'feedback' => [
+                    'name' => 'Đánh giá',
+                    'child' => [
+                        [
+                            'name' => 'Danh sách',
+                            'route' => "#"
+                        ],
+                    ],
+                    'icon'=>'nav-icon fas fa-tachometer-alt'
+                ],
+                'account'=>[
+                    'name'=>'Tài khoản',
+                    'child'=>[
+                        [
+                            'name'=>'Cập nhật tài khoản',
+                            'route'=>'#'
+                        ],
+                        [
+                            'name'=>'Đăng xuất',
+                            'route'=>'#'
+                        ]
+                    ],
+                    'icon'=>'nav-icon far fa-plus-square'
 
                 ]
             ],

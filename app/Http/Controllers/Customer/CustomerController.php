@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Models\Address;
 use App\Models\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
@@ -15,22 +16,27 @@ class CustomerController extends Controller
 {
     protected $customer;
     protected $post;
-    public function __construct(Customer $customer,Post $post)
+
+    public function __construct(Customer $customer, Post $post)
     {
         $this->customer = $customer;
         $this->post = $post;
+        $address = Address::where('matp', 01)->get();
+        view()->share(compact('address'));
     }
 
     public function index(Request $request)
     {
         $customers = $this->customer->data($request);
 
-        return view('customer.index', compact('customers'));
+        return view('customer.dashboard', compact('customers'));
     }
+
     public function create()
     {
         return view('customer.create');
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -70,12 +76,12 @@ class CustomerController extends Controller
         return redirect()->route('customer.index');
     }
 
-    public function posts($id,Request $request)
+    public function posts(Request $request, $id)
     {
         $customer = $this->customer->find($id);
         $request['customer_id'] = $customer->id;
         $posts = $this->post->getData($request);
-        return view('customer.post',compact('posts','customer'));
+        return view('customer.post', compact('posts', 'customer'));
     }
 
 

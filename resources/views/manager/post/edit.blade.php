@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Tạo bài đăng</h1>
+                <h1 class="m-0 text-dark">Sửa bài đăng</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -21,7 +21,7 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-        <form method="post" action="{{route('customer.post.store')}}">
+        <form method="post" action="{{route('customer.post.update',['id' => $post->id])}}">
             @csrf
             <div class="row">
                 <div class="col-md-12">
@@ -38,28 +38,53 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="inputName">Title</label>
-                                <input type="text" name="title" id="inputName" class="form-control">
+                                <input type="text" name="title" id="inputName" value="{{$post->title}}"
+                                    class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="inputName">Description</label>
-                                <input type="text" name="description" id="inputName" class="form-control">
+                                <input type="text" name="description" id="inputName" value="{{$post->description}}"
+                                    class="form-control">
                             </div>
-                            <div class="form-group">
-                                <label for="inputName">Address</label>
-                                <input type="text" name="address" id="inputName" class="form-control">
+                            <div class="wrap-input100 validate-input m-b-26">
+                                <span class="label-input100">Address</span>
+                                <select id="inputStatus" class="form-control custom-select" name="address">
+                                    <option selected="" disabled="">Address</option>
+                                    @foreach($address as $a)
+                                        <option value="{{$a->maqh}}">{{$a->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="inputName">Price</label>
-                                <input type="text" name="price" id="inputName" class="form-control">
+                                <input type="text" name="price" id="inputName" value="{{$post->price}}"
+                                    class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="inputName">Category</label>
                                 <select name="category_id" class="form-control" id="category">
                                     <option value="">Chọn loại</option>
                                     @foreach ($categories as $cat)
+                                    @if($post->category_id == $cat->id)
+                                    <option value="{{$cat->id}}" selected>{{$cat->name}}</option>
+                                    @endif
                                     <option value="{{$cat->id}}">{{$cat->name}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select class="form-control select2bs4 select2-hidden-accessible"
+                                        style="width: 100%;" data-select2-id="17" tabindex="-1" aria-hidden="true">
+                                    <option selected="selected" data-select2-id="19">-- chọn --</option>
+                                    <option data-select2-id="0">Alaska</option>
+                                    <option data-select2-id="1">California</option>
+                                    <option data-select2-id="2">Delaware</option>
+                                    <option data-select2-id="3">Tennessee</option>
+                                    <option data-select2-id="4">Texas</option>
+                                    <option data-select2-id="5">Washington</option>
+                                </select>
+
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -79,7 +104,7 @@
             </div>
             <div class="row " style="margin-bottom: 40px">
                 <div class="col-12">
-                    <input type="submit" value="Create post" class="btn btn-success float-left">
+                    <input type="submit" value="Update post" class="btn btn-success float-left">
                 </div>
             </div>
         </form>

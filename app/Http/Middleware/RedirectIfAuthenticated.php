@@ -24,11 +24,11 @@ class RedirectIfAuthenticated
                     return redirect()->route('manager.index');
                 }
                 break;
-//            case 'customer':
-//                if (Auth::guard($guard)->check()) {
-//                    return redirect()->route('customer.index');
-//                }
-//                break;
+            case 'customer':
+                if (Auth::guard($guard)->check()) {
+                    return redirect()->route('customer.index');
+                }
+                break;
             case 'employee':
                 if (Auth::guard($guard)->check()) {
                     return redirect()->route('employee.index');

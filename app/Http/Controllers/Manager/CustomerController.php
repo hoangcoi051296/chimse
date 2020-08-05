@@ -24,7 +24,6 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $customers = $this->customer->data($request);
-
         return view('manager.customer.index', compact('customers'));
     }
 
@@ -67,8 +66,15 @@ class CustomerController extends Controller
                 'password_confirmation' => 'required'
             ]
         );
-        $customer = $this->customer->find($id);
-        $customer->update($request->all());
+//        $customer = $this->customer->find($id);
+//        $customer->update($request->all());
+        $customer = Customer::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'phone' => $request->phone,
+            'address' => $request->address
+        ]);
         return redirect()->route('manager.customer.index');
     }
 
@@ -76,5 +82,14 @@ class CustomerController extends Controller
     {
         Customer::find($id)->delete();
         return redirect()->back();
+    }
+
+    public function posts($id,Request $request)
+    {
+        $customer = $this->customer->find($id);
+        $request['customer_id'] = $customer->id;
+        $posts = $this->post->getData($request);
+
+        return view('customer.post',compact('customer','posts'));
     }
 }

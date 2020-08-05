@@ -2,36 +2,41 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Models\Customer;
+use App\Models\Address;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use PhpParser\Node\Expr\PostDec;
-use App\Category;
+use App\Models\Category;
 use App\Http\Requests\PostCreated;
 
 class PostController extends Controller
 {
     protected $post;
     protected $category;
-    public function __construct(Post $post, Category $category){
+
+    public function __construct(Post $post, Category $category)
+    {
         $this->post = $post;
         $this->category = $category;
+
+        $address = Address::where('matp', 01)->get();
+
+        view()->share(compact('address'));
     }
 
     public function index(Request $request)
     {
         $user = Auth::guard('customer')->user();
-        $request['customer_id'] = $user->id;
+//        $request['customer_id'] = $user->id;
         $posts = $this->post->getData($request);
-        return view('post.index',compact('posts'));
+        return view('customer.post.index', compact('posts'));
     }
 
     public function create()
     {
         $categories = $this->category->all();
-        return view('post.create',compact('categories'));
+        return view('customer.post.create', compact('categories'));
     }
 
     public function store(PostCreated $request)
@@ -39,7 +44,7 @@ class PostController extends Controller
         $user = Auth::guard('customer')->user();
         $data = $request->all();
         $data['customer_id'] = $user->id;
-        $data['status'] = 0;
+        $data['status'] = 1;
         $post = $this->post->create($data);
 
         return redirect()->route('customer.post.index');
@@ -49,18 +54,18 @@ class PostController extends Controller
     {
         $post = $this->post->find($id);
         $categories = $this->category->all();
-        return view('post.edit',compact('post','categories'));
+        return view('customer.post.edit', compact('post', 'categories'));
     }
 
-    public function update($id,Request $request)
+    public function update(Request $request)
     {
         $user = Auth::guard('customer')->user();
         $data = $request->all();
         $data['customer_id'] = $user->id;
-        $data['status'] = 0;
+        $data['status'] = 1;
 
-        $post = $this->post->find($id)->update($data);
+        $post = $this->post->find($user->id)->update($data);
 
-        return redirect()->route('customer.post');
+        return redirect()->route('customer.post.index', compact('post'));
     }
 }

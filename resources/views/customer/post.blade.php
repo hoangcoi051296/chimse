@@ -22,7 +22,6 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-
                 <form class="ml-3">
                     <div class="card">
                         <div class="input-group input-group-sm">
@@ -61,14 +60,14 @@
                                         {{$post->description}}
                                     </td>
                                     <td>{{$post->price}}</td>
-                                    <td>{{$post->address}}</td>
+                                    <td>{{$customer->getAddress->name}}</td>
                                     <td>{{$post->category->name}}</td>
                                     <td>
-                                        <a href="{{ route('customer.post.edit',['id' => $post->id])}}"
-                                            class="btn btn-primary"><i class="fa fa-edit"></i></a>
-                                        <a href="{{ route('customer.post.delete',['id'=> $post->id])}}"
-                                            onclick="return confirm('Bạn muốn xóa không?');" class="btn btn-danger"><i
-                                                class="fa fa-trash"></i></a>
+                                        <a href="{{ route('manager.customer.post.edit',['id' => $customer->id,'post_id'=>$post->id])}}"
+                                            class="btn btn-primary btn-xs" ><i class="fa fa-edit"></i></a>
+                                        <a href="{{ route('manager.customer.post.delete',['id' => $customer->id,'post_id'=>$post->id])}}"
+                                            onclick="return confirm('Bạn muốn xóa không?');" class="btn btn-danger btn-xs"><i
+                                                class="fa fa-trash" ></i></a>
                                     </td>
                                 </tr>
                                 @endforeach

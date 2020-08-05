@@ -54,11 +54,8 @@
                 </div>
 
                 <div class="flex-sb-m w-full p-b-30">
-                    <div class="contact100-form-checkbox">
-                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                        <label class="label-checkbox100" for="ckb1">
-                            Remember me
-                        </label>
+                    <div class="label-agree-term"><span><span></span></span>
+                        <a href="{{route('customer.forgot')}}">Forgot password</a>
                     </div>
                     <div class="contact100-form">
                         <a href="{{route('customer.register')}}">No account? Register here</a>

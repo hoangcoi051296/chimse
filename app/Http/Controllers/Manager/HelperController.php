@@ -31,9 +31,6 @@ class HelperController extends Controller
     public function index(Request $request)
     {
         $condition = $request->all();
-//        $condition['status']=[
-//            1,2,3
-//        ];
         $helpers = $this->helper->getData($condition, $request)->paginate($this->helper->perPage);
         return view('manager.employee.index', compact('helpers'));
     }

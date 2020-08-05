@@ -46,21 +46,17 @@
                                 <input name="email" type="email" class="form-control" value="{{$customer->email}}">
                             </div>
                             <div class="form-group">
-                                <label for="inputPassword">Password</label>
-                                <input type="password" name="password" id="inputClientCompany" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputProjectLeader">Repeat Password</label>
-                                <input type="password" name="password_confirmation" id="inputProjectLeader"
-                                    class="form-control">
-                            </div>
-                            <div class="form-group">
                                 <label for="inputEmail">Phone</label>
                                 <input name="phone" type="text" class="form-control" value="{{$customer->phone}}">
                             </div>
-                            <div class="form-group">
-                                <label for="inputEmail">Address</label>
-                                <input name="address" type="text" class="form-control" value="{{$customer->address}}">
+                            <div class="wrap-input100 validate-input m-b-26">
+                                <span class="label-input100">Address</span>
+                                <select id="inputStatus" class="form-control custom-select" name="address">
+                                    <option selected="" disabled="">Address</option>
+                                    @foreach($address as $a)
+                                        <option value="{{$a->maqh}}">{{$a->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <!-- /.card-body -->

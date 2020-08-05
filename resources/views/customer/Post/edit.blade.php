@@ -46,10 +46,14 @@
                                 <input type="text" name="description" id="inputName" value="{{$post->description}}"
                                     class="form-control">
                             </div>
-                            <div class="form-group">
-                                <label for="inputName">Address</label>
-                                <input type="text" name="address" id="inputName" value="{{$post->address}}"
-                                    class="form-control">
+                            <div class="wrap-input100 validate-input m-b-26">
+                                <span class="label-input100">Address</span>
+                                <select id="inputStatus" class="form-control custom-select" name="address">
+                                    <option selected="" disabled="">Address</option>
+                                    @foreach($address as $a)
+                                        <option value="{{$a->maqh}}">{{$a->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="inputName">Price</label>
@@ -67,6 +71,20 @@
                                     <option value="{{$cat->id}}">{{$cat->name}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select class="form-control select2bs4 select2-hidden-accessible"
+                                        style="width: 100%;" data-select2-id="17" tabindex="-1" aria-hidden="true">
+                                    <option selected="selected" data-select2-id="19">-- chọn --</option>
+                                    <option data-select2-id="0">Alaska</option>
+                                    <option data-select2-id="1">California</option>
+                                    <option data-select2-id="2">Delaware</option>
+                                    <option data-select2-id="3">Tennessee</option>
+                                    <option data-select2-id="4">Texas</option>
+                                    <option data-select2-id="5">Washington</option>
+                                </select>
+
                             </div>
                         </div>
                         <!-- /.card-body -->

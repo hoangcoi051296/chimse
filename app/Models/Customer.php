@@ -11,7 +11,7 @@ class Customer extends Model implements Authenticatable
 {
     use AuthenticableTrait;
     protected $table = 'customer';
-    protected $fillable = ['name','email','phone','address','password'];
+    protected $fillable = ['name','email','phone','address','password','is_active'];
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -31,5 +31,10 @@ class Customer extends Model implements Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class,'customer_id','id');
+    }
+
+    public function getAddress()
+    {
+        return $this->belongsTo(Address::class,'address','maqh');
     }
 }

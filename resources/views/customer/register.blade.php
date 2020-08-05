@@ -53,8 +53,17 @@
                 </div>
                 <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
                     <span class="label-input100">Phone</span>
-                    <input class="input100" type="text" name="phone" placeholder="Enter email">
+                    <input class="input100" type="text" name="phone" placeholder="Enter phone">
                     <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input100 validate-input m-b-26">
+                    <span class="label-input100">Address</span>
+                    <select id="inputStatus" class="form-control custom-select" name="address">
+                        <option selected="" disabled="">Address</option>
+                        @foreach($address as $a)
+                            <option value="{{$a->maqh}}">{{$a->name}}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
