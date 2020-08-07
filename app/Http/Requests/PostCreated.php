@@ -37,7 +37,7 @@ class PostCreated extends FormRequest
             'title.required' => 'title is required!',
             'description.required' => 'description is required!',
             'price.required' => 'price is required!',
-            'address.required' =>'Address is required!'
+            'address.required' =>'AddressQuanHuyen is required!'
         ];
     }
 }

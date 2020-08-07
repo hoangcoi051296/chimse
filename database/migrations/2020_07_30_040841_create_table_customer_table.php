@@ -18,6 +18,7 @@ class CreateTableCustomerTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('avatar')->nullable();
+            $table->boolean('is_active')->default(0)->nullable();
             $table->string('password');
             $table->string('phone');
             $table->unsignedBigInteger('address');

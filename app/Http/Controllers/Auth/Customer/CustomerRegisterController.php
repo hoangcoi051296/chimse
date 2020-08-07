@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth\Customer;
 use App\Http\Controllers\Controller;
 use App\Mail\AccountCreated;
 use App\Models\Activation;
-use App\Models\Address;
+use App\Models\Address_QuanHuyen;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ class CustomerRegisterController extends Controller
     }
     public function getRegister()
     {
-        $address = Address::where('matp', 01)->get();
+        $address = Address_QuanHuyen::where('matp', 01)->get();
         // trả về trang đăng nhập
         return view('customer.register',compact('address'));
     }

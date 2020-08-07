@@ -40,11 +40,11 @@ if (!function_exists("sidebarManager")) {
                     'child' => [
                         [
                             'name' => 'Danh sách',
-                            'route' =>route('customer.post.index')
+                            'route' =>route('manager.post.index')
                         ],
                         [
                             'name' => 'Tạo mới',
-                            'route' => route('customer.post.create')
+                            'route' => route('manager.post.create')
                         ],
                     ],
                     'icon'=>'nav-icon fas fa-tachometer-alt'

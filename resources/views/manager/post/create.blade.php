@@ -38,29 +38,35 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="inputName">Title</label>
-                                    <input type="text" name="title" id="inputName" class="form-control">
+                                    <label for="inputName">Tiêu đề</label>
+                                    <input type="text" name="title"  class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputName">Description</label>
-                                    <input type="text" name="description" id="inputName" class="form-control">
+                                    <label for="inputName">Mô tả chi tiết</label>
+                                    <input type="text" name="description"  class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputStatus">Address</label>
-                                    <select id="inputStatus" class="form-control custom-select" name="address"
+                                    <label for="inputStatus">Địa chỉ</label>
+                                    <select  class="form-control custom-select option" name="address"
                                             type="text">
-                                        <option selected="" disabled="">Address</option>
+                                        <option >Hà Nội</option>
                                         @foreach($address as $a)
                                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputName">Price</label>
+                                    <label>Chọn phường :</label>
+                                    <select class="form-control" name="ward">
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputName">Giá</label>
                                     <input type="text" name="price" id="inputName" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputName">Category</label>
+                                    <label for="inputName">Danh mục</label>
                                     <select name="category_id" class="form-control" id="category">
                                         <option value="">Chọn loại</option>
                                         @foreach ($categories as $cat)
@@ -95,3 +101,29 @@
 
     <!-- /.content -->
 @endsection
+@section('script')
+    <script type="text/javascript">
+        var url = "{{ url('manager/post/showWard') }}";
+        $("select[name='address']").change(function(){
+            var address = $(this).val();
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    address: address,
+                    _token: token,
+                },
+                success: function(data) {
+                    console.log(data)
+                    $("select[name='ward']").html('');
+                    $.each(data, function(key, value){
+                        $("select[name='ward']").append(
+                            "<option value=" + value.id + ">" + value.name + "</option>"
+                        );
+                    });
+                }
+            });
+        });
+    </script>
+    @endsection

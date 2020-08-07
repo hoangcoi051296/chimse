@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Models\Address;
+use App\Models\Address_QuanHuyen;
 use App\Models\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
@@ -21,7 +21,7 @@ class CustomerController extends Controller
     {
         $this->customer = $customer;
         $this->post = $post;
-        $address = Address::where('matp', 01)->get();
+        $address = Address_QuanHuyen::where('matp', 01)->get();
         view()->share(compact('address'));
     }
 

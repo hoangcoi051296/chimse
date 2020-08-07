@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
-use App\Models\Address;
+use App\Models\Address_QuanHuyen;
 use App\Models\Employee;
 use App\Models\Manager;
 use Illuminate\Http\Request;
@@ -23,7 +23,7 @@ class EmployeeController extends Controller
     }
     public function editAccount(){
             $user=Auth::guard('employee')->user();
-            $address = Address::where('matp', 01)->get();
+            $address = Address_QuanHuyen::where('matp', 01)->get();
         return view('employee.account.edit',compact('user','address'));
     }
     public function updateAccount($id,Request $request){

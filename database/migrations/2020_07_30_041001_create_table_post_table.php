@@ -16,16 +16,16 @@ class CreateTablePostTable extends Migration
         Schema::create('post', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->string('status');
             $table->string('description');
             $table->float('price');
+            $table->boolean('status')->nullable();
             $table->unsignedBigInteger('address');
             $table->foreign('address')->references('maqh')->on('devvn_quanhuyen');
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('helper_id');
+            $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('customer_id');
             $table->foreign("category_id")->references("id")->on("category");
-            $table->foreign("helper_id")->references("id")->on("employee");
+            $table->foreign("employee_id")->references("id")->on("employee");
             $table->foreign("customer_id")->references("id")->on("customer");
             $table->timestamps();
         });

@@ -42,7 +42,8 @@
         ],
         "files": [
             "helpers/sidebar-manager.php",
-            "helpers/format_phoneNumber.php"
+            "helpers/format_phoneNumber.php",
+            "helpers/getStatus.php"
         ]
     },
     "autoload-dev": {

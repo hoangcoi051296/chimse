@@ -20,7 +20,9 @@ class CustomerLoginController extends Controller
         ]);
 
         if (Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password])) {
+
             return redirect()->route('customer.index');
+
         } else {
             //sai thông báo lỗi
 //            dd("Loiix");
