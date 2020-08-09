@@ -16,11 +16,11 @@ class CreateTableFeedback extends Migration
         Schema::create('feedback', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('helper_id');
+            $table->unsignedBigInteger('employee_id');
             $table->string('comment');
             $table->tinyInteger('rating');
             $table->foreign('customer_id')->references('id')->on('customer');
-            $table->foreign('helper_id')->references('id')->on('employee');
+            $table->foreign('employee_id')->references('id')->on('employee');
             $table->timestamps();
         });
     }
