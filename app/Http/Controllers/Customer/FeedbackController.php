@@ -17,8 +17,6 @@ class FeedbackController extends Controller
     {
         $this->feedback = $feedback;
         $this->post = $post;
-        $address = Address::where('id', 01)->get();
-        view()->share(compact('address'));
     }
 
     public function index()
