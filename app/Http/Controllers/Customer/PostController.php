@@ -20,11 +20,9 @@ class PostController extends Controller
     {
         $this->post = $post;
         $this->category = $category;
-
-        $address = Address::where('id', 01)->get();
         $provinces = Province::get();
 
-        view()->share(compact('address', 'provinces'));
+        view()->share(compact( 'provinces'));
     }
 
     public function index(Request $request)
