@@ -68,7 +68,7 @@ if (!function_exists("sidebarManager")) {
                     'child'=>[
                         [
                             'name'=>'Cập nhật tài khoản',
-                            'route'=>route('manager.account.edit',['id'=>Auth::guard('manager')->user()->id])
+                            'route'=> '#'
                         ],
                         [
                             'name'=>'Đăng xuất',
@@ -142,22 +142,22 @@ if (!function_exists("sidebarCustomer")) {
     {
         return [
             'customer' => [
-                'post' => [
-                    'name' => 'Quản lý công việc',
-                    'child' => [
-                        [
-                            'name' => 'Danh sách',
-                            'route' => '#'
-                        ],
-                    ],
-                    'icon'=>'nav-icon fas fa-tachometer-alt'
-                ],
                 'feedback' => [
                     'name' => 'Đánh giá',
                     'child' => [
                         [
                             'name' => 'Danh sách',
-                            'route' => "#"
+                            'route' => route('customer.feedback.index')
+                        ],
+                    ],
+                    'icon'=>'nav-icon fas fa-tachometer-alt'
+                ],
+                'post' => [
+                    'name' => 'Bài đăng',
+                    'child' => [
+                        [
+                            'name' => 'Danh sách',
+                            'route' => route('customer.post.index')
                         ],
                     ],
                     'icon'=>'nav-icon fas fa-tachometer-alt'
@@ -167,11 +167,11 @@ if (!function_exists("sidebarCustomer")) {
                     'child'=>[
                         [
                             'name'=>'Cập nhật tài khoản',
-                            'route'=>'#'
+                            'route'=>route('customer.profile.edit',['id'=>(Auth::guard('customer')->user() !== null)    ? Auth::guard('customer')->user()->id:""])
                         ],
                         [
                             'name'=>'Đăng xuất',
-                            'route'=>'#'
+                            'route'=>route('customer.logout')
                         ]
                     ],
                     'icon'=>'nav-icon far fa-plus-square'

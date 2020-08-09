@@ -27,17 +27,19 @@ class PostCreated extends FormRequest
             'title' => "required| string",
             'description' => "required",
             'price' => 'required',
-            'address' => 'required'
+            "province_id" => "required",
+            "district_id" => "required",
+            "commune_id" => "required",
+            "category_id" => "required"
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required' => 'title is required!',
-            'description.required' => 'description is required!',
-            'price.required' => 'price is required!',
-            'address.required' =>'AddressQuanHuyen is required!'
+            'title.required' => 'Tiêu đề là trường bắt buộc!',
+            'description.required' => 'Không được để trống!',
+            'price.required' => 'Không được để trống!',
         ];
     }
 }

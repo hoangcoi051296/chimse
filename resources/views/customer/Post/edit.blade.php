@@ -1,4 +1,4 @@
-@extends('manager.layout.layout')
+@extends('customer.layout.layout')
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -46,14 +46,39 @@
                                 <input type="text" name="description" id="inputName" value="{{$post->description}}"
                                     class="form-control">
                             </div>
-                            <div class="wrap-input100 validate-input m-b-26">
-                                <span class="label-input100">Address</span>
-                                <select id="inputStatus" class="form-control custom-select" name="address">
-                                    <option selected="" disabled="">Address</option>
-                                    @foreach($address as $a)
-                                        <option value="{{$a->maqh}}">{{$a->name}}</option>
+                            <div class="form-group">
+                                <label for="inputStatus">Province</label>
+                                <select class="form-control custom-select" id="province" name="province_id">
+                                    <option selected>Province</option>
+                                    @foreach($provinces as $p)
+                                        <option value="{{$p->matp}}">{{$p->name}}</option>
                                     @endforeach
                                 </select>
+                                @if($errors->has('province'))
+                                    {{$errors->first('province')}}
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="inputStatus">District</label>
+                                <select class="form-control custom-select" id="district" name="district_id"
+                                        type="text">
+                                    <option selected="" disabled="">District</option>
+
+                                </select>
+                                @if($errors->has('province'))
+                                    {{$errors->first('province')}}
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="inputStatus">Commune</label>
+                                <select class="form-control custom-select" id="commune" name="commune_id"
+                                        type="text">
+                                    <option selected="" disabled="">Commune</option>
+
+                                </select>
+                                @if($errors->has('province'))
+                                    {{$errors->first('province')}}
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="inputName">Price</label>
@@ -71,20 +96,6 @@
                                     <option value="{{$cat->id}}">{{$cat->name}}</option>
                                     @endforeach
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Status</label>
-                                <select class="form-control select2bs4 select2-hidden-accessible"
-                                        style="width: 100%;" data-select2-id="17" tabindex="-1" aria-hidden="true">
-                                    <option selected="selected" data-select2-id="19">-- chọn --</option>
-                                    <option data-select2-id="0">Alaska</option>
-                                    <option data-select2-id="1">California</option>
-                                    <option data-select2-id="2">Delaware</option>
-                                    <option data-select2-id="3">Tennessee</option>
-                                    <option data-select2-id="4">Texas</option>
-                                    <option data-select2-id="5">Washington</option>
-                                </select>
-
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -110,6 +121,45 @@
         </form>
     </div><!-- /.container-fluid -->
 </section>
+<script>
+    $('#province').change(() => {
+        $('#commune').html('');
+        let province_id = $('#province').val();
+        $.ajax({
+            url: "{{ route('district.by.province') }}",
+            type: "GET",
+            data: {id: province_id},
+            success: function (response) {
+                if (!response.errors) {
+                    let list_district;
+                    response.data.forEach(district => {
+                        list_district += `<option value="${district.maqh}">${district.name}</option>`;
+                    });
+                    $('#district').html(list_district);
+                    $('#district').change(() => {
+                        let district_id = $('#district').val();
+                        console.log('ád');
+                        $.ajax({
+                            url: "{{ route('commune.by.district') }}",
+                            type: "GET",
+                            data: {id: district_id},
+                            success: function (response) {
+                                console.log(response);
+                                if (!response.errors) {
+                                    let list_commune;
+                                    response.data.forEach(commune => {
+                                        list_commune += `<option value="${commune.xaid}">${commune.name}</option>`;
+                                    });
+                                    $('#commune').html(list_commune);
+                                }
+                            }
+                        });
+                    })
+                }
+            }
+        });
+    })
+</script>
 
 <!-- /.content -->
 @endsection

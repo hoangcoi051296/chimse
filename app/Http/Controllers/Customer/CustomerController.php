@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Models\Address_QuanHuyen;
 use App\Models\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Province;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
-use PhpParser\Node\Expr\PostDec;
 
 class CustomerController extends Controller
 {
@@ -21,8 +19,8 @@ class CustomerController extends Controller
     {
         $this->customer = $customer;
         $this->post = $post;
-        $address = Address_QuanHuyen::where('matp', 01)->get();
-        view()->share(compact('address'));
+        $provinces = Province::get();
+        view()->share(compact('provinces'));
     }
 
     public function index(Request $request)
@@ -32,43 +30,45 @@ class CustomerController extends Controller
         return view('customer.dashboard', compact('customers'));
     }
 
-    public function create()
-    {
-        return view('customer.create');
-    }
+//    public function create()
+//    {
+//        return view('customer.create');
+//    }
+//
+//    public function store(Request $request)
+//    {
+//        $request->validate([
+//                'name' => "required| string| max:255",
+//                'email' => "required|string|email|max:255|unique:customer",
+//                'password' => 'required| min:5|confirmed',
+//                'password_confirmation' => 'required'
+//            ]
+//        );
+//        $customer = Customer::create([
+//            'name' => $request->name,
+//            'email' => $request->email,
+//            'password' => bcrypt($request->password),
+//            'phone' => $request->phone,
+//            'address' => $request->address
+//        ]);
+//        return redirect()->route('customer.index')->with("success", "Create Success");
+//    }
 
-    public function store(Request $request)
+    public function editProfile(Request $request,$id)
     {
-        $request->validate([
-                'name' => "required| string| max:255",
-                'email' => "required|string|email|max:255|unique:customer",
-                'password' => 'required| min:5|confirmed',
-                'password_confirmation' => 'required'
-            ]
-        );
-        $customer = Customer::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'phone' => $request->phone,
-            'address' => $request->address
-        ]);
-        return redirect()->route('customer.index')->with("success", "Create Success");
-    }
-
-    public function edit($id, Request $request)
-    {
+        $user = Auth::guard('customer')->user();
         $customer = $this->customer->find($id);
-        return view('customer.edit', compact('customer'));
+        $request['customer_id'] = $customer->id;
+        return view('customer.profile.edit', compact('user'));
     }
 
-    public function update($id, Request $request)
+    public function updateProfile($id, Request $request)
     {
         $request->validate([
                 'name' => "required| string| max:255",
                 'email' => "required|string|email|max:255|unique:customer",
-                'password' => 'required| min:5|confirmed',
-                'password_confirmation' => 'required'
+                'address' => 'required| string| max:255',
+                'phone' => 'required'
             ]
         );
         $customer = $this->customer->find($id);
