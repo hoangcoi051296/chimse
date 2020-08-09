@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Models\Address;
+use App\Models\Address_QuanHuyen;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Province;

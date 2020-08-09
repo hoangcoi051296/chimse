@@ -18,18 +18,36 @@ class Post extends Model
     const NGVBatDau=5;
     const NGVKetThuc=6;
     const NTXacNhan=7;
-    public function getData($request = null)
-    {
-        $data = $this->query();
-        if ($request['customer_id']) {
-            $data->where('customer_id', $request['customer_id']);
+
+    public function getData($condition){
+        $posts=$this->query()->orderBy('created_at','desc');
+        if (!$condition){
+            return $posts;
         }
-        if ($request->get('search')) {
-            $search = $request->get('search');
-            $data->where('title', 'LIKE', '%' . $search . '%')
-                ->orWhere('price', 'LIKE', '%' . $search . '%')
-                ->orWhere('description', 'LIKE', '%' . $search . '%')
-                ->orWhere('address', 'LIKE', '%' . $search . '%');
+        if (isset($condition['status'])) {
+            $posts=$posts->where('status', $condition['status']);
+        }
+        if (isset($condition['address'])) {
+            $posts=$posts->where('address', $condition['address']);
+        }
+        if (isset($condition['search'])) {
+            $search=$condition['search'];
+            $posts=$posts->where(function ($q) use ($search) {
+                $q->where('title', 'LIKE', '%' . $search . '%')
+                    ->orwhere('description','LIKE', '%' . $search . '%')
+                    ->orWhereHas('AddressQuanHuyen', function ($query) use ($search) {
+                        $query->where('name','like', '%'. $search.'%' );
+                    })
+                    ->orWhereHas('customer', function ($query) use ($search) {
+                    $query->where('name','like', '%'. $search.'%' );
+                    })
+                    ->orWhereHas('employee', function ($query) use ($search) {
+                    $query->where('name','like', '%'. $search.'%' );
+                    })
+                    ->orWhereHas('category', function ($query) use ($search) {
+                    $query->where('name','like', '%'. $search.'%' );
+                });
+            });
         }
         if ($request->get('province')){
             $data->where('province_id', $request->get('province'));
@@ -44,6 +62,10 @@ class Post extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
+    }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
 
     public function category()

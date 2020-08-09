@@ -24,6 +24,7 @@ class CustomerLoginController extends Controller
                 return redirect('customer/login')->with("error", "tai khoan chua active vui long check lai mail!")->withInput();
             }
             return redirect()->route('customer.index');
+
         } else {
             return redirect('customer/login')->with("error", "The account or password is incorrect!")->withInput();
         }

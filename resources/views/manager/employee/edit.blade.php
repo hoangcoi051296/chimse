@@ -22,7 +22,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form method="post" action="{{route('manager.employee.update',['id'=>$helper->id])}}">
+            <form action="{{route('manager.employee.update',['id'=>$helper->id])}}" method="post" >
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
@@ -45,13 +45,14 @@
                                     <label for="inputEmail">Email</label>
                                     <input name="email" type="email" value="{{$helper->email}}"  class="form-control" >
                                 </div>
+                                <input name="id" value="{{$helper->id}}" hidden>
                                 <div class="form-group">
                                     <label for="inputEmail">Số điện thoại</label>
-                                    <input name="phone" value="{{$helper->phone}}" type="number" min="1" max="100"  class="form-control" >
+                                    <input name="phone" value="{{$helper->phone}}" type="number"   class="form-control" >
                                 </div>
                                 <div class="form-group">
                                     <label for="inputStatus">Địa chỉ</label>
-                                    <select id="inputStatus" class="form-control custom-select" name="address">
+                                    <select  class="form-control custom-select" name="address">
                                         <option selected="" disabled="">Địa chỉ </option>
                                         @foreach($address as $a)
                                             <option value="{{$a->maqh}}"}} {{$helper->address==$a->maqh?"selected='selected'":''}} >{{$a->name}}</option>
@@ -93,7 +94,8 @@
                 </div>
                 <div class="row " style="margin-bottom: 40px" >
                     <div class="col-12">
-                        <input type="submit" value="Cập nhật" class="btn btn-success float-left">
+
+                        <button type="submit"  class="btn btn-success float-left"> Click zoo</button>
                     </div>
                 </div>
             </form>
@@ -102,3 +104,29 @@
 
     <!-- /.content -->
 @endsection
+{{--@section('script')--}}
+{{--    <script>--}}
+{{--        $("#updateEmployee").click(function(e){--}}
+{{--            e.preventDefault();--}}
+{{--            $.ajax({--}}
+{{--                method : "POST",--}}
+{{--                url: "{{route('manager.employee.update')}}",--}}
+{{--                data: {--}}
+{{--                    _token: $("input[name=_token]").val(),--}}
+{{--                    id : $("input[name=id]").val(),--}}
+{{--                    name: $("input[name=name]").val(),--}}
+{{--                    email: $("input[name=email]").val(),--}}
+{{--                    address: $( "#address option:selected" ).val(),--}}
+{{--                    phone: $("input[name=phone]").val(),--}}
+{{--                },--}}
+{{--                success:function(data){--}}
+{{--                    window.location = "{{route('manager.employee.index')}}"--}}
+{{--                }--}}
+
+{{--            });--}}
+
+
+
+{{--        });--}}
+{{--    </script>--}}
+{{--@endsection--}}

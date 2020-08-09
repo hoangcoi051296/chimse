@@ -57,7 +57,7 @@
                             </div>
                         </form>
 
-                    <a  href="{{route('manager.employee.create')}}" class="btn btn-success float-right " style="margin-bottom: 10px">Tạo người giúp việc</a>
+                    <a href="{{route('manager.employee.create')}}" class="btn btn-success float-right " style="margin-bottom: 10px">Tạo người giúp việc</a>
                 </div>
                 <div class="col-md-12">
                     <div class="card">
@@ -113,3 +113,4 @@
     </section>
     <!-- /.content -->
 @endsection
+

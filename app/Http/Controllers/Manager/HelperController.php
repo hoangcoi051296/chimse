@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Manager;
 
 use App\Mail\AccountCreated;
 use App\Mail\AccountHelperCreated;
-use App\Models\Address;
+use App\Models\Address_QuanHuyen;
 use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
-use App\Models\TinhTP;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -24,7 +23,7 @@ class HelperController extends Controller
     ) {
         $this->manager = $manager;
         $this->helper = $helper;
-        $address = Address::where('matp', 01)->get();
+        $address = Address_QuanHuyen::where('matp', 01)->get();
         view()->share(compact('address'));
     }
 
@@ -42,9 +41,10 @@ class HelperController extends Controller
 
     public function store(Request $request)
     {
+        $data=$request->all();
         $request->validate($this->helper->rules());
         try {
-            $this->helper->createData($request);
+            $this->helper->createData($data);
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
@@ -59,11 +59,12 @@ class HelperController extends Controller
         return view('manager.employee.edit', compact('helper'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $request->validate($this->helper->rules($id));
+        $data=$request->all();
+        $request->validate($this->helper->rules($data['id']));
         try {
-            $this->helper->updateData($request, $id);
+            $this->helper->updateData($data, $data['id']);
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Address extends Model
+class Address_QuanHuyen extends Model
 {
     protected $table = 'address';
     protected $fillable = ['post_id','province_id', 'district_id', 'commune_id', 'note'];

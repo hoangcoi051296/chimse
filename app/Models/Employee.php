@@ -14,12 +14,12 @@ class Employee extends Model implements Authenticatable
 {
     use AuthenticableTrait;
     protected $table = 'employee';
-    protected $fillable = ['id','name','email','phone','password','address'];
+    protected $fillable = ['name','email','phone','password','address'];
     protected $hidden = [
         'password', 'remember_token',
     ];
     public function getData($condition ,$request){
-        $helpers=$this->query() ;
+        $helpers=$this->query()->orderBy('created_at','desc') ;
         if (!$condition){
             return $helpers;
         }
@@ -32,7 +32,7 @@ class Employee extends Model implements Authenticatable
                 $q->where('name', 'LIKE', '%' . $search . '%')
                     ->orWhere('email', 'LIKE', '%' . $search . '%')
                     ->orWhere('phone', 'LIKE', '%' . $search . '%')
-                    ->orWhereHas('Address', function ($query) use ($search) {
+                    ->orWhereHas('Address_QuanHuyen', function ($query) use ($search) {
                         $query->where('name','like', '%'. $search.'%' );
                     });
             });
@@ -40,7 +40,7 @@ class Employee extends Model implements Authenticatable
         return $helpers;
     }
     public function Address(){
-        return $this->hasOne("\App\Models\Address",'maqh','address');
+        return $this->hasOne("\App\Models\Address_QuanHuyen",'maqh','address');
     }
     public function rules($id=null)
     {
@@ -56,34 +56,21 @@ class Employee extends Model implements Authenticatable
         return Arr::add($validate,'password','sometimes|nullable|min:6|confirmed') ;
     }
     public $perPage = 10;
-    public function createData($request){
-        $data =$request->all();
-        $data['password']=bcrypt($request->password);
+    public function createData($data){
+        $data['password']=bcrypt($data['password']);
         return $this->fill($data)->save();
-//        if ($this->fill($data)->save()){
-//            Mail::to($data['email'])->send(new AccountCreated());
-//            return true;
-//        }
-//        return false;
     }
-    public function updateData($request,$id){
-        $data =$request->all();
+    public function updateData($data,$id){
         $data['phone']=format_phone_number($data['phone']);
-        if (!$request->password) {
-            return
-            $this->find($id)->fill([
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'phone'=>format_phone_number($request->phone),
-                'address'=>$request->address,
-            ])->save();
+        $data=array_filter($data);
+        if (isset($data['password'])) {
+            $data['password']=bcrypt($data['password']);
         }
-
-        $data['password']=bcrypt($request->password);
         $this->find($id)->fill($data)->save();
     }
     public function deleteData($id){
         $this->find($id)->delete();
     }
+
 
 }

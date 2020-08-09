@@ -33,5 +33,6 @@
 
 <!-- jQuery -->
     @include('manager.components.js')
+    @yield('script')
 </body>
 </html>
