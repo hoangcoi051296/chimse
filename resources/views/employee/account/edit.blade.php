@@ -48,6 +48,7 @@
                                 </ul>
 
                                 <a href="#" class="btn btn-primary btn-block"><b>Đổi ảnh đại diện</b></a>
+
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -62,7 +63,11 @@
                             <div class="card-header p-2">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item"><a class="btn  btn-primary" href="#settings" data-toggle="tab">Thông tin tài khoản</a></li>
+                                    @if(Session::has("success"))
+                                            <li class="nav-item"><a class="btn  btn-success"  data-toggle="tab">{{Session('success')}}</a></li>
+                                    @endif
                                 </ul>
+
                             </div><!-- /.card-header -->
                             <div class="card-body">
                                 <div class="tab-content">

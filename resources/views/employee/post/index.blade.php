@@ -36,7 +36,7 @@
                         <div class="input-group input-group-sm">
                             <div class="form-group filterData ">
                                 <select  class="form-control" name="status">
-                                        <option {{Request::get('status')==null ?"selected='selected'":'' }} value="" >Trạng thái</option>
+                                    <option {{Request::get('status')==null ?"selected='selected'":'' }} value="" >Trạng thái</option>
                                     @foreach(listStatus() as $status)
                                         <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
                                     @endforeach
@@ -90,40 +90,40 @@
                                     <tr>
                                         <form>
                                             @csrf
-                                        <td>{{ $post->title}}</td>
-                                        <td>
-                                            {{$post->description}}
-                                        </td>
-                                        <td>{{$post->price}}</td>
+                                            <td>{{ $post->title}}</td>
+                                            <td>
+                                                {{$post->description}}
+                                            </td>
+                                            <td>{{$post->price}}</td>
                                             @if($post->address)
-                                        <td>{{$post->findDistrict(json_decode($post->address,true)['district'])->name}},
-                                            {{$post->findWard(json_decode($post->address,true)['ward'])->name}}
-                                        </td>
+                                                <td>{{$post->findDistrict(json_decode($post->address,true)['district'])->name}},
+                                                    {{$post->findWard(json_decode($post->address,true)['ward'])->name}}
+                                                </td>
                                             @else
                                                 <td>null</td>
                                             @endif
-                                        <td>
-                                            <div class="row postStatus" data-value="{{$post->id}}" >
-                                                {{getStatus($post->status)}}</div>
-                                        </td>
-                                        <td>{{$post->customer->name}}</td>
-                                        <td>{{$post->category->name}}</td>
-                                        <td class="align-self-center" >
-                                            <a href="{{ route('manager.post.details',['id' => $post->id])}}"
-                                               class="btn btn-info btn-xs"><i class="far fa-eye"></i></a>
+                                            <td>
+                                                <div class="row postStatus" data-value="{{$post->id}}" >
+                                                    {{getStatus($post->status)}}</div>
+                                            </td>
+                                            <td>{{$post->customer->name}}</td>
+                                            <td>{{$post->category->name}}</td>
+                                            <td class="align-self-center" >
+                                                <a href="{{ route('manager.post.details',['id' => $post->id])}}"
+                                                   class="btn btn-info btn-xs"><i class="far fa-eye"></i></a>
                                                 @if($post->status==1)
-                                                <a id="{{$post->id}}"
-                                                   class="btn btn-primary btn-xs changeStatus"><i class="fas fa-exchange-alt"></i></a>
+                                                    <a id="{{$post->id}}"
+                                                       class="btn btn-primary btn-xs changeStatus"><i class="fas fa-exchange-alt"></i></a>
                                                 @endif
 
-                                            <a href="{{ route('manager.post.edit',['id' => $post->id])}}"
-                                               class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                                            <a href="{{ route('manager.post.delete',['id'=> $post->id])}}"
-                                               onclick="return confirm('Bạn muốn xóa không?');"
-                                               class="btn btn-danger btn-xs "><i
+                                                <a href="{{ route('manager.post.edit',['id' => $post->id])}}"
+                                                   class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
+                                                <a href="{{ route('manager.post.delete',['id'=> $post->id])}}"
+                                                   onclick="return confirm('Bạn muốn xóa không?');"
+                                                   class="btn btn-danger btn-xs "><i
                                                         class="fa fa-trash"></i></a>
 
-                                        </td>
+                                            </td>
                                         </form>
                                     </tr>
                                 @endforeach
@@ -142,30 +142,4 @@
         </div><!-- /.container-fluid -->
     </section>
 @endsection
-@section('script')
-    <script type="text/javascript">
-        var url = "{{ url('manager/post/changeStatus') }}";
-        $(".changeStatus").click(function(){
-            var id = this.id;
-            var token = $("input[name='_token']").val();
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: {
-                    id: id,
-                    _token: token,
-                },
-                success: function(data) {
-                    location.reload();
-                    {{--console.log(data)--}}
-                    {{--$('.postStatus').each(function(i){--}}
-                    {{--    if ($(this).data('value')==data['id']){--}}
-                    {{--        console.log(data['status'])--}}
-                    {{--        $(this).html(" {{}} ")--}}
-                    {{--    }--}}
-                    {{--});--}}
-                }
-            });
-        });
-    </script>
-@endsection
+

@@ -45,7 +45,6 @@ $factory->define(\App\Models\Post::class, function (Faker $faker) {
         'category_id'=>random_int(1,10),
         'employee_id'=>random_int(1,10),
         'customer_id'=>random_int(1,10),
-        'address'=>random_int(1,9),
     ];
 });
 $factory->define(\App\Models\Category::class, function (Faker $faker) {

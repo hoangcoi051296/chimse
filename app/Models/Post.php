@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Post extends Model
 {
@@ -34,7 +35,7 @@ class Post extends Model
             $posts=$posts->where(function ($q) use ($search) {
                 $q->where('title', 'LIKE', '%' . $search . '%')
                     ->orwhere('description','LIKE', '%' . $search . '%')
-                    ->orWhereHas('AddressQuanHuyen', function ($query) use ($search) {
+                    ->orWhereHas('Address', function ($query) use ($search) {
                         $query->where('name','like', '%'. $search.'%' );
                     })
                     ->orWhereHas('customer', function ($query) use ($search) {
@@ -69,4 +70,44 @@ class Post extends Model
         return $this->hasOne("\App\Models\Address_QuanHuyen",'maqh','address');
     }
 
+    public function findDistrict($id){
+       return Address_QuanHuyen::where('maqh',$id)->first();
+    }
+    public function findWard($id){
+        return Address_XaPhuong::where('xaid',$id)->first();
+    }
+
+    public function rules($id=null){
+        $validate=[
+            'title' => "required| string| max:255",
+            'description'=>"required|string|max:255",
+            'price'=>"required",
+            'category_id'=>"required",
+            'customer_id'=>"required",
+        ];
+        if($id){
+            return $validate;
+        }
+        return array_merge($validate,['district'=>'required',
+            'ward'=>"required"]) ;
+
+    }
+    public function createData($data){
+        $data['address']=json_encode([
+            'district'=>$data['district'],
+            'ward'=>$data['ward'],
+        ]) ;
+        $data=array_filter($data);
+        return $this->fill($data)->save();
+    }
+    public function updateData($data,$id){
+        if ($data['district'] && $data['ward']){
+            $data['address']=json_encode([
+                'district'=>$data['district'],
+                'ward'=>$data['ward'],
+            ]) ;
+        }
+        $data=array_filter($data);
+        $this->find($id)->fill($data)->save();
+    }
 }

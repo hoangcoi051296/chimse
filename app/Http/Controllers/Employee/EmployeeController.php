@@ -27,12 +27,13 @@ class EmployeeController extends Controller
         return view('employee.account.edit',compact('user','address'));
     }
     public function updateAccount($id,Request $request){
+        $data=$request->all();
         $request->validate($this->employee->rules($id));
         try {
-            $this->employee->updateData($request, $id);
+            $this->employee->updateData($data, $id);
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('employee.index')->with("success", "Update Success");
+        return redirect()->route('employee.account.edit')->with("success", "Cập nhật thành công");
     }
 }
