@@ -21,7 +21,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form method="post" action="{{route('customer.post.store')}}">
+            <form method="post" action="{{route('manager.post.store')}}">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
@@ -46,10 +46,72 @@
                                     <input type="text" name="description"  class="form-control">
                                 </div>
                                 <div class="form-group">
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#fullHeightModalRight">
+                                       Chọn người thuê
+                                    </button>
+                                </div>
+                                <div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                     aria-hidden="true">
+
+                                    <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
+                                    <div class="modal-dialog modal-full-height modal-right modal-lg" role="document">
+
+
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title w-100" id="myModalLabel">Chọn người thuê</h4>
+                                                <input value="{{Request::get('search')}}" id="findCustomer" placeholder="Tìm kiếm" type="text" class="form-control" name="search">
+                                                <span class="input-group-append">
+                                                 <button type="button" onclick="chooseCustomer(document.getElementById('findCustomer').value)" class="btn btn-info btn-flat">Go!</button>
+                                                </span>
+                                                <span class="input-group-append">
+                                                    <button type="button" onclick="chooseCustomer('')"  class="btn btn-secondary btn-flat"><i class="fas fa-redo" style="padding-top: 3px"></i></button>
+                                                    </span>
+
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Chọn</th>
+                                                        <th>Ảnh</th>
+                                                        <th>Tên</th>
+                                                        <th >Email</th>
+                                                        <th>Số điện thoại</th>
+{{--                                                        <th>Địa chỉ</th>--}}
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($customers as $customer)
+                                                        <tr>
+                                                            <td> <input  type="radio" name="customer_id" value="{{$customer->id}}"></td>
+                                                            @if($customer->avatar)
+                                                                <td><img src="{{$post->avatar}}"></td>
+                                                            @else
+                                                                <td><img src="{{asset('images/avt.jpeg')}}" style="width:40px;height: 40px"></td>
+                                                            @endif
+                                                                <td>{{ $customer->name}}</td>
+                                                                <td>{{$customer->email}}</td>
+                                                                <td>{{$customer->phone}}</td>
+{{--                                                                <td>{{$customer->getAddress->name}}</td>--}}
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                    {{$customers->appends(request()->query())->links()}}
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer justify-content-center" >
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Lưu</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label for="inputStatus">Địa chỉ</label>
-                                    <select  class="form-control custom-select option" name="address"
+                                    <select  class="form-control custom-select option" name="district"
                                             type="text">
-                                        <option >Hà Nội</option>
+                                        <option value="" >Hà Nội</option>
                                         @foreach($address as $a)
                                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
@@ -92,7 +154,7 @@
                 </div>
                 <div class="row " style="margin-bottom: 40px">
                     <div class="col-12">
-                        <input type="submit" value="Create post" class="btn btn-success float-left">
+                        <input  type="submit" value="Create post" class="btn btn-success float-left">
                     </div>
                 </div>
             </form>
@@ -104,12 +166,12 @@
 @section('script')
     <script type="text/javascript">
         var url = "{{ url('manager/post/showWard') }}";
-        $("select[name='address']").change(function(){
+        $("select[name='district']").change(function(){
             var address = $(this).val();
             var token = $("input[name='_token']").val();
             $.ajax({
                 url: url,
-                method: 'POST',
+                method: 'GET',
                 data: {
                     address: address,
                     _token: token,
@@ -118,12 +180,18 @@
                     console.log(data)
                     $("select[name='ward']").html('');
                     $.each(data, function(key, value){
+                        console.log(value)
                         $("select[name='ward']").append(
-                            "<option value=" + value.id + ">" + value.name + "</option>"
+                            "<option value=" + value.xaid + ">" + value.name + "</option>"
                         );
                     });
                 }
             });
         });
+        function chooseCustomer(customer) {
+            var url="{!! route('manager.post.create',['search' => '']) !!}"+customer;
+            window.history.pushState({}, '',url );
+            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
+        }
     </script>
     @endsection

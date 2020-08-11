@@ -17,8 +17,8 @@ class CustomerController extends Controller
     {
         $this->customer = $customer;
         $this->post = $post;
-        $address = Address_QuanHuyen::where('matp', 01)->get();
-        view()->share(compact('address'));
+//        $address = Address_QuanHuyen::where('matp', 01)->get();
+//        view()->share(compact('address'));
     }
 
     public function index(Request $request)

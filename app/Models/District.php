@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class District extends Model
+class Address_QuanHuyen extends Model
 {
-    protected $table = 'devvn_quanhuyen';
-    protected $fillable = ['maqh','name','type','matp'];
+    protected $table = 'address';
+    protected $fillable = ['post_id','province_id', 'district_id', 'commune_id', 'note'];
 
-    public function communes()
+    public function posts()
     {
-        return $this->hasMany(Commune::class,'maqh','xaid');
+        return $this->hasMany(Post::class,'province_id', 'id', 'district_id', 'id', 'commune_id', 'id');
     }
 }

@@ -75,7 +75,7 @@
                                             <a href="{{ route('manager.customer.delete',['id'=> $customer->id])}}"
                                                onclick="return confirm('Bạn muốn xóa không?');"
                                                class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>
-                                            <a href="{{route('manager.customer.post.index',['id' => $customer->id])}}"
+                                            <a href="{{route('manager.customer.index',['id' => $customer->id])}}"
                                                class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>

@@ -48,15 +48,15 @@
                                     <label for="inputEmail">Phone</label>
                                     <input name="phone" type="phone"  class="form-control" >
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputStatus">Address</label>
-                                    <select id="inputStatus" class="form-control custom-select" name="address">
-                                        <option selected="" disabled="">Address</option>
-                                        @foreach($address as $a)
-                                            <option value="{{$a->maqh}}">{{$a->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                {{--<div class="form-group">--}}
+                                    {{--<label for="inputStatus">Address</label>--}}
+                                    {{--<select id="inputStatus" class="form-control custom-select" name="address">--}}
+                                        {{--<option selected="" disabled="">Address</option>--}}
+                                        {{--@foreach($address as $a)--}}
+                                            {{--<option value="{{$a->maqh}}">{{$a->name}}</option>--}}
+                                        {{--@endforeach--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
                                 <div class="form-group">
                                     <label for="inputPassword">Password</label>
                                     <input type="password" name="password" id="inputClientCompany" class="form-control">

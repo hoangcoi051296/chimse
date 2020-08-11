@@ -18,11 +18,10 @@ class CreateTablePostTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->float('price');
-            $table->boolean('status')->nullable();
-            $table->unsignedBigInteger('address');
-            $table->foreign('address')->references('maqh')->on('devvn_quanhuyen');
+            $table->boolean('status')->default(1);
+            $table->json('address')->nullable();
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('employee_id')->nullable();
             $table->unsignedBigInteger('customer_id');
             $table->foreign("category_id")->references("id")->on("category");
             $table->foreign("employee_id")->references("id")->on("employee");

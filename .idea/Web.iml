@@ -22,6 +22,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/hamcrest/hamcrest-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/jacobbennett/pjax" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jakub-onderka/php-console-color" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jakub-onderka/php-console-highlighter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/kjmtrue/vietnam-zone" />
@@ -30,6 +31,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/ui" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/commonmark" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/flysystem" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/mime-type-detection" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/maatwebsite/excel" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/maennchen/zipstream-php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/markbaker/complex" />
@@ -83,6 +85,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/console" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/css-selector" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/debug" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/dom-crawler" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/error-handler" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/event-dispatcher" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/event-dispatcher-contracts" />

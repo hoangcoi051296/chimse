@@ -19,8 +19,8 @@ class CustomerController extends Controller
     {
         $this->customer = $customer;
         $this->post = $post;
-        $provinces = Province::get();
-        view()->share(compact('provinces'));
+        $districts = District::get();
+        view()->share(compact('districts'));
     }
 
     public function index(Request $request)
@@ -29,30 +29,6 @@ class CustomerController extends Controller
 
         return view('customer.dashboard', compact('customers'));
     }
-
-//    public function create()
-//    {
-//        return view('customer.create');
-//    }
-//
-//    public function store(Request $request)
-//    {
-//        $request->validate([
-//                'name' => "required| string| max:255",
-//                'email' => "required|string|email|max:255|unique:customer",
-//                'password' => 'required| min:5|confirmed',
-//                'password_confirmation' => 'required'
-//            ]
-//        );
-//        $customer = Customer::create([
-//            'name' => $request->name,
-//            'email' => $request->email,
-//            'password' => bcrypt($request->password),
-//            'phone' => $request->phone,
-//            'address' => $request->address
-//        ]);
-//        return redirect()->route('customer.index')->with("success", "Create Success");
-//    }
 
     public function editProfile(Request $request,$id)
     {

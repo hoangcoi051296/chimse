@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     @include('manager.components.head')
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" id="body">
 <div class="wrapper">
 
 
@@ -9,7 +9,7 @@
     @include('manager.components.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" id="content-wrapper">
 
         @yield('content')
 

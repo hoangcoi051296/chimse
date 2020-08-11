@@ -97,7 +97,7 @@ if (!function_exists("sidebarEmployee")) {
                     'child' => [
                         [
                             'name' => 'Danh sách',
-                            'route' => '#'
+                            'route' => route('employee.post.index')
                         ],
                     ],
                     'icon'=>'nav-icon fas fa-tachometer-alt'
@@ -117,7 +117,7 @@ if (!function_exists("sidebarEmployee")) {
                     'child'=>[
                             [
                             'name'=>'Cập nhật tài khoản',
-                            'route'=>route('employee.account.edit',['id'=>Auth::guard('employee')->user()->id])
+                            'route'=>route('employee.account.edit'),
                         ],
                             [
                         'name'=>'Đăng xuất',

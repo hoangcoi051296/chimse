@@ -33,9 +33,10 @@ Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], f
     Route::group(['prefix'=>'post'],function (){
         Route::get('/', 'PostController@index')->name('manager.post.index');
         Route::get('create', 'PostController@create')->name('manager.post.create');
-        Route::post('showWard','PostController@showWardInDistrict')->name('manager.post.showWard');
+        Route::get('showWard','PostController@showWardInDistrict')->name('manager.get.showWard');
         Route::post('store', 'PostController@store')->name('manager.post.store');
         Route::get('details/{id}', 'PostController@details')->name('manager.post.details');
+        Route::post('changeStatus', 'PostController@changeStatus')->name('manager.post.changeStatus');
         Route::get('edit/{id}', 'PostController@edit')->name('manager.post.edit');
         Route::post('update/{id}', 'PostController@update')->name('manager.post.update');
         Route::get('delete/{id}', 'PostController@delete')->name('manager.post.delete');

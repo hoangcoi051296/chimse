@@ -6,6 +6,8 @@ use App\Models\Address_QuanHuyen;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Province;
+use App\Models\Ward;
+use App\Models\District;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Category;
@@ -21,7 +23,7 @@ class PostController extends Controller
         $this->post = $post;
         $this->category = $category;
         $provinces = Province::get();
-
+//        $address = Address_QuanHuyen::where('matp', 01)->get();
         view()->share(compact( 'provinces'));
     }
 

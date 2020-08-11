@@ -31,3 +31,14 @@
 <script src="{{asset("dist/js/demo.js")}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset("dist/js/pages/dashboard.js")}}"></script>
+<script src="{{asset("js/jquery.pjax.js")}}"></script>
+<script>
+    $(document).ready(function(){
+        $(document).pjax('a','#body')
+        // does current browser support PJAX
+        if ($.support.pjax) {
+            $.pjax.defaults.timeout = 1000; // time in milliseconds
+        }
+
+    });
+</script>

@@ -15,8 +15,9 @@ class PostController extends Controller
     protected $customer;
     protected $post;
 
-    public function __construct(Post $post )
+    public function __construct(Post $post ,Customer $customer)
     {
+        $this->customer=$customer;
         $this->post = $post;
         $address = Address_QuanHuyen::where('matp', 01)->get();
         $categories=Category::all();
@@ -35,10 +36,30 @@ class PostController extends Controller
         }
 
     }
-    public function create()
+    public function changeStatus(Request $request){
+        if ($request->ajax()) {
+           $post=$this->post->find($request->id);
+           $post->status=$post->status+1;
+           $post->save();
+            return response()->json($post);
+        }
+    }
+    public function create(Request $request)
     {
+        $customers=  $this->customer->data($request);
+        return view('manager.post.create',compact('customers'));
+    }
+    public function store(Request  $request){
+        $data=$request->all();
+        $request->validate($this->post->rules());
+        try {
+            $this->post->createData($data);
+        } catch (\Exception $e) {
+            return redirect()->back()->with("error", $e->getMessage());
+        }
+        return redirect()->route('manager.post.index')->with("success", "Create Success");
 
-        return view('manager.post.create');
+
     }
     public function details($id)
     {
@@ -51,14 +72,16 @@ class PostController extends Controller
         return view('manager.post.edit',compact('post'));
     }
 
-    public function update($id,$post_id,Request $request)
+    public function update($id,Request $request)
     {
-        $customer = $this->customer->find($id);
-        $post = $this->post->find($post_id);
-
-        $post->update($request->all());
-
-        return redirect()->route('manager.customer.post.index',['id' => $customer->id]);
+        $data=$request->all();
+        $request->validate($this->post->rules($id));
+        try {
+            $this->post->updateData($data, $id);
+        } catch (\Exception $e) {
+            return redirect()->back()->with("error", $e->getMessage());
+        }
+        return redirect()->route('manager.post.index')->with("success", "Update Success");
     }
 
     public function delete($id,$post_id)
