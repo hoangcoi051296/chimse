@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{asset("plugins/daterangepicker/daterangepicker.css")}}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{asset("plugins/summernote/summernote-bs4.min.css")}}">
+    <link rel="stylesheet" href="{{asset("css/custom.css")}}">
     <script
             src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="

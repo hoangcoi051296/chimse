@@ -40,11 +40,21 @@
                                 <label for="inputName">Title</label>
                                 <input type="text" name="title" id="inputName" value="{{$post->title}}"
                                     class="form-control">
+                                @if($errors->has('title'))
+                                    <div class="messages-error">
+                                        {{$errors->first('title')}}
+                                    </div>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="inputName">Description</label>
                                 <input type="text" name="description" id="inputName" value="{{$post->description}}"
                                     class="form-control">
+                                @if($errors->has('description'))
+                                    <div class="messages-error">
+                                        {{$errors->first('description')}}
+                                    </div>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="inputStatus">Province</label>
@@ -54,8 +64,10 @@
                                         <option value="{{$p->matp}}">{{$p->name}}</option>
                                     @endforeach
                                 </select>
-                                @if($errors->has('province'))
-                                    {{$errors->first('province')}}
+                                @if($errors->has('province_id'))
+                                    <div class="messages-error">
+                                        {{$errors->first('province_id')}}
+                                    </div>
                                 @endif
                             </div>
                             <div class="form-group">
@@ -65,8 +77,10 @@
                                     <option selected="" disabled="">District</option>
 
                                 </select>
-                                @if($errors->has('province'))
-                                    {{$errors->first('province')}}
+                                @if($errors->has('district_id'))
+                                    <div class="messages-error">
+                                        {{$errors->first('district_id')}}
+                                    </div>
                                 @endif
                             </div>
                             <div class="form-group">
@@ -76,14 +90,21 @@
                                     <option selected="" disabled="">Commune</option>
 
                                 </select>
-                                @if($errors->has('province'))
-                                    {{$errors->first('province')}}
+                                @if($errors->has('commune_id'))
+                                    <div class="messages-error">
+                                        {{$errors->first('commune_id')}}
+                                    </div>
                                 @endif
                             </div>
                             <div class="form-group">
                                 <label for="inputName">Price</label>
                                 <input type="text" name="price" id="inputName" value="{{$post->price}}"
                                     class="form-control">
+                                @if($errors->has('price'))
+                                    <div class="messages-error">
+                                        {{$errors->first('price')}}
+                                    </div>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="inputName">Category</label>
@@ -96,6 +117,11 @@
                                     <option value="{{$cat->id}}">{{$cat->name}}</option>
                                     @endforeach
                                 </select>
+                                @if($errors->has('category_id'))
+                                    <div class="messages-error">
+                                        {{$errors->first('category_id')}}
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <!-- /.card-body -->

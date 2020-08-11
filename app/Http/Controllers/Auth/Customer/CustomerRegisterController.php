@@ -20,9 +20,8 @@ class CustomerRegisterController extends Controller
     }
     public function getRegister()
     {
-        $address = Address_QuanHuyen::where('matp', 01)->get();
         // trả về trang đăng nhập
-        return view('customer.register',compact('address'));
+        return view('customer.register');
     }
 
     public function postRegister(Request $request)

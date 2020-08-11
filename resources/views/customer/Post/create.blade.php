@@ -41,71 +41,83 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="inputName">Title</label>
-                                    <input type="text" name="title" id="inputName" class="form-control">
+                                    <input type="text" name="title" id="inputName" class="form-control @if($errors->has('title')) error-input @endif">
                                     @if($errors->has('title'))
+                                        <div class="messages-error">
                                         {{$errors->first('title')}}
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Description</label>
-                                    <input type="text" name="description" id="inputName" class="form-control"
-                                           style="color: red">
+                                    <input type="text" name="description" id="inputName" class="form-control @if($errors->has('title')) error-input @endif">
+
                                     @if($errors->has('description'))
+                                        <div class="messages-error">
                                         {{$errors->first('description')}}
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputStatus">Province</label>
-                                    <select class="form-control custom-select" id="province" name="province_id">
+                                    <select class="form-control custom-select" id="province" name="province_id" class="form-control @if($errors->has('title')) error-input @endif">
                                         <option selected>Province</option>
                                         @foreach($provinces as $p)
                                             <option value="{{$p->matp}}">{{$p->name}}</option>
                                         @endforeach
                                     </select>
-                                    @if($errors->has('province'))
-                                        {{$errors->first('province')}}
+                                    @if($errors->has('province_id'))
+                                        <div class="messages-error">
+                                        {{$errors->first('province_id')}}
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputStatus">District</label>
                                     <select class="form-control custom-select" id="district" name="district_id"
-                                            type="text">
+                                            type="text" class="form-control @if($errors->has('title')) error-input @endif">
                                         <option selected="" disabled="">District</option>
 
                                     </select>
-                                    @if($errors->has('province'))
-                                        {{$errors->first('province')}}
+                                    @if($errors->has('district_id'))
+                                        <div class="messages-error">
+                                        {{$errors->first('district_id')}}
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputStatus">Commune</label>
                                     <select class="form-control custom-select" id="commune" name="commune_id"
-                                            type="text">
+                                            type="text" class="form-control @if($errors->has('title')) error-input @endif">
                                         <option selected="" disabled="">Commune</option>
-
                                     </select>
-                                    @if($errors->has('province'))
-                                        {{$errors->first('province')}}
+                                    @if($errors->has('commune_id'))
+                                        <div class="messages-error">
+                                        {{$errors->first('commune_id')}}
+                                        </div>
                                     @endif
                                 </div>
-
                                 <div class="form-group">
                                     <label for="inputName">Price</label>
-                                    <input type="text" name="price" id="inputName" class="form-control">
+                                    <input type="text" name="price" id="inputName" class="form-control @if($errors->has('title')) error-input @endif">
                                     @if($errors->has('price'))
+                                        <div class="messages-error">
                                         {{$errors->first('price')}}
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Category</label>
-                                    <select name="category_id" class="form-control" id="category_id">
+                                    <select name="category_id" class="form-control" id="category_id" class="form-control @if($errors->has('title')) error-input @endif">
                                         <option value="">Chọn loại</option>
                                         @foreach ($categories as $cat)
                                             <option value="{{$cat->id}}">{{$cat->name}}</option>
                                         @endforeach
                                     </select>
-                                    @if($errors->has('category'))
-                                        {{$errors->first('category')}}
+                                    @if($errors->has('category_id'))
+                                        <div class="messages-error">
+                                        {{$errors->first('category_id')}}
+                                        </div>
                                     @endif
                                 </div>
                             </div>
