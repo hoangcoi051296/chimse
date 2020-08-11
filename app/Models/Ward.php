@@ -8,7 +8,7 @@ class Ward extends Model
 {
     protected $table = 'devvn_xaphuongthitran';
     protected $fillable = ['xaid','name','type','maqh'];
-    public function District(){
+    public function district(){
         return $this->hasOne("\App\Models\District", 'maqh', 'maqh');
     }
 }

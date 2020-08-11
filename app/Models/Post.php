@@ -25,18 +25,20 @@ class Post extends Model
             return $posts;
         }
         if (isset($condition['status'])) {
-            $posts=$posts->where('status', $condition['status']);
+            $posts->where('status', $condition['status']);
         }
         if (isset($condition['address'])) {
-            $posts=$posts->where('address', $condition['address']);
+           $posts->where('address', $condition['address']);
         }
         if (isset($condition['search'])) {
             $search=$condition['search'];
-            $posts=$posts->where(function ($q) use ($search) {
-                $q->where('title', 'LIKE', '%' . $search . '%')
+            $posts->where(function ($q) use ($search) {
+                    $q->where('title', 'LIKE', '%' . $search . '%')
                     ->orwhere('description','LIKE', '%' . $search . '%')
-                    ->orWhereHas('Address', function ($query) use ($search) {
-                        $query->where('name','like', '%'. $search.'%' );
+                    ->orWhereHas('ward', function ($query) use ($search) {
+                        $query->whereHas('district',function ($q)use($search){
+                            $q->where('name','like','%'.$search.'%');
+                        });
                     })
                     ->orWhereHas('customer', function ($query) use ($search) {
                     $query->where('name','like', '%'. $search.'%' );
@@ -66,17 +68,10 @@ class Post extends Model
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    public function Address(){
-        return $this->hasOne("\App\Models\District",'maqh','address');
+    public function ward()
+    {
+        return $this->hasOne("\App\Models\Ward", 'xaid', 'address');
     }
-
-    public function findDistrict($id){
-       return District::where('maqh',$id)->first();
-    }
-    public function findWard($id){
-        return Ward::where('xaid',$id)->first();
-    }
-
     public function rules($id=null){
         $validate=[
             'title' => "required| string| max:255",
@@ -93,20 +88,15 @@ class Post extends Model
 
     }
     public function createData($data){
-        $data['address']=json_encode([
-            'district'=>$data['district'],
-            'ward'=>$data['ward'],
-        ]) ;
+        $data['address']=$data['ward'];
         $data=array_filter($data);
         return $this->fill($data)->save();
     }
     public function updateData($data,$id){
         if ($data['district'] && $data['ward']){
-            $data['address']=json_encode([
-                'district'=>$data['district'],
-                'ward'=>$data['ward'],
-            ]) ;
+            $data['address']=$data['ward'];
         }
+        $data['status']=Post::ChoDuyet;
         $data=array_filter($data);
         $this->find($id)->fill($data)->save();
     }
