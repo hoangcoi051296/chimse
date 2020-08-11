@@ -67,14 +67,14 @@ class Post extends Model
     }
 
     public function Address(){
-        return $this->hasOne("\App\Models\Address_QuanHuyen",'maqh','address');
+        return $this->hasOne("\App\Models\District",'maqh','address');
     }
 
     public function findDistrict($id){
-       return Address_QuanHuyen::where('maqh',$id)->first();
+       return District::where('maqh',$id)->first();
     }
     public function findWard($id){
-        return Address_XaPhuong::where('xaid',$id)->first();
+        return Ward::where('xaid',$id)->first();
     }
 
     public function rules($id=null){

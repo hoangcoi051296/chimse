@@ -42,6 +42,7 @@ $factory->define(\App\Models\Post::class, function (Faker $faker) {
         'description' => $faker->text,
         'price'=>random_int(100,1000),
         'status'=>random_int(0,7),
+        'address'=>null,
         'category_id'=>random_int(1,10),
         'employee_id'=>random_int(1,10),
         'customer_id'=>random_int(1,10),

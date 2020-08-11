@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use App\Mail\AccountCreated;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
@@ -13,62 +14,78 @@ use Symfony\Component\Console\Helper\Table;
 class Employee extends Model implements Authenticatable
 {
     use AuthenticableTrait;
+
     protected $table = 'employee';
-    protected $fillable = ['name','email','phone','password','address'];
+    protected $fillable = ['name', 'email', 'phone', 'password', 'address'];
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
-    public function getData($condition ,$request){
-        $helpers=$this->query()->orderBy('created_at','desc') ;
-        if (!$condition){
+
+    public function getData($condition, $request)
+    {
+        $helpers = $this->query()->orderBy('created_at', 'desc');
+        if (!$condition) {
             return $helpers;
         }
         if (isset($condition['address'])) {
-            $helpers=$helpers->where('address', $condition['address']);
+            $helpers->where('address', $condition['address']);
         }
         if (isset($condition['search'])) {
-            $search=$condition['search'];
-            $helpers=$helpers->where(function ($q) use ($search) {
+            $search = $condition['search'];
+           $helpers->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', '%' . $search . '%')
                     ->orWhere('email', 'LIKE', '%' . $search . '%')
                     ->orWhere('phone', 'LIKE', '%' . $search . '%')
-                    ->orWhereHas('Address_QuanHuyen', function ($query) use ($search) {
-                        $query->where('name','like', '%'. $search.'%' );
+                    ->orWhereHas('Ward', function ($query) use ($search) {
+                        $query->whereHas('District',function ($q)use($search){
+                            $q->where('name','like','%'.$search.'%');
+                        });
                     });
             });
         }
         return $helpers;
     }
-    public function Address(){
-        return $this->hasOne("\App\Models\Address_QuanHuyen",'maqh','address');
-    }
-    public function rules($id=null)
+
+    public function Ward()
     {
-        $validate=[
-            'name' => "required| string| max:255",
-            'email' => "required|string|email|regex:^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$^|unique:employee,email,".$id,
-            'phone'=>'required|unique:employee,phone,'.$id,
-            'address'=>'required',
-        ];
-        if (!$id){
-            return Arr::add( $validate,'password','required|min:6|confirmed') ;
-        }
-        return Arr::add($validate,'password','sometimes|nullable|min:6|confirmed') ;
+        return $this->hasOne("\App\Models\Ward", 'xaid', 'address');
     }
+    public function rules($id = null)
+    {
+        $validate = [
+            'name' => "required| string| max:255",
+            'email' => "required|string|email|regex:^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$^|unique:employee,email," . $id,
+            'phone' => 'required|unique:employee,phone,' . $id,
+            'ward' => 'required',
+        ];
+        if (!$id) {
+            return Arr::add($validate, 'password', 'required|min:6|confirmed');
+        }
+        return Arr::add($validate, 'password', 'sometimes|nullable|min:6|confirmed');
+    }
+
     public $perPage = 10;
-    public function createData($data){
-        $data['password']=bcrypt($data['password']);
+
+    public function createData($data)
+    {
+        $data['password'] = bcrypt($data['password']);
         return $this->fill($data)->save();
     }
-    public function updateData($data,$id){
-        $data['phone']=format_phone_number($data['phone']);
-        $data=array_filter($data);
+
+    public function updateData($data, $id)
+    {
+        $data['phone'] = format_phone_number($data['phone']);
+        $data['address']=$data['ward'];
+        $data = array_filter($data);
         if (isset($data['password'])) {
-            $data['password']=bcrypt($data['password']);
+            $data['password'] = bcrypt($data['password']);
         }
         $this->find($id)->fill($data)->save();
     }
-    public function deleteData($id){
+
+    public function deleteData($id)
+    {
         $this->find($id)->delete();
     }
 

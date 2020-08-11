@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Models\Address_QuanHuyen;
+use App\Models\District;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ class PostController extends Controller
         $this->post = $post;
         $this->category = $category;
 
-        $address = Address_QuanHuyen::where('matp', 01)->get();
+        $address = District::where('matp', 01)->get();
 
         view()->share(compact('address'));
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
-use App\Models\Address_QuanHuyen;
+use App\Models\District;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Post;
@@ -17,7 +17,7 @@ class PostController extends Controller
     {
         $this->customer=$customer;
         $this->post = $post;
-        $address = Address_QuanHuyen::where('matp', 01)->get();
+        $address = District::where('matp', 01)->get();
         $categories=Category::all();
         view()->share(compact('address','categories'));
     }

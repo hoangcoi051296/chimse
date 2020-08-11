@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
-use App\Models\Address_QuanHuyen;
-use App\Models\Address_XaPhuong;
+use App\Models\District;
+use App\Models\Ward;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Post;
@@ -19,7 +19,7 @@ class PostController extends Controller
     {
         $this->customer=$customer;
         $this->post = $post;
-        $address = Address_QuanHuyen::where('matp', 01)->get();
+        $address = District::where('matp', 01)->get();
         $categories=Category::all();
         view()->share(compact('address','categories'));
     }
@@ -31,7 +31,7 @@ class PostController extends Controller
     public function showWardInDistrict(Request $request){
 
         if ($request->ajax()) {
-            $wards = Address_XaPhuong::Where('maqh',$request->address)->get();
+            $wards = Ward::Where('maqh',$request->address)->get();
             return response()->json($wards);
         }
 

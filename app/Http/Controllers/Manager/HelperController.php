@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Manager;
 
 use App\Mail\AccountCreated;
 use App\Mail\AccountHelperCreated;
-use App\Models\Address_QuanHuyen;
+use App\Models\District;
 use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
@@ -23,7 +23,7 @@ class HelperController extends Controller
     ) {
         $this->manager = $manager;
         $this->helper = $helper;
-        $address = Address_QuanHuyen::where('matp', 01)->get();
+        $address = District::where('matp', 01)->get();
         view()->share(compact('address'));
     }
 
@@ -62,9 +62,10 @@ class HelperController extends Controller
     public function update(Request $request)
     {
         $data=$request->all();
-        $request->validate($this->helper->rules($data['id']));
+        $request->validate($this->helper->rules($request->id));
+        $this->helper->updateData($data, $request->id);
         try {
-            $this->helper->updateData($data, $data['id']);
+            $this->helper->updateData($data, $request->id);
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }

@@ -35,6 +35,6 @@ class Customer extends Model implements Authenticatable
 
     public function getAddress()
     {
-        return $this->belongsTo(Address_QuanHuyen::class,'address','maqh');
+        return $this->belongsTo(District::class,'address','maqh');
     }
 }
