@@ -21,23 +21,23 @@ class PostCreated extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
-        return [
-            'title' => "required| string",
-            'description' => "required",
-            'price' => 'required',
-            'address' => 'required'
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'title.required' => 'title is required!',
-            'description.required' => 'description is required!',
-            'price.required' => 'price is required!',
-            'address.required' =>'AddressQuanHuyen is required!'
-        ];
-    }
+//    public function rules()
+//    {
+//        return [
+//            'title' => "required| string",
+////            'description' => "required",
+//            'price' => 'required',
+//            "category_id" => "required"
+//        ];
+//    }
+//
+//    public function messages()
+//    {
+//        return [
+//            'title.required' => 'Must not be left blank',
+//            'description.required' => 'Must not be left blank',
+//            'price.required' => 'Must not be left blank',
+//            'category_id' => 'Must not be left blank'
+//        ];
+//    }
 }

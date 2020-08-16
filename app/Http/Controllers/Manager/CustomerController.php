@@ -19,6 +19,7 @@ class CustomerController extends Controller
         $this->post = $post;
         $address = District::where('matp', 01)->get();
         view()->share(compact('address'));
+
     }
 
     public function index(Request $request)
@@ -46,7 +47,7 @@ class CustomerController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'phone' => $request->phone,
-            'address' => $request->address
+            'address' => $request->ward
         ]);
         return redirect()->route('manager.customer.index')->with("success", "Create Success");
     }
@@ -61,26 +62,19 @@ class CustomerController extends Controller
     {
         $request->validate([
                 'name' => "required| string| max:255",
-                'email' => "required|string|email|max:255|unique:customer",
-                'password' => 'required| min:5|confirmed',
-                'password_confirmation' => 'required'
             ]
         );
-//        $customer = $this->customer->find($id);
-//        $customer->update($request->all());
-        $customer = Customer::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'phone' => $request->phone,
-            'address' => $request->address
-        ]);
+       $customer = $this->customer->find($id);
+       $customer->update($request->all());
         return redirect()->route('manager.customer.index');
     }
 
     public function delete($id)
     {
-        Customer::find($id)->delete();
+        $customer = Customer::find($id);
+        if($customer){
+            $customer->delete();
+        }
         return redirect()->back();
     }
 

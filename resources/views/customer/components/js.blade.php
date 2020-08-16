@@ -31,3 +31,42 @@
 <script src="{{asset("dist/js/demo.js")}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset("dist/js/pages/dashboard.js")}}"></script>
+<script>
+    tinymce.init({
+        selector: '#description1'
+    });
+    var url = "{{ url('customer/post/showWard') }}";
+    $("select[name='district']").change(function () {
+        var address = $(this).val();
+        var token = $("input[name='_token']").val();
+        $.ajax({
+            url: url,
+            method: 'GET',
+            data: {
+                address: address,
+                _token: token,
+            },
+            success: function (data) {
+                console.log(data)
+                $("select[name='ward']").html('');
+                $.each(data, function (key, value) {
+                    console.log(value)
+                    $("select[name='ward']").append(
+                        "<option value=" + value.xaid + ">" + value.name + "</option>"
+                    );
+                });
+            }
+        });
+    });
+    $(function() {
+        $('#reservationtime').daterangepicker({
+            timePicker: true,
+            timePicker24Hour:true,
+            startDate: moment().startOf('hour'),
+            endDate: moment().startOf('hour').add(32, 'hour'),
+            locale: {
+                format: 'YYYY-MM-DD HH:mm'
+            }
+        });
+    });
+</script>

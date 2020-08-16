@@ -20,6 +20,7 @@ Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], f
         Route::get('edit/{id}', 'CustomerController@edit')->name('manager.customer.edit');
         Route::post('update/{id}', 'CustomerController@update')->name('manager.customer.update');
         Route::get('delete/{id}', 'CustomerController@delete')->name('manager.customer.delete');
+
     });
     Route::group(['prefix'=>'category'],function (){
         Route::get('/', 'CategoryController@index')->name('manager.category.index');

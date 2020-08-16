@@ -17,14 +17,13 @@ class CustomerRegisterController extends Controller
     protected $active;
     public function __construct(Activation $active){
         $this->active = $active;
+        $address = District::where('matp', 01)->get();
+        view()->share(compact('address'));
     }
     public function getRegister()
     {
-        $address = District::where('matp', 01)->get();
-        // trả về trang đăng nhập
-        return view('customer.register',compact('address'));
+        return view('customer.register');
     }
-
     public function postRegister(Request $request)
     {
         $data = $request->all();

@@ -39,18 +39,20 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="inputName">Tiêu đề</label>
-                                    <input type="text" name="title"  class="form-control">
+                                    <input type="text" name="title" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Mô tả chi tiết</label>
-                                    <input type="text" name="description"  class="form-control">
+                                    <input type="text" name="description" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#fullHeightModalRight">
-                                       Chọn người thuê
+                                    <button type="button" class="btn btn-info" data-toggle="modal"
+                                            data-target="#fullHeightModalRight">
+                                        Chọn người thuê
                                     </button>
                                 </div>
-                                <div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                <div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel"
                                      aria-hidden="true">
 
                                     <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
@@ -60,12 +62,18 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h4 class="modal-title w-100" id="myModalLabel">Chọn người thuê</h4>
-                                                <input value="{{Request::get('search')}}" id="findCustomer" placeholder="Tìm kiếm" type="text" class="form-control" name="search">
+                                                <input value="{{Request::get('search')}}" id="findCustomer"
+                                                       placeholder="Tìm kiếm" type="text" class="form-control"
+                                                       name="search">
                                                 <span class="input-group-append">
-                                                 <button type="button" onclick="chooseCustomer(document.getElementById('findCustomer').value)" class="btn btn-info btn-flat">Go!</button>
+                                                 <button type="button"
+                                                         onclick="chooseCustomer(document.getElementById('findCustomer').value)"
+                                                         class="btn btn-info btn-flat">Go!</button>
                                                 </span>
                                                 <span class="input-group-append">
-                                                    <button type="button" onclick="chooseCustomer('')"  class="btn btn-secondary btn-flat"><i class="fas fa-redo" style="padding-top: 3px"></i></button>
+                                                    <button type="button" onclick="chooseCustomer('')"
+                                                            class="btn btn-secondary btn-flat"><i class="fas fa-redo"
+                                                                                                  style="padding-top: 3px"></i></button>
                                                     </span>
 
                                             </div>
@@ -76,32 +84,35 @@
                                                         <th>Chọn</th>
                                                         <th>Ảnh</th>
                                                         <th>Tên</th>
-                                                        <th >Email</th>
+                                                        <th>Email</th>
                                                         <th>Số điện thoại</th>
-{{--                                                        <th>Địa chỉ</th>--}}
+                                                        {{--                                                        <th>Địa chỉ</th>--}}
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     @foreach($customers as $customer)
                                                         <tr>
-                                                            <td> <input  type="radio" name="customer_id" value="{{$customer->id}}"></td>
+                                                            <td><input type="radio" name="customer_id"
+                                                                       value="{{$customer->id}}"></td>
                                                             @if($customer->avatar)
                                                                 <td><img src="{{$post->avatar}}"></td>
                                                             @else
-                                                                <td><img src="{{asset('images/avt.jpeg')}}" style="width:40px;height: 40px"></td>
+                                                                <td><img src="{{asset('images/avt.jpeg')}}"
+                                                                         style="width:40px;height: 40px"></td>
                                                             @endif
-                                                                <td>{{ $customer->name}}</td>
-                                                                <td>{{$customer->email}}</td>
-                                                                <td>{{$customer->phone}}</td>
-{{--                                                                <td>{{$customer->getAddress->name}}</td>--}}
+                                                            <td>{{ $customer->name}}</td>
+                                                            <td>{{$customer->email}}</td>
+                                                            <td>{{$customer->phone}}</td>
+                                                            {{--                                                                <td>{{$customer->getAddress->name}}</td>--}}
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
                                                     {{$customers->appends(request()->query())->links()}}
                                                 </table>
                                             </div>
-                                            <div class="modal-footer justify-content-center" >
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Lưu</button>
+                                            <div class="modal-footer justify-content-center">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Lưu
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -109,9 +120,9 @@
 
                                 <div class="form-group">
                                     <label for="inputStatus">Địa chỉ</label>
-                                    <select  class="form-control custom-select option" name="district"
+                                    <select class="form-control custom-select option" name="district"
                                             type="text">
-                                        <option value="" >Hà Nội</option>
+                                        <option value="">Hà Nội</option>
                                         @foreach($address as $a)
                                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
@@ -154,7 +165,7 @@
                 </div>
                 <div class="row " style="margin-bottom: 40px">
                     <div class="col-12">
-                        <input  type="submit" value="Create post" class="btn btn-success float-left">
+                        <input type="submit" value="Create post" class="btn btn-success float-left">
                     </div>
                 </div>
             </form>
@@ -166,7 +177,7 @@
 @section('script')
     <script type="text/javascript">
         var url = "{{ url('manager/post/showWard') }}";
-        $("select[name='district']").change(function(){
+        $("select[name='district']").change(function () {
             var address = $(this).val();
             var token = $("input[name='_token']").val();
             $.ajax({
@@ -176,10 +187,10 @@
                     address: address,
                     _token: token,
                 },
-                success: function(data) {
+                success: function (data) {
                     console.log(data)
                     $("select[name='ward']").html('');
-                    $.each(data, function(key, value){
+                    $.each(data, function (key, value) {
                         console.log(value)
                         $("select[name='ward']").append(
                             "<option value=" + value.xaid + ">" + value.name + "</option>"
@@ -188,10 +199,11 @@
                 }
             });
         });
+
         function chooseCustomer(customer) {
-            var url="{!! route('manager.post.create',['search' => '']) !!}"+customer;
-            window.history.pushState({}, '',url );
+            var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
+            window.history.pushState({}, '', url);
             $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
         }
     </script>
-    @endsection
+@endsection
