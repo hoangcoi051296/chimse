@@ -27,9 +27,8 @@ class PostCreated extends FormRequest
             'title' => "required| string",
             'description' => "required",
             'price' => 'required',
-            "province_id" => "required",
-            "district_id" => "required",
-            "commune_id" => "required",
+            "district" => "required",
+            "ward" => "required",
             "category_id" => "required"
         ];
     }
@@ -40,9 +39,8 @@ class PostCreated extends FormRequest
             'title.required' => 'Must not be left blank',
             'description.required' => 'Must not be left blank',
             'price.required' => 'Must not be left blank',
-            'province_id' => 'Must not be left blank',
-            'district_id' => 'Must not be left blank',
-            'commune_id' => 'Must not be left blank',
+            'district' => 'Must not be left blank',
+            'ward' => 'Must not be left blank',
             'category_id' => 'Must not be left blank'
         ];
     }

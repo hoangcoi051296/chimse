@@ -21,29 +21,23 @@ class PostCreated extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
-        return [
-            'title' => "required| string",
-            'description' => "required",
-            'price' => 'required',
-            "province_id" => "required",
-            "district_id" => "required",
-            "commune_id" => "required",
-            "category_id" => "required"
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'title.required' => 'Must not be left blank',
-            'description.required' => 'Must not be left blank',
-            'price.required' => 'Must not be left blank',
-            'province_id' => 'Must not be left blank',
-            'district_id' => 'Must not be left blank',
-            'commune_id' => 'Must not be left blank',
-            'category_id' => 'Must not be left blank'
-        ];
-    }
+//    public function rules()
+//    {
+//        return [
+//            'title' => "required| string",
+////            'description' => "required",
+//            'price' => 'required',
+//            "category_id" => "required"
+//        ];
+//    }
+//
+//    public function messages()
+//    {
+//        return [
+//            'title.required' => 'Must not be left blank',
+//            'description.required' => 'Must not be left blank',
+//            'price.required' => 'Must not be left blank',
+//            'category_id' => 'Must not be left blank'
+//        ];
+//    }
 }

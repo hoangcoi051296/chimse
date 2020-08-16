@@ -81,8 +81,9 @@
                                     <td>{{$helper->name}}</td>
                                     <td>{{$helper->email}}</td>
                                     <td>{{$helper->phone}}</td>
-                                    <td>{{$helper->Address->name}}</td>
-                                    <td></td>
+                                    <td>{{$helper->Ward->name}} ,
+                                        {{$helper->Ward->District->name}}
+                                    </td>
                                     <td>
                                         <a class="edit" href="{{route('manager.employee.edit',['id'=>$helper->id])}}" ><i class="fas fa-edit"></i></a>
                                         <a class="delete" onclick="return confirm('Are you sure?')" href="{{route('manager.employee.delete',['id'=>$helper->id])}}" ><i class="far fa-trash-alt"></i></a>

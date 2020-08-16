@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth\Customer;
 use App\Http\Controllers\Controller;
 use App\Mail\AccountCreated;
 use App\Models\Activation;
-use App\Models\Address_QuanHuyen;
+use App\Models\District;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,13 +17,13 @@ class CustomerRegisterController extends Controller
     protected $active;
     public function __construct(Activation $active){
         $this->active = $active;
+        $address = District::where('matp', 01)->get();
+        view()->share(compact('address'));
     }
     public function getRegister()
     {
-        // trả về trang đăng nhập
         return view('customer.register');
     }
-
     public function postRegister(Request $request)
     {
         $data = $request->all();

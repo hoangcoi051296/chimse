@@ -21,7 +21,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form method="post" action="{{route('customer.update',['id' => $customer->id])}}">
+            <form method="post" action="{{route('manager.customer.update',['id' => $customer->id])}}">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
@@ -50,15 +50,35 @@
                                     <label for="inputEmail">Phone</label>
                                     <input name="phone" type="text" class="form-control" value="{{$customer->phone}}">
                                 </div>
-                                <div class="wrap-input100 validate-input m-b-26">
-                                    <span class="label-input100">Address</span>
-                                    <select id="inputStatus" class="form-control custom-select" name="address">
-                                        <option selected="" disabled="">Address</option>
+                                <div class="form-group">
+                                    <label for="inputStatus">Address</label>
+                                    <select class="form-control custom-select option" name="district" type="text">
                                         @foreach($address as $a)
-                                            <option value="{{$a->maqh}}">{{$a->name}}</option>
+                                            @if($customer->ward->district->maqh == $a->maqh)
+                                                <option value="{{$a->maqh}}" selected>{{$a->name}}</option>
+                                            @else
+                                                <option value="{{$a->maqh}}">{{$a->name}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
+                                    @if($errors->has('district'))
+                                        <div class="messages-error">
+                                            {{$errors->first('district')}}
+                                        </div>
+                                    @endif
                                 </div>
+                                <div class="form-group">
+                                    <label>Ward</label>
+                                    <select class="form-control" name="address">
+                                        <option value="{{$customer->ward->xaid}}" selected>{{$customer->ward->name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                @if($errors->has('ward'))
+                                    <div class="messages-error">
+                                        {{$errors->first('ward')}}
+                                    </div>
+                                @endif
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -83,6 +103,31 @@
             </form>
         </div><!-- /.container-fluid -->
     </section>
+    <script>
+        var url = "{{ url('customer/post/showWard') }}";
+        $("select[name='district']").change(function () {
+            var address = $(this).val();
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: {
+                    address: address,
+                    _token: token,
+                },
+                success: function (data) {
+                    console.log(data)
+                    $("select[name='address']").html('');
+                    $.each(data, function (key, value) {
+                        console.log(value)
+                        $("select[name='address']").append(
+                            "<option value=" + value.xaid + ">" + value.name + "</option>"
+                        );
+                    });
+                }
+            });
+        });
+    </script>
 
     <!-- /.content -->
 @endsection

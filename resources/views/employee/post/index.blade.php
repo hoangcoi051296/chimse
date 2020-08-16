@@ -96,9 +96,7 @@
                                             </td>
                                             <td>{{$post->price}}</td>
                                             @if($post->address)
-                                                <td>{{$post->findDistrict(json_decode($post->address,true)['district'])->name}},
-                                                    {{$post->findWard(json_decode($post->address,true)['ward'])->name}}
-                                                </td>
+                                                {{$post->address}}
                                             @else
                                                 <td>null</td>
                                             @endif

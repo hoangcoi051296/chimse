@@ -45,18 +45,22 @@
                                     <label for="inputEmail">Email</label>
                                     <input name="email" type="email" value="{{$helper->email}}"  class="form-control" >
                                 </div>
-                                <input name="id" value="{{$helper->id}}" hidden>
                                 <div class="form-group">
                                     <label for="inputEmail">Số điện thoại</label>
-                                    <input name="phone" value="{{$helper->phone}}" type="number"   class="form-control" >
+                                    <input name="phone" value="{{$helper->phone}}" type="text"   class="form-control" >
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputStatus">Địa chỉ</label>
-                                    <select  class="form-control custom-select" name="address">
-                                        <option selected="" disabled="">Địa chỉ </option>
+                                    <label for="inputStatus">Quận huyện</label>
+                                    <select  class="form-control custom-select" name="district">
+                                        <option selected="" disabled="">Hà Nội </option>
                                         @foreach($address as $a)
-                                            <option value="{{$a->maqh}}"}} {{$helper->address==$a->maqh?"selected='selected'":''}} >{{$a->name}}</option>
+                                            <option value="{{$a->maqh}}"}} {{$helper->Ward->District->maqh==$a->maqh?"selected='selected'":''}} >{{$a->name}}</option>
                                         @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputStatus">Xã phường</label>
+                                    <select  class="form-control custom-select" name="ward">
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -66,15 +70,6 @@
                                 <div class="form-group">
                                     <label for="inputProjectLeader">Nhập lại mật khẩu</label>
                                     <input type="password" name="password_confirmation" id="inputProjectLeader" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputStatus">Status</label>
-                                    <select id="inputStatus" class="form-control custom-select">
-                                        <option selected="" disabled="">Select one</option>
-                                        <option>On Hold</option>
-                                        <option>Canceled</option>
-                                        <option>Success</option>
-                                    </select>
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -104,29 +99,30 @@
 
     <!-- /.content -->
 @endsection
-{{--@section('script')--}}
-{{--    <script>--}}
-{{--        $("#updateEmployee").click(function(e){--}}
-{{--            e.preventDefault();--}}
-{{--            $.ajax({--}}
-{{--                method : "POST",--}}
-{{--                url: "{{route('manager.employee.update')}}",--}}
-{{--                data: {--}}
-{{--                    _token: $("input[name=_token]").val(),--}}
-{{--                    id : $("input[name=id]").val(),--}}
-{{--                    name: $("input[name=name]").val(),--}}
-{{--                    email: $("input[name=email]").val(),--}}
-{{--                    address: $( "#address option:selected" ).val(),--}}
-{{--                    phone: $("input[name=phone]").val(),--}}
-{{--                },--}}
-{{--                success:function(data){--}}
-{{--                    window.location = "{{route('manager.employee.index')}}"--}}
-{{--                }--}}
-
-{{--            });--}}
-
-
-
-{{--        });--}}
-{{--    </script>--}}
-{{--@endsection--}}
+@section('script')
+    <script type="text/javascript">
+        var url = "{{ url('manager/post/showWard') }}";
+        $("select[name='district']").change(function(){
+            var address = $(this).val();
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: {
+                    address: address,
+                    _token: token,
+                },
+                success: function(data) {
+                    console.log(data)
+                    $("select[name='ward']").html('');
+                    $.each(data, function(key, value){
+                        console.log(value)
+                        $("select[name='ward']").append(
+                            "<option value=" + value.xaid + ">" + value.name + "</option>"
+                        );
+                    });
+                }
+            });
+        });
+    </script>
+@endsection

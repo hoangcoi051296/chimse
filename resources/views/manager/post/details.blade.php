@@ -45,12 +45,15 @@
                                    Người thuê
                                     <address>
                                         <strong>{{$post->customer->name}}</strong><br>
-                                       {{$post->Address->name}}<br>
+                                        @if($post->address)
+                                      {{dd($post->address)}}
+                                        @endif
                                         Phone: {{$post->customer->phone}}<br>
                                         Email: {{$post->customer->email}}
                                     </address>
                                 </div>
                                 <!-- /.col -->
+                                @if($post->employee_id)
                                 <div class="col-sm-4 invoice-col">
                                     Người giúp việc
                                     <address>
@@ -60,6 +63,7 @@
                                         Email: {{$post->employee->email}}
                                     </address>
                                 </div>
+                            @endif
                                 <!-- /.col -->
                                 <div class="col-sm-4 invoice-col">
                                     <b>Invoice #</b><br>

@@ -51,7 +51,7 @@ $listStatus = listStatus();
                                     <th>Eployee</th>
                                     <th>Comment</th>
                                     <th>Rating</th>
-                                    <th style="width: 113px">View</th>
+                                    <th style="width: 113px">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -64,9 +64,9 @@ $listStatus = listStatus();
                                             <td>{{$fb->comment}}</td>
                                             <td>{{$fb->rating}}</td>
                                             <td>
-                                                <a href="{{ route('customer.feedback.view',['id' => $fb->id])}}"
+                                                <a href="{{ route('customer.feedback.edit',['id' => $fb->id])}}"
                                                    class="btn btn-primary btn-xsmax"><i
-                                                            class="fa fa-street-view"></i></a>
+                                                            class="fas fa-user-edit"></i></a>
                                             </td>
 
                                         </tr>
