@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Models\District;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Ward;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Category;
@@ -19,18 +20,25 @@ class PostController extends Controller
     {
         $this->post = $post;
         $this->category = $category;
-
         $address = District::where('matp', 01)->get();
-
         view()->share(compact('address'));
     }
 
     public function index(Request $request)
     {
         $user = Auth::guard('customer')->user();
-//        $request['customer_id'] = $user->id;
+        $request['customer_id'] = $user->id;
         $posts = $this->post->getData($request);
-        return view('customer.post.index', compact('posts'));
+        $posts = Post::all();
+    return view('customer.post.index', compact('posts'));
+    }
+    public function showWardInDistrict(Request $request){
+
+        if ($request->ajax()) {
+            $wards = Ward::Where('maqh',$request->address)->get();
+            return response()->json($wards);
+        }
+
     }
 
     public function create()
@@ -38,16 +46,19 @@ class PostController extends Controller
         $categories = $this->category->all();
         return view('customer.post.create', compact('categories'));
     }
-
-    public function store(PostCreated $request)
+    public function store(Request  $request)
     {
-        $user = Auth::guard('customer')->user();
         $data = $request->all();
-        $data['customer_id'] = $user->id;
-        $data['status'] = 1;
-        $post = $this->post->create($data);
+        $request->validate($this->post->rules());
+        $data['status']=Post::ChoDuyet;
+        $data['customer_id']=Auth::guard('customer')->user()->id;
+        $this->post->createData($data);
+        try {
 
-        return redirect()->route('customer.post.index');
+        } catch (\Exception $e) {
+            return redirect()->back()->with("error", $e->getMessage());
+        }
+        return redirect()->route('customer.post.index')->with("success", "Create Success");
     }
 
     public function edit($id)
@@ -57,15 +68,26 @@ class PostController extends Controller
         return view('customer.post.edit', compact('post', 'categories'));
     }
 
-    public function update(Request $request)
+    public function update($id,Request $request)
     {
-        $user = Auth::guard('customer')->user();
         $data = $request->all();
-        $data['customer_id'] = $user->id;
-        $data['status'] = 1;
+        $request->validate($this->post->rules());
 
-        $post = $this->post->find($user->id)->update($data);
+        $data['status']=Post::ChoDuyet;
+        $data['customer_id']=Auth::guard('customer')->user()->id;
+        $this->post->updateData($data, $id);
+        try {
 
-        return redirect()->route('customer.post.index', compact('post'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with("error", $e->getMessage());
+        }
+        return redirect()->route('customer.post.index')->with("success", "Create Success");
+    }
+
+    public function delete($id)
+    {
+        $post = Post::find($id);
+        $post->delete($id);
+        return redirect()->route('customer.post.index')->withSuccess('Xóa thành công');
     }
 }

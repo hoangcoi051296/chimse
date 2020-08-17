@@ -47,6 +47,7 @@
                                     <div id="description"
                                          style="background-color: whitesmoke; border-radius: 10px; height: 150px">
                                     </div>
+                                    <input type="text" name="description" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <button type="button" class="btn btn-info" data-toggle="modal"
@@ -206,6 +207,9 @@
 
         $("select[name='category_id']").change(function () {
             var category_id = $(this).val();
+        var url = "{{ url('manager/post/showWard') }}";
+        $("select[name='district']").change(function () {
+            var address = $(this).val();
             var token = $("input[name='_token']").val();
             $.ajax({
                 url: '{{route('getAttributes')}}',
@@ -266,5 +270,22 @@
                 }
             });
         });
+                    console.log(data)
+                    $("select[name='ward']").html('');
+                    $.each(data, function (key, value) {
+                        console.log(value)
+                        $("select[name='ward']").append(
+                            "<option value=" + value.xaid + ">" + value.name + "</option>"
+                        );
+                    });
+                }
+            });
+        });
+
+        function chooseCustomer(customer) {
+            var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
+            window.history.pushState({}, '', url);
+            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
+        }
     </script>
 @endsection

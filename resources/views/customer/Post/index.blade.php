@@ -1,7 +1,7 @@
 <?php
 $listStatus = listStatus();
 ?>
-@extends('manager.layout.layout')
+@extends('customer.layout.layout')
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -12,8 +12,8 @@ $listStatus = listStatus();
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{url('/')}}"></a>Danh sách</li>
+                        <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Trang chủ</a></li>
+                        <li class="breadcrumb-item active"><a href="{{route('customer.logout')}}">Đăng xuất</a></li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -25,101 +25,144 @@ $listStatus = listStatus();
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-
-                    <form class="ml-3" action="{{route('customer.post.index')}}" method="GET">
-                        <div class="card">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" placeholder="Search" aria-label="Search"
-                                       name="search" id="search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" id="searchPost" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
+                    <form action="{{route('customer.post.index')}}" method="GET">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <select class="form-control" name="status">
+                                    <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
+                                        thái
+                                    </option>
+                                    @foreach(listStatus() as $status)
+                                        <option
+                                                {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}
+                                                value="{{$status['value']}}">{{$status['name']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-control" name="address">
+                                    <option value="">District</option>
+                                    @foreach($address as $a)
+                                        <option {{Request::get('address')==$a->maqh ?"selected='selected'":''}}
+                                                value="{{$a->maqh}}">{{$a->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" name="time" class="form-control float-right" id="reservationtime">
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control" placeholder="Search" aria-label="Search" name="search"
+                                       id="search">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-success">Go!</button>
                             </div>
                         </div>
                     </form>
-
-                    <a href="{{route('customer.post.create')}}" class="btn btn-success float-right "
-                       style="margin-bottom: 10px">Tạo
-                        bài đăng</a>
                 </div>
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Title</th>
-                                    <th>Description</th>
-                                    <th>Price</th>
-                                    <th>Address</th>
-                                    <th>Status</th>
-                                    <th>Customer</th>
-                                    <th>Category</th>
-                                    <th style="width: 113px">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($posts as $key => $post)
-                                    <tr>
-                                        <td>{{$key + 1}}</td>
-                                        <td>{{ $post->title}}</td>
-                                        <td>
-                                            {{$post->description}}
-                                        </td>
-                                        <td>{{$post->price}}</td>
-                                        <td>{{$post->getAddress->name}}</td>
-                                        <td>
-                                            @foreach($listStatus as $s)
-                                                @if($post->status == $s['id'])
-                                                    {{$s['name']}}
-                                                @endif
-                                            @endforeach
-                                        </td>
-                                        <td>{{$post->customer->name}}</td>
-                                        <td>{{$post->category->name}}</td>
-                                        <td>
-                                            <a href="{{ route('customer.post.edit',['id' => $post->id])}}"
-                                               class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                                            <a href="{{ route('customer.post.delete',['id'=> $post->id])}}"
-                                               onclick="return confirm('Bạn muốn xóa không?');"
-                                               class="btn btn-danger btn-xs"><i
-                                                        class="fa fa-trash"></i></a>
-                                        </td>
-                                        
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer clearfix">
-                            {{$posts->links()}}
-                        </div>
-                    </div>
-                    <!-- /.card -->
+                <div class="col-md-12" style="text-align: end;">
+                    <a href="{{route('customer.post.create')}}" class="btn btn-success">Tạo Bài Đăng</a>
                 </div>
-
             </div>
+        </div>
+        <br>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Time</th>
+                            <th>Category</th>
+                            <th>Customer</th>
+                            <th>Review</th>
+                            <th style="width: 113px">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($posts as $key => $post)
+                            <tr>
+                                <td>{{$key + 1}}</td>
+                                <td>{{ $post->title}}</td>
+                                <td>
+                                    {!! $post->description!!}
+                                </td>
+                                <td>{{$post->price}}$</td>
+                                <td>{{$post->ward->name}}
+                                    {{$post->ward->district->name}}</td>
+                                <td>
+                                    @foreach($listStatus as $s)
+                                        @if($post->status == $s['value'])
+                                            {{$s['name']}}
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td>{{$post->time}}</td>
+                                <td>{{$post->category->name}}</td>
+                                <td>{{$post->customer->name }}</td>
+                                <td style="width: 13%;">
+                                    <span id="number_rating" data-value="{{$post->rating->avg('rating')}}">
+                                    @for($i=1;$i<=5;$i++)
+                                            @if($i<=$post->rating->avg('rating'))
+                                                <i class="fa fa-star" style="color: #FFCC00;">
+                                        </i>
+                                            @else
+                                                <i class="fa fa-star"></i>
+                                            @endif
+                                        @endfor
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ route('customer.post.edit',['id' => $post->id])}}"
+                                       class="btn btn-primary btn-xsmax"><i class="fa fa-edit"></i></a>
+                                    <a href="{{ route('customer.post.delete',['id'=> $post->id])}}"
+                                       onclick="return confirm('Bạn muốn xóa không?');"
+                                       class="btn btn-danger btn-xsmax"><i
+                                                class="fa fa-trash"></i></a>
+                                </td>
+
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    {{--{{$posts->links()}}--}}
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+
+        </div>
         </div><!-- /.container-fluid -->
     </section>
-    <!-- /.content -->
-    {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script>
-        $(()=>{
-            $('#searchPost').click(() => {
-                console.log("ok");
-                $.ajax({
-                    url: "{{ route('customer.post.index')}}",
-    method: 'get',
-    data: $('#search').val(),
-    success: function(response){
-    console.log(response);
-    }});
-    });
-    });
-    </script> --}}
+    {{--<script>--}}
+    {{--$('#province').change(() => {--}}
+    {{--$('#commune').html('');--}}
+    {{--let province_id = $('#province').val();--}}
+    {{--$.ajax({--}}
+    {{--url: "{{ route('district.by.province') }}",--}}
+    {{--type: "GET",--}}
+    {{--data: {id: province_id},--}}
+    {{--success: function (response) {--}}
+    {{--if (!response.errors) {--}}
+    {{--let list_district;--}}
+    {{--response.data.forEach(district => {--}}
+    {{--list_district += `<option value="${district.maqh}">${district.name}</option>`;--}}
+    {{--});--}}
+    {{--$('#district').html(list_district);--}}
+    {{--}--}}
+    {{--}--}}
+    {{--});--}}
+    {{--})--}}
+    {{--</script>--}}
 @endsection
+                   
