@@ -59,6 +59,20 @@ if (!function_exists("sidebarManager")) {
                     ],
                     'icon' => 'nav-icon fas fa-tachometer-alt'
                 ],
+                'attribute' => [
+                    'name' => 'Thuộc tính',
+                    'child' => [
+                        [
+                            'name' => 'Danh sách',
+                            'route' => route('manager.attribute.index')
+                        ],
+                        [
+                            'name' => 'Tạo mới',
+                            'route' => route('manager.attribute.create')
+                        ],
+                    ],
+                    'icon'=>'nav-icon fas fa-tachometer-alt'
+                ],
                 'account' => [
                     'name' => 'Tài khoản',
                     'child' => [
@@ -72,12 +86,9 @@ if (!function_exists("sidebarManager")) {
                         ]
                     ],
                     'icon' => 'nav-icon far fa-plus-square'
-
                 ]
-
             ],
             'report' => [
-
             ]
         ];
     }

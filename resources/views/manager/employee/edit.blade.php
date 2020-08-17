@@ -43,33 +43,44 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputEmail">Email</label>
-                                    <input name="email" type="email" value="{{$helper->email}}"  class="form-control" >
+                                    <input name="email" type="email" value="{{$helper->email}}"  class="form-control"  disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputEmail">Số điện thoại</label>
                                     <input name="phone" value="{{$helper->phone}}" type="text"   class="form-control" >
                                 </div>
                                 <div class="form-group">
+                                    @if($helper->district_id)
+                                        <input id="districtPost" value="{{$helper->ward->district->maqh}}" hidden>
+                                    @endif
                                     <label for="inputStatus">Quận huyện</label>
                                     <select  class="form-control custom-select" name="district">
                                         <option selected="" disabled="">Hà Nội </option>
                                         @foreach($address as $a)
-                                            <option value="{{$a->maqh}}"}} {{$helper->Ward->District->maqh==$a->maqh?"selected='selected'":''}} >{{$a->name}}</option>
+                                            <option value="{{$a->maqh}}"}} @if($helper->district_id){{$helper->district_id==$a->maqh?"selected='selected'":''}} @endif >{{$a->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    @if($helper->ward_id)
+                                        <input id="wardPost" value="{{$helper->ward->xaid}}"  hidden>
+                                    @endif
                                     <label for="inputStatus">Xã phường</label>
-                                    <select  class="form-control custom-select" name="ward">
+                                    <select  class="form-control custom-select" name="ward" id="ward">
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputPassword">Mật khẩu </label>
-                                    <input type="password" name="password" id="inputClientCompany" class="form-control">
+                                <div>
+                                    <input class="form-group" type="checkbox" name="changepass" id="checkbox" value="1"> <span>Thay đổi mật khẩu</span>
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputProjectLeader">Nhập lại mật khẩu</label>
-                                    <input type="password" name="password_confirmation" id="inputProjectLeader" class="form-control">
+                                <div id="password" style="display: none">
+                                    <div class="form-group">
+                                        <label for="inputPassword">Mật khẩu </label>
+                                        <input type="password" name="password" id="inputClientCompany" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputProjectLeader">Nhập lại mật khẩu</label>
+                                        <input type="password" name="password_confirmation" id="inputProjectLeader" class="form-control">
+                                    </div>
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -90,7 +101,7 @@
                 <div class="row " style="margin-bottom: 40px" >
                     <div class="col-12">
 
-                        <button type="submit"  class="btn btn-success float-left"> Click zoo</button>
+                        <button type="submit"  class="btn btn-success float-left"> Cập nhật</button>
                     </div>
                 </div>
             </form>
@@ -100,29 +111,16 @@
     <!-- /.content -->
 @endsection
 @section('script')
-    <script type="text/javascript">
-        var url = "{{ url('manager/post/showWard') }}";
-        $("select[name='district']").change(function(){
-            var address = $(this).val();
-            var token = $("input[name='_token']").val();
-            $.ajax({
-                url: url,
-                method: 'GET',
-                data: {
-                    address: address,
-                    _token: token,
-                },
-                success: function(data) {
-                    console.log(data)
-                    $("select[name='ward']").html('');
-                    $.each(data, function(key, value){
-                        console.log(value)
-                        $("select[name='ward']").append(
-                            "<option value=" + value.xaid + ">" + value.name + "</option>"
-                        );
-                    });
-                }
-            });
+    <script src="{{asset("js/getAddress.js")}}"></script>
+    <script>
+        $('body').on('change', '#checkbox', function(event) {
+            event.preventDefault();
+            var r = document.getElementById('checkbox').checked;
+            if(r==true){
+                document.getElementById('password').style.display = 'inline';
+            }else{
+                document.getElementById('password').style.display = 'none';
+            }
         });
     </script>
 @endsection

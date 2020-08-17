@@ -21,8 +21,10 @@ class CreateTableCustomerTable extends Migration
             $table->boolean('is_active')->default(0)->nullable();
             $table->string('password');
             $table->string('phone');
-            $table->unsignedBigInteger('address');
-            $table->foreign('address')->references('maqh')->on('devvn_quanhuyen');
+            $table->unsignedBigInteger('ward_id')->nullable();
+            $table->foreign('ward_id')->references('xaid')->on('devvn_xaphuongthitran');
+            $table->unsignedBigInteger('district_id')->nullable();
+            $table->foreign('district_id')->references('maqh')->on('devvn_quanhuyen');
             $table->timestamps();
         });
     }

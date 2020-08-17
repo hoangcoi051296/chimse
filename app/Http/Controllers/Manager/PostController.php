@@ -28,14 +28,6 @@ class PostController extends Controller
         $posts = $this->post->getData($condition)->paginate(10);
         return view('manager.post.index',compact('posts'));
     }
-    public function showWardInDistrict(Request $request){
-
-        if ($request->ajax()) {
-            $wards = Ward::Where('maqh',$request->address)->get();
-            return response()->json($wards);
-        }
-
-    }
     public function changeStatus(Request $request){
         if ($request->ajax()) {
            $post=$this->post->find($request->id);
