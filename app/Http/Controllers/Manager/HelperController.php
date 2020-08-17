@@ -63,7 +63,6 @@ class HelperController extends Controller
     {
         $data=$request->all();
         $request->validate($this->helper->rules($request->id));
-        $this->helper->updateData($data, $request->id);
         try {
             $this->helper->updateData($data, $request->id);
         } catch (\Exception $e) {

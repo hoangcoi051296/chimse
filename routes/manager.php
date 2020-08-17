@@ -29,10 +29,17 @@ Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], f
         Route::post('update/{id}', 'CategoryController@update')->name('manager.category.update');
         Route::get('delete/{id}', 'CategoryController@delete')->name('manager.category.delete');
     });
+    Route::group(['prefix'=>'attribute'],function (){
+        Route::get('/', 'AttributeController@index')->name('manager.attribute.index');
+        Route::get('create', 'AttributeController@create')->name('manager.attribute.create');
+        Route::post('store', 'AttributeController@store')->name('manager.attribute.store');
+        Route::get('edit/{id}', 'AttributeController@edit')->name('manager.attribute.edit');
+        Route::post('update/{id}', 'AttributeController@update')->name('manager.attribute.update');
+        Route::get('delete/{id}', 'AttributeController@delete')->name('manager.attribute.delete');
+    });
     Route::group(['prefix'=>'post'],function (){
         Route::get('/', 'PostController@index')->name('manager.post.index');
         Route::get('create', 'PostController@create')->name('manager.post.create');
-        Route::get('showWard','PostController@showWardInDistrict')->name('manager.get.showWard');
         Route::post('store', 'PostController@store')->name('manager.post.store');
         Route::get('details/{id}', 'PostController@details')->name('manager.post.details');
         Route::post('changeStatus', 'PostController@changeStatus')->name('manager.post.changeStatus');

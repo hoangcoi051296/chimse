@@ -23,7 +23,6 @@
                     <div class="col-12">
                         <div class="callout callout-info">
                             <h5><i class="fas fa-info"></i> Bài đăng : #{{$post->id}}</h5>
-                            This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
                         </div>
 
 
@@ -45,12 +44,25 @@
                                    Người thuê
                                     <address>
                                         <strong>{{$post->customer->name}}</strong><br>
-                                        @if($post->address)
-                                      {{dd($post->address)}}
+                                        @if($post->ward_id && $post->district_id)
+                                            <span>Địa chỉ : {{$post->ward->name}} , {{$post->district->name}} </span><br/>
                                         @endif
                                         Phone: {{$post->customer->phone}}<br>
                                         Email: {{$post->customer->email}}
                                     </address>
+                                </div>
+                                <div class="col-sm-4 invoice-col">
+                                    Danh mục <br>
+                                    <strong>{{$post->category->name}}</strong><br>
+                                    @if($post->attributes)
+                                        @foreach( json_decode($post->attributes,true) as $key => $attribute )
+                                                @if(getAttributes($key)->type=="select"||getAttributes($key)->type=="radio")
+                                                <b>{{getAttributes($key)->name}}</b> : {{json_decode(getAttributes($key)->options,true)[$attribute]}}<br/>
+                                                @elseif(getAttributes($key)->type=="textarea"||getAttributes($key)->type=="input")
+                                                <b>{{getAttributes($key)->name}}</b> : {{$attribute}}<br/>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </div>
                                 <!-- /.col -->
                                 @if($post->employee_id)
@@ -58,20 +70,15 @@
                                     Người giúp việc
                                     <address>
                                         <strong>{{$post->employee->name}}</strong><br>
-                                        {{$post->employee->Address->name}}<br>
+                                        @if($post->employee->ward_id && $post->employee->district_id)
+                                            <span>Địa chỉ : {{$post->employee->ward->name}} , {{$post->employee->district->name}} </span><br/>
+                                        @endif
                                         Phone: {{$post->employee->phone}}<br>
                                         Email: {{$post->employee->email}}
                                     </address>
                                 </div>
                             @endif
                                 <!-- /.col -->
-                                <div class="col-sm-4 invoice-col">
-                                    <b>Invoice #</b><br>
-                                    <br>
-                                    <b>Post ID:</b> {{$post->id}}<br>
-                                    <b>Payment Due:</b> {{$post->created_at}}<br>
-                                    <b>Account:</b> {{$post->updated_at}}
-                                </div>
                                 <!-- /.col -->
                             </div>
                             <!-- /.row -->
@@ -85,7 +92,7 @@
                                     <p class="lead">Chi tiết công việc:</p>
 
                                     <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                                        {{$post->description}}
+                                        {!! $post->description !!}
                                     </p>
                                 </div>
                                 <!-- /.col -->

@@ -39,93 +39,108 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="inputName">Tiêu đề</label>
-                                    <input type="text" value="{{$post->title}}" name="title"  class="form-control">
+                                    <input type="text" value="{{$post->title}}" name="title" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Mô tả chi tiết</label>
-                                    <input type="text" value="{{$post->description}}" name="description"  class="form-control">
+                                    <div id="description" style="background-color: whitesmoke; border-radius: 10px; height: 150px">
+                                        {!!$post->description!!}
+                                    </div>
+
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" style="padding-top: 50px">
                                     <label for="inputName"> Người thuê : </label>
                                     <input name="customer_id" value="{{$post->customer_id}}" hidden>
                                     <a href="#"> <span>{{$post->customer->name}}</span></a>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputStatus">Địa chỉ : </label>
-                                   <span>{{$post->findDistrict(json_decode($post->address,true)['district'])->name}},
-                                            {{$post->findWard(json_decode($post->address,true)['ward'])->name}}</span>
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#pickAddress">
-                                        Chọn lại địa chỉ
-                                    </button>
-                                </div>
-                                <div class="modal fade right" id="pickAddress" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                                     aria-hidden="true">
-
-                                    <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
-                                    <div class="modal-dialog modal-full-height modal-right modal-lg" role="document">
-
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="form-group">
-                                                    <select  class="form-control custom-select option" name="district"
-                                                             type="text">
-                                                        <option value="" >Hà Nội</option>
-                                                        @foreach($address as $a)
-                                                            <option value="{{$a->maqh}}">{{$a->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Chọn phường :</label>
-                                                    <select class="form-control" name="ward">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer justify-content-center" >
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Lưu</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Giá</label>
-                                    <input type="text" value="{{$post->price}}" name="price" id="inputName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Danh mục</label>
-                                    <select name="category_id" class="form-control" id="category">
-                                        <option value="">Chọn loại</option>
-                                        @foreach ($categories as $cat)
-                                            <option {{$post->category_id==$cat->id?"selected='selected'":''}} value="{{$cat->id}}">{{$cat->name}}</option>
+                                    <label>Chọn quận huyện:</label>
+                                    @if($post->district_id)
+                                        <input id="districtPost" value="{{$post->ward->district->maqh}}" hidden>
+                                    @endif
+                                    <select class="form-control custom-select option" name="district"
+                                            type="text">
+                                        <option value="">Hà Nội</option>
+                                        @foreach($address as $a)
+                                            <option
+                                                {{$post->district_id?$post->district->maqh==$a->maqh?"selected='selected'":'':''}} value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label>Chọn phường xã:</label>
+                                    @if($post->ward_id)
+                                        <input id="wardPost" value="{{$post->ward->xaid}}" hidden>
+                                    @endif
+                                    <select class="form-control" name="ward" id="ward">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputName">Giá</label>
+                                    <input type="text" value="{{$post->price}}" name="price" id="inputName"
+                                           class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputName">Danh mục</label>
+                                    <input value="{{$post->category_id}}" id="category_id" hidden>
+                                    <select name="category_id" class="form-control" id="category">
+                                        <option value="">Chọn loại</option>
+                                        @foreach ($categories as $cat)
+                                            <option
+                                                {{$post->category_id==$cat->id?"disabled".' '."selected='selected'":''}} value="{{$cat->id}}">{{$cat->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div id="attributes">
+                                    @foreach(json_decode($post->attributes,true) as $key =>$attributes)
+                                        <div class="form-group">
+                                            <label>{{getAttributes($key)->name}}</label>
+                                            @if(getAttributes($key)->type=='select')
+                                                <select name="attributes[{{getAttributes($key)->id}}]"
+                                                        class="form-control">
+                                                    @foreach (json_decode(getAttributes($key)->options,true) as $keyOp => $option)
+                                                        <option
+                                                            {{$attributes==$keyOp?"selected='selected'":''}} value="{{$keyOp}}">{{$option}}</option>
+                                                    @endforeach
+                                                </select>
+                                            @elseif(getAttributes($key)->type=='radio')
+                                                @foreach (json_decode(getAttributes($key)->options,true) as $keyOp => $option)
+                                                    <label style="margin-left: 15px"><input type="radio" {{$attributes==$keyOp?"checked":''}} value="{{$keyOp}}" name="attributes[{{getAttributes($key)->id}}]">{{$option}}</label>
+                                                @endforeach
+                                            @elseif(getAttributes($key)->type=='textarea')
+                                                <div class="row">
+                                                    <textarea class="form-control" name="attributes[{{getAttributes($key)->id}}]"
+                                                              rows="4" cols="50">{{$attributes}}
+                                                    </textarea>
+                                                    @elseif(getAttributes($key)->type=='input')
+                                                        <div class="row">
+                                                    <input class="form-control" name="attributes[{{getAttributes($key)->id}}]"
+                                                        value="{{$attributes}}"      >
+                                                    @endif
+                                                    @endforeach
+                                                </div>
+                                        </div>
+                                </div>
+                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card-body -->
+                            <!-- /.card -->
                         </div>
-                        <!-- /.card -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                There were some errors with your request.
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     </div>
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            There were some errors with your request.
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                    <div class="row " style="margin-bottom: 40px">
+                        <div class="col-12">
+                            <input type="submit" value="Cập nhật" class="btn btn-success float-left">
                         </div>
-                    @endif
-                </div>
-                <div class="row " style="margin-bottom: 40px">
-                    <div class="col-12">
-                        <input  type="submit" value="Cập nhật" class="btn btn-success float-left">
                     </div>
-                </div>
             </form>
         </div><!-- /.container-fluid -->
     </section>
@@ -133,33 +148,106 @@
     <!-- /.content -->
 @endsection
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.4/tinymce.min.js" referrerpolicy="origin"></script>
     <script type="text/javascript">
-        var url = "{{ url('manager/post/showWard') }}";
-        $("select[name='district']").change(function(){
-            var address = $(this).val();
+        tinymce.init({
+            selector: '#description',
+            inline: true
+        });
+    </script>
+    <script src="{{asset("js/getAddress.js")}}"></script>
+    <script type="text/javascript">
+        function chooseCustomer(customer) {
+            var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
+            window.history.pushState({}, '', url);
+            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
+        }
+
+        $("select[name='category_id']").change(function () {
+            var category_id = $(this).val();
             var token = $("input[name='_token']").val();
             $.ajax({
-                url: url,
+                url: '{{route('getAttributes')}}',
                 method: 'GET',
                 data: {
-                    address: address,
+                    category_id: category_id,
                     _token: token,
                 },
-                success: function(data) {
-                    console.log(data)
-                    $("select[name='ward']").html('');
-                    $.each(data, function(key, value){
-                        $("select[name='ward']").append(
-                            "<option  value=" + value.xaid + ">" + value.name + "</option>"
-                        );
-                    });
+                success: function (data) {
+                    if (data != null) {
+                        var html = ''
+                        for (i = 0; i < data.length; i++) {
+                            html += '<div class="form-group">'
+                            html += '<label>' + data[i]['name'] + '</label>'
+                            var options = JSON.parse(data[i]['options'])
+                            if (data[i]['type'] === 'select') {
+                                html += '<select name="attributes[' + data[i]['id'] + ']" class="form-control" >'
+                                for (var j in options) {
+                                    html += '<option value="' + j + '">' + options[j] + '</option>'
+                                }
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'radio') {
+                                html += '<div class="row">'
+                                for (var j in options) {
+                                    html += '<label style="margin-left: 15px" ><input type="radio" value="' + j + '"  name="attributes[' + data[i]['id'] + ']"  >' + options[j] + '</label>'
+                                }
+                                html += '</div>'
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'input') {
+                                html += '<div class="row">'
+                                html += '<input type="text" placeholder="" class="form-control" name="attributes[' + data[i]['id'] + ']"  >'
+                                html += '</div>'
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'checkbox') {
+                                html += '<div class="row">'
+                                for (var j in options) {
+                                    html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][value][]"  >' + options[j] + '</label>'
+                                }
+                                html += '</div>'
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'textarea') {
+                                html += '<div class="row">'
+                                html += '<textarea class="form-control" name="attributes[' + data[i]['id'] + ']" rows="4" cols="50">'
+                                html += '</textarea>'
+                                html += '</div>'
+                            }
+                            html += '</div>'
+                        }
+                        $('#attributes').html(html);
+                    } else {
+                        $("#attributes").html('');
+                    }
                 }
             });
         });
-        function chooseCustomer(customer) {
-            var url="{!! route('manager.post.create',['search' => '']) !!}"+customer;
-            window.history.pushState({}, '',url );
-            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
-        }
+        $(document).ready(function () {
+
+            var category_id = $('#category_id').val();
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: '{{route('getAttributes')}}',
+                method: 'GET',
+                data: {
+                    category_id: category_id,
+                    _token: token,
+                },
+                success: function (data) {
+                    console.log(data)
+                    $("select[name='address']").html('');
+                    $.each(data, function (key, value) {
+                        $("select[name='ward']").append(
+                            "<option value=" + value.xaid + ">" + value.name + "</option>"
+                        );
+
+                    });
+                    var ward = $('#wardPost').val();
+                    $('#ward option[value=' + ward + ']').attr('selected', true)
+                }
+            });
+        });
     </script>
 @endsection

@@ -20,8 +20,10 @@ class CreateTableEmployeeTable extends Migration
             $table->string('avatar')->nullable();
             $table->string('phone');
             $table->string('password');
-            $table->unsignedBigInteger('address');
-            $table->foreign('address')->references('maqh')->on('devvn_quanhuyen');
+            $table->unsignedBigInteger('ward_id')->nullable();
+            $table->foreign('ward_id')->references('xaid')->on('devvn_xaphuongthitran');
+            $table->unsignedBigInteger('district_id')->nullable();
+            $table->foreign('district_id')->references('maqh')->on('devvn_quanhuyen');
             $table->timestamps();
         });
     }

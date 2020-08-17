@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 class Post extends Model
 {
     protected $table = 'post';
-    protected $fillable = ['title', 'status', 'description', 'price', 'address', 'category_id', 'helper_id', 'customer_id'];
+    protected $fillable = ['title', 'status', 'description','attributes', 'price', 'district_id','ward_id', 'category_id', 'helper_id', 'customer_id'];
 
     const DaHuy =0;
     const ChoDuyet=1;
@@ -25,14 +25,23 @@ class Post extends Model
             return $posts;
         }
         if (isset($condition['status'])) {
-            $posts->where('status', $condition['status']);
+
+            $posts= $posts->where('status', $condition['status']);
         }
-        if (isset($condition['address'])) {
-           $posts->where('address', $condition['address']);
+        if (isset($condition['district'])) {
+            $filter=$condition['district'];
+            $posts= $posts->whereHas('ward',function ($q) use ($filter){
+                $q->whereHas('district',function ($q)use($filter){
+                    $q->where('maqh',$filter);
+                });
+            });
+        }
+        if (isset($condition['ward'])) {
+            $posts= $posts->where('ward_id', $condition['ward']);
         }
         if (isset($condition['search'])) {
             $search=$condition['search'];
-            $posts->where(function ($q) use ($search) {
+            $posts=$posts->where(function ($q) use ($search) {
                     $q->where('title', 'LIKE', '%' . $search . '%')
                     ->orwhere('description','LIKE', '%' . $search . '%')
                     ->orWhereHas('ward', function ($query) use ($search) {
@@ -70,26 +79,31 @@ class Post extends Model
 
     public function ward()
     {
-        return $this->hasOne("\App\Models\Ward", 'xaid', 'address');
+        return $this->hasOne("\App\Models\Ward", 'xaid', 'ward_id');
+    }
+    public function district()
+    {
+        return $this->hasOne(District::class, 'maqh', 'district_id');
     }
     public function rules($id=null){
         $validate=[
-            'title' => "required| string| max:255",
-            'description'=>"required|string|max:255",
+            'title' => "required|string|max:255",
             'price'=>"required",
-            'category_id'=>"required",
+            'district'=>'required',
+            'ward'=>"required",
             'customer_id'=>"required",
         ];
-        if($id){
-            return $validate;
+        if(!$id){
+            return array_merge($validate,[ 'description'=>"required",'category_id'=>"required"]) ;
         }
-        return array_merge($validate,['district'=>'required',
-            'ward'=>"required"]) ;
+        return $validate;
 
     }
     public function createData($data){
-        $data['address']=$data['ward'];
         $data=array_filter($data);
+        $data['district_id']=$data['district'];
+        $data['ward_id']=$data['ward'];
+        $data['attributes']= json_encode($data['attributes']);
         return $this->fill($data)->save();
     }
     public function updateData($data,$id){
@@ -98,6 +112,9 @@ class Post extends Model
         }
         $data['status']=Post::ChoDuyet;
         $data=array_filter($data);
+        $data['district_id']=$data['district'];
+        $data['ward_id']=$data['ward'];
+        $data['attributes']= json_encode($data['attributes']);
         $this->find($id)->fill($data)->save();
     }
 }

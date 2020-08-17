@@ -23,7 +23,8 @@ $factory->define(\App\Models\Employee::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'phone'=>$faker->unique()->phoneNumber,
-        'address'=>random_int(1,9),
+        'ward_id'=>null,
+        'district_id'=>null,
     ];
 });
 $factory->define(\App\Models\Customer::class, function (Faker $faker) {
@@ -33,7 +34,8 @@ $factory->define(\App\Models\Customer::class, function (Faker $faker) {
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'is_active'=>0,
         'phone'=>$faker->unique()->phoneNumber,
-        'address'=>random_int(1,9),
+        'ward_id'=>null,
+        'district_id'=>null,
     ];
 });
 $factory->define(\App\Models\Post::class, function (Faker $faker) {
@@ -42,7 +44,8 @@ $factory->define(\App\Models\Post::class, function (Faker $faker) {
         'description' => $faker->text,
         'price'=>random_int(100,1000),
         'status'=>random_int(0,7),
-        'address'=>null,
+        'ward_id'=>null,
+        'district_id'=>null,
         'category_id'=>random_int(1,10),
         'employee_id'=>random_int(1,10),
         'customer_id'=>random_int(1,10),
@@ -51,6 +54,5 @@ $factory->define(\App\Models\Post::class, function (Faker $faker) {
 $factory->define(\App\Models\Category::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
-        'properties' => $faker->jobTitle,
     ];
 });
