@@ -27,7 +27,7 @@ $listStatus = listStatus();
                 <div class="col-md-12">
                     <form action="{{route('customer.post.index')}}" method="GET">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <select class="form-control" name="status">
                                     <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
                                         thái
@@ -39,13 +39,18 @@ $listStatus = listStatus();
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <select class="form-control" name="address">
                                     <option value="">District</option>
                                     @foreach($address as $a)
                                         <option {{Request::get('address')==$a->maqh ?"selected='selected'":''}}
                                                 value="{{$a->maqh}}">{{$a->name}}</option>
                                     @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-1">
+                                <select class="form-control" name="ward">
+                                    <option value="">Ward</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -144,25 +149,31 @@ $listStatus = listStatus();
         </div>
         </div><!-- /.container-fluid -->
     </section>
-    {{--<script>--}}
-    {{--$('#province').change(() => {--}}
-    {{--$('#commune').html('');--}}
-    {{--let province_id = $('#province').val();--}}
-    {{--$.ajax({--}}
-    {{--url: "{{ route('district.by.province') }}",--}}
-    {{--type: "GET",--}}
-    {{--data: {id: province_id},--}}
-    {{--success: function (response) {--}}
-    {{--if (!response.errors) {--}}
-    {{--let list_district;--}}
-    {{--response.data.forEach(district => {--}}
-    {{--list_district += `<option value="${district.maqh}">${district.name}</option>`;--}}
-    {{--});--}}
-    {{--$('#district').html(list_district);--}}
-    {{--}--}}
-    {{--}--}}
-    {{--});--}}
-    {{--})--}}
-    {{--</script>--}}
+    <script>
+        var url = "{{ url('customer/post/showWard') }}";
+        $("select[name='district']").change(function () {
+            var address = $(this).val();
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: {
+                    address: address,
+                    _token: token,
+                },
+                success: function (data) {
+                    console.log(data)
+                    $("select[name='ward']").html('');
+                    $.each(data, function (key, value) {
+                        console.log(value)
+                        $("select[name='ward']").append(
+                            "<option value=" + value.xaid + ">" + value.name + "</option>"
+                        );
+                    });
+                }
+            });
+        });
+    </script>
+
 @endsection
                    

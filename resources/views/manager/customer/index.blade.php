@@ -10,7 +10,6 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{route('manager.index')}}">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="{{url('/')}}"></a>Danh sách</li>
                     <li class="breadcrumb-item active"><a href="{{route('customer.login')}}"><i
                                 class="zmdi zmdi-power"></i>Logout</a>
                     </li>
