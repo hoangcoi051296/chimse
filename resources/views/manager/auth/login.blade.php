@@ -34,6 +34,7 @@
                 @csrf
 					<span class="login100-form-title">
 						Manager Login
+
 					</span>
 
                 <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">

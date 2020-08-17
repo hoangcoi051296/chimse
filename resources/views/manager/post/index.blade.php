@@ -34,26 +34,36 @@
                     <form class=" ml-3">
 
                         <div class="input-group input-group-sm">
+                            <div class="form-group filterData">
+                                @if(Request::get('district'))
+                                    <input id="districtPost" value="{{Request::get('district')}}" hidden>
+                                @endif
+                                <select class="form-control" name="district">
+                                    <option value="" >Quận huyện</option>
+                                    @foreach($address as $a)
+                                        <option {{Request::get('district')==$a->maqh?"selected='selected":''}} value="{{$a->maqh}}">{{$a->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group filterData" style="width: 200px" >
+                                @if(Request::get('ward'))
+                                    <input id="wardPost" value="{{Request::get('ward')}}"  hidden>
+                                @endif
+                                <select  class="form-control" name="ward"  id="ward" >
+                                    <option selected="selected" value="">Xã phường</option>
+                                </select>
+                            </div>
                             <div class="form-group filterData ">
                                 <select  class="form-control" name="status">
-                                        <option {{Request::get('status')==null ?"selected='selected'":'' }} value="" >Trạng thái</option>
+                                    <option {{Request::get('status')==null ?"selected='selected'":'' }} value="" >Trạng thái</option>
                                     @foreach(listStatus() as $status)
                                         <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group filterData">
-                                <select class="form-control" name="address">
-                                    <option value="">Địa chỉ</option>
-                                    @foreach($address as $a)
-                                        <option {{Request::get('address')==$a->maqh ?"selected='selected'":''}}  value="{{$a->maqh}}">{{$a->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
                         </div>
                         <div class="card">
-                            <div class="input-group input-group-sm">
+                            <div class="input-group input-group-sm" >
                                 <div class="input-group input-group-sm">
                                     <input value="{{Request::get('search')}}" placeholder="Tìm kiếm" type="text" class="form-control" name="search">
                                     <span class="input-group-append">
@@ -75,13 +85,11 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Title</th>
-                                    <th style="width: 35%">Description</th>
-                                    <th><a>Price</a></th>
-                                    <th>Address</th>
-                                    <th>Status</th>
-                                    <th>Customer</th>
-                                    <th>Category</th>
+                                    <th>Tiêu đề</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Trạng thái</th>
+                                    <th>Khách hàng</th>
+                                    <th>Danh mục</th>
                                     <th style="width: 8%">Action</th>
                                 </tr>
                                 </thead>
@@ -91,23 +99,29 @@
                                         <form>
                                             @csrf
                                         <td>{{ $post->title}}</td>
-                                        <td>
-                                            {{$post->description}}
-                                        </td>
-                                        <td>{{$post->price}}</td>
-                                            @if($post->address)
-                                        <td>{{$post->findDistrict(json_decode($post->address,true)['district'])->name}},
-                                            {{$post->findWard(json_decode($post->address,true)['ward'])->name}}
-                                        </td>
-                                            @else
-                                                <td>null</td>
-                                            @endif
+                                            <td>
+                                            @if($post->ward_id)
+                                              {{$post->ward->name}}
+                                                @endif
+                                                @if($post->district_id),
+                                                    {{$post->ward->district->name}}
+                                                @endif
+                                            </td>
                                         <td>
                                             <div class="row postStatus" data-value="{{$post->id}}" >
                                                 {{getStatus($post->status)}}</div>
                                         </td>
                                         <td>{{$post->customer->name}}</td>
-                                        <td>{{$post->category->name}}</td>
+                                        <td>{{$post->category->name}}<br/>
+{{--                                        @if($post->attributes)--}}
+
+{{--                                           @foreach( json_decode($post->attributes,true) as $key => $attribute )--}}
+{{--                                               <div class="row">--}}
+{{--                                                   <span>{{getAttributes($key)->name}}</span> : <p>{{json_decode(getAttributes($key)->options,true)[$attribute]}}</p>--}}
+{{--                                               </div>--}}
+{{--                                                @endforeach--}}
+{{--                                            @endif--}}
+                                        </td>
                                         <td class="align-self-center" >
                                             <a href="{{ route('manager.post.details',['id' => $post->id])}}"
                                                class="btn btn-info btn-xs"><i class="far fa-eye"></i></a>
@@ -144,12 +158,12 @@
 @endsection
 @section('script')
     <script type="text/javascript">
-        var url = "{{ url('manager/post/changeStatus') }}";
+        var urlStatus = "{{ url('manager/post/changeStatus') }}";
         $(".changeStatus").click(function(){
             var id = this.id;
             var token = $("input[name='_token']").val();
             $.ajax({
-                url: url,
+                url: urlStatus,
                 method: 'POST',
                 data: {
                     id: id,
@@ -157,15 +171,11 @@
                 },
                 success: function(data) {
                     location.reload();
-                    {{--console.log(data)--}}
-                    {{--$('.postStatus').each(function(i){--}}
-                    {{--    if ($(this).data('value')==data['id']){--}}
-                    {{--        console.log(data['status'])--}}
-                    {{--        $(this).html(" {{}} ")--}}
-                    {{--    }--}}
-                    {{--});--}}
                 }
             });
         });
+
     </script>
+    <script src="{{asset("js/getAddress.js")}}"></script>
+
 @endsection

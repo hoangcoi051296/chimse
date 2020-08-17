@@ -1,5 +1,6 @@
 <?php
 use App\Models\Post;
+use App\Models\Attribute;
 /**
  * Created by PhpStorm.
  * User: Duc Thang
@@ -67,5 +68,12 @@ if (!function_exists("listStatus")) {
                 'name' => 'Hủy'
             ]
         ];
+    }
+}
+if (!function_exists("getAttributes")) {
+    function getAttributes($key)
+    {
+        $attribute =Attribute::find($key);
+        return $attribute;
     }
 }

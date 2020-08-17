@@ -16,7 +16,7 @@ class Employee extends Model implements Authenticatable
     use AuthenticableTrait;
 
     protected $table = 'employee';
-    protected $fillable = ['name', 'email', 'phone', 'password', 'address'];
+    protected $fillable = ['name', 'email', 'phone', 'password', 'district_id','ward_id'];
     protected $hidden = [
         'password',
         'remember_token',
@@ -24,21 +24,33 @@ class Employee extends Model implements Authenticatable
 
     public function getData($condition, $request)
     {
+
         $helpers = $this->query()->orderBy('created_at', 'desc');
         if (!$condition) {
             return $helpers;
         }
-        if (isset($condition['address'])) {
-            $helpers->where('address', $condition['address']);
+            if (isset($condition['district'])) {
+            $districtFilter =$condition['district'];
+            $helpers->WhereHas('district', function ($query) use ($districtFilter) {
+                $query->where('maqh',$districtFilter);
+            });
         }
+            if (isset($condition['ward'])) {
+                $wardFilter =$condition['ward'];
+                $helpers->WhereHas('ward', function ($query) use ($wardFilter) {
+                    $query->
+                       where('xaid',$wardFilter);
+                });
+            }
+
         if (isset($condition['search'])) {
             $search = $condition['search'];
            $helpers->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', '%' . $search . '%')
                     ->orWhere('email', 'LIKE', '%' . $search . '%')
                     ->orWhere('phone', 'LIKE', '%' . $search . '%')
-                    ->orWhereHas('Ward', function ($query) use ($search) {
-                        $query->whereHas('District',function ($q)use($search){
+                    ->orWhereHas('ward', function ($query) use ($search) {
+                        $query->whereHas('district',function ($q)use($search){
                             $q->where('name','like','%'.$search.'%');
                         });
                     });
@@ -47,22 +59,30 @@ class Employee extends Model implements Authenticatable
         return $helpers;
     }
 
-    public function Ward()
+    public function ward()
     {
-        return $this->hasOne("\App\Models\Ward", 'xaid', 'address');
+        return $this->hasOne("\App\Models\Ward", 'xaid', 'ward_id');
+    }
+    public function district()
+    {
+        return $this->hasOne(District::class, 'maqh', 'district_id');
     }
     public function rules($id = null)
     {
         $validate = [
             'name' => "required| string| max:255",
-            'email' => "required|string|email|regex:^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$^|unique:employee,email," . $id,
             'phone' => 'required|unique:employee,phone,' . $id,
             'ward' => 'required',
+            'district'=>'required',
         ];
         if (!$id) {
-            return Arr::add($validate, 'password', 'required|min:6|confirmed');
+           return array_merge($validate,[
+                'email' => "required|string|email|regex:^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$^|unique:employee,email," . $id,
+               'password'=> 'required|min:6|confirmed'
+            ]);
         }
-        return Arr::add($validate, 'password', 'sometimes|nullable|min:6|confirmed');
+        return Arr::add($validate,  'password', 'sometimes|nullable|min:6|confirmed');
+
     }
 
     public $perPage = 10;
@@ -70,14 +90,17 @@ class Employee extends Model implements Authenticatable
     public function createData($data)
     {
         $data['password'] = bcrypt($data['password']);
+        $data['district_id']=$data['district'];
+        $data['ward_id']=$data['ward'];
         return $this->fill($data)->save();
     }
 
     public function updateData($data, $id)
     {
         $data['phone'] = format_phone_number($data['phone']);
-        $data['address']=$data['ward'];
         $data = array_filter($data);
+        $data['district_id']=$data['district'];
+        $data['ward_id']=$data['ward'];
         if (isset($data['password'])) {
             $data['password'] = bcrypt($data['password']);
         }

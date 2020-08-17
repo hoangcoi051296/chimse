@@ -23,4 +23,7 @@ class Category extends Model
 //
 //        }
     }
+    public function attributes(){
+        return $this->hasMany(Attribute::class,'category_id','id');
+    }
 }

@@ -11,10 +11,7 @@
 <script src="{{asset("plugins/chart.js/Chart.min.js")}}"></script>
 <!-- Sparkline -->
 <script src="{{asset("plugins/sparklines/sparkline.js")}}"></script>
-<!-- JQVMap -->
-<script src="{{asset("plugins/jqvmap/jquery.vmap.min.js")}}"></script>
-<script src="{{asset("plugins/jqvmap/maps/jquery.vmap.usa.js")}}"></script>
-<!-- jQuery Knob Chart -->
+
 <script src="{{asset("plugins/jquery-knob/jquery.knob.min.js")}}"></script>
 <!-- daterangepicker -->
 <script src="{{asset("plugins/moment/moment.min.js")}}"></script>
@@ -33,12 +30,12 @@
 <script src="{{asset("dist/js/pages/dashboard.js")}}"></script>
 <script src="{{asset("js/jquery.pjax.js")}}"></script>
 <script>
-    $(document).ready(function(){
-        $(document).pjax('a','#body')
-        // does current browser support PJAX
-        if ($.support.pjax) {
-            $.pjax.defaults.timeout = 1000; // time in milliseconds
-        }
-
-    });
+    // $(document).ready(function(){
+    //     $(document).pjax('a','#body')
+    //     // does current browser support PJAX
+    //     if ($.support.pjax) {
+    //         $.pjax.defaults.timeout = 1000; // time in milliseconds
+    //     }
+    //
+    // });
 </script>

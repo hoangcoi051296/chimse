@@ -54,12 +54,17 @@
                                 <input name="phone" type="number"  class="form-control" >
                             </div>
                             <div class="form-group">
-                                <label for="inputStatus">Địa chỉ</label>
-                                <select id="inputStatus" class="form-control custom-select" name="address">
-                                    <option selected="" disabled="">Address</option>
+                                <label for="inputStatus">Quận huyện</label>
+                                <select  class="form-control custom-select" name="district">
+                                    <option value="" disabled="" selected >Hà Nội</option>
                                     @foreach($address as $a)
                                         <option value="{{$a->maqh}}">{{$a->name}}</option>
                                     @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputStatus">Xã phường</label>
+                                <select class="form-control custom-select" name="ward">
                                 </select>
                             </div>
                             <div class="form-group">
@@ -96,4 +101,7 @@
     </section>
 
     <!-- /.content -->
+@endsection
+@section('script')
+    <script src="{{asset("js/getAddress.js")}}"></script>
 @endsection

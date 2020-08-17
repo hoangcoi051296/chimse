@@ -12,9 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(Hseeder::class);
-        DB::table('managers')->insert([
+//        $this->call(Hseeder::class);
+        DB::table('customer')->insert([
             'name' => 'thaihoang',
+            'phone'=>1234,
             'email' => 'thaihoangdo0512@gmail.com',
             'password' => bcrypt('12345678'),
         ]);

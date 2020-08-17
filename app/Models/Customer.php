@@ -11,7 +11,7 @@ class Customer extends Model implements Authenticatable
 {
     use AuthenticableTrait;
     protected $table = 'customer';
-    protected $fillable = ['name','email','phone','address','password','is_active'];
+    protected $fillable = ['name','email','phone','district_id','ward_id','password','is_active'];
     protected $hidden = [
         'password', 'remember_token',
     ];

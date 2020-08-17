@@ -43,7 +43,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Mô tả chi tiết</label>
-                                    <input type="text" name="description" class="form-control">
+
+                                    <div id="description"
+                                         style="background-color: whitesmoke; border-radius: 10px; height: 150px">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <button type="button" class="btn btn-info" data-toggle="modal"
@@ -147,58 +150,123 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div id="attributes">
+                                </div>
+
                             </div>
-                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card -->
+                        <!-- /.card-body -->
                     </div>
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            There were some errors with your request.
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                    <!-- /.card -->
                 </div>
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        There were some errors with your request.
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="row " style="margin-bottom: 40px">
                     <div class="col-12">
                         <input type="submit" value="Create post" class="btn btn-success float-left">
                     </div>
                 </div>
             </form>
+
         </div><!-- /.container-fluid -->
     </section>
 
     <!-- /.content -->
 @endsection
 @section('script')
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{asset("js/getAddress.js")}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.4/tinymce.min.js" referrerpolicy="origin"></script>
     <script type="text/javascript">
-        var url = "{{ url('manager/post/showWard') }}";
-        $("select[name='district']").change(function () {
-            var address = $(this).val();
-            var token = $("input[name='_token']").val();
-            $.ajax({
-                url: url,
-                method: 'GET',
-                data: {
-                    address: address,
-                    _token: token,
-                },
-                success: function (data) {
-                    console.log(data)
-                    $("select[name='ward']").html('');
-                    $.each(data, function (key, value) {
-                        console.log(value)
-                        $("select[name='ward']").append(
-                            "<option value=" + value.xaid + ">" + value.name + "</option>"
-                        );
-                    });
-                }
-            });
+        tinymce.init({
+            selector: '#description',
+            inline: true,
+
         });
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+    </script>
+    <script type="text/javascript">
+        function chooseCustomer(customer) {
+            var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
+            window.history.pushState({}, '', url);
+            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
+        }
+
+        $("select[name='category_id']").change(function () {
+            var category_id = $(this).val();
+            console.log(category_id)
+                var token = $("input[name='_token']").val();
+                $.ajax({
+                    url: '{{route('getAttributes')}}',
+                    method: 'GET',
+                    data: {
+                        category_id: category_id,
+                        _token: token,
+                    },
+                    success: function (data) {
+                        if (data != null) {
+                            var html = ''
+                            for (i = 0; i < data.length; i++) {
+                                html += '<div class="form-group">'
+                                html += '<label>' + data[i]['name'] + '</label>'
+                                var options = JSON.parse(data[i]['options'])
+                                if (data[i]['type'] === 'select') {
+                                    html += '<select name="attributes[' + data[i]['id'] + ']" class="form-control" >'
+                                    for (var j in options) {
+                                        html += '<option value="' + j + '">' + options[j] + '</option>'
+                                    }
+                                    html += '</select>'
+                                }
+                                if (data[i]['type'] === 'radio') {
+                                    html += '<div class="row">'
+                                    for (var j in options) {
+                                        html += '<label style="margin-left: 15px" ><input type="radio" value="' + j + '"  name="attributes[' + data[i]['id'] + ']"  >' + options[j] + '</label>'
+                                    }
+                                    html += '</div>'
+                                    html += '</select>'
+                                }
+                                if (data[i]['type'] === 'input') {
+                                    html += '<div class="row">'
+                                    html += '<input type="text" placeholder="" class="form-control" name="attributes[' + data[i]['id'] + ']"  >'
+                                    html += '</div>'
+                                    html += '</select>'
+                                }
+                                if (data[i]['type'] === 'checkbox') {
+                                    html += '<div class="row">'
+                                    for (var j in options) {
+                                        html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][value][]"  >' + options[j] + '</label>'
+                                    }
+                                    html += '</div>'
+                                    html += '</select>'
+                                }
+                                if (data[i]['type'] === 'textarea') {
+                                    html += '<div class="row">'
+                                    html += '<textarea class="form-control" name="attributes[' + data[i]['id'] + ']" rows="4" cols="50">'
+                                    html += '</textarea>'
+                                    html += '</div>'
+                                    html += '</select>'
+                                }
+                                html += '</div>'
+                            }
+                            $('#attributes').html(html);
+                        } else {
+                            $("#attributes").html('');
+                        }
+                    }
+                });
+            })
 
         function chooseCustomer(customer) {
             var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
