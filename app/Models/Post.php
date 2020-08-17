@@ -62,7 +62,6 @@ class Post extends Model
         }
         return $posts;
         }
-
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id');

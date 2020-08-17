@@ -47,7 +47,6 @@
                                     <div id="description"
                                          style="background-color: whitesmoke; border-radius: 10px; height: 150px">
                                     </div>
-                                    <input type="text" name="description" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <button type="button" class="btn btn-info" data-toggle="modal"
@@ -207,80 +206,67 @@
 
         $("select[name='category_id']").change(function () {
             var category_id = $(this).val();
-        var url = "{{ url('manager/post/showWard') }}";
-        $("select[name='district']").change(function () {
-            var address = $(this).val();
-            var token = $("input[name='_token']").val();
-            $.ajax({
-                url: '{{route('getAttributes')}}',
-                method: 'GET',
-                data: {
-                    category_id: category_id,
-                    _token: token,
-                },
-                success: function (data) {
-                    if (data != null) {
-                        var html = ''
-                        for (i = 0; i < data.length; i++) {
-                            html += '<div class="form-group">'
-                            html += '<label>' + data[i]['name'] + '</label>'
-                            var options = JSON.parse(data[i]['options'])
-                            if (data[i]['type'] === 'select') {
-                                html += '<select name="attributes['+data[i]['id']+']" class="form-control" >'
-                                for (var j in options) {
-                                    html += '<option value="' + j + '">' + options[j] + '</option>'
+            console.log(category_id)
+                var token = $("input[name='_token']").val();
+                $.ajax({
+                    url: '{{route('getAttributes')}}',
+                    method: 'GET',
+                    data: {
+                        category_id: category_id,
+                        _token: token,
+                    },
+                    success: function (data) {
+                        if (data != null) {
+                            var html = ''
+                            for (i = 0; i < data.length; i++) {
+                                html += '<div class="form-group">'
+                                html += '<label>' + data[i]['name'] + '</label>'
+                                var options = JSON.parse(data[i]['options'])
+                                if (data[i]['type'] === 'select') {
+                                    html += '<select name="attributes[' + data[i]['id'] + ']" class="form-control" >'
+                                    for (var j in options) {
+                                        html += '<option value="' + j + '">' + options[j] + '</option>'
+                                    }
+                                    html += '</select>'
                                 }
-                                html += '</select>'
-                            }
-                            if (data[i]['type'] === 'radio') {
-                                html += '<div class="row">'
-                                for (var j in options) {
-                                    html += '<label style="margin-left: 15px" ><input type="radio" value="'+j+'"  name="attributes['+data[i]['id']+']"  >' + options[j] + '</label>'
+                                if (data[i]['type'] === 'radio') {
+                                    html += '<div class="row">'
+                                    for (var j in options) {
+                                        html += '<label style="margin-left: 15px" ><input type="radio" value="' + j + '"  name="attributes[' + data[i]['id'] + ']"  >' + options[j] + '</label>'
+                                    }
+                                    html += '</div>'
+                                    html += '</select>'
+                                }
+                                if (data[i]['type'] === 'input') {
+                                    html += '<div class="row">'
+                                    html += '<input type="text" placeholder="" class="form-control" name="attributes[' + data[i]['id'] + ']"  >'
+                                    html += '</div>'
+                                    html += '</select>'
+                                }
+                                if (data[i]['type'] === 'checkbox') {
+                                    html += '<div class="row">'
+                                    for (var j in options) {
+                                        html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][value][]"  >' + options[j] + '</label>'
+                                    }
+                                    html += '</div>'
+                                    html += '</select>'
+                                }
+                                if (data[i]['type'] === 'textarea') {
+                                    html += '<div class="row">'
+                                    html += '<textarea class="form-control" name="attributes[' + data[i]['id'] + ']" rows="4" cols="50">'
+                                    html += '</textarea>'
+                                    html += '</div>'
+                                    html += '</select>'
                                 }
                                 html += '</div>'
-                                html += '</select>'
                             }
-                            if (data[i]['type'] === 'input') {
-                                html += '<div class="row">'
-                                html += '<input type="text" placeholder="" class="form-control" name="attributes['+data[i]['id']+']"  >'
-                                html += '</div>'
-                                html += '</select>'
-                            }
-                            if (data[i]['type'] === 'checkbox') {
-                                html += '<div class="row">'
-                                for (var j in options) {
-                                    html += '<label style="margin-left: 15px" ><input value="'+j+'" type="checkbox"  name="attributes['+data[i]['id']+'][value][]"  >' + options[j] + '</label>'
-                                }
-                                html += '</div>'
-                                html += '</select>'
-                            }
-                            if (data[i]['type'] === 'textarea') {
-                                html += '<div class="row">'
-                                html += '<textarea class="form-control" name="attributes['+data[i]['id']+']" rows="4" cols="50">'
-                                html+=    '</textarea>'
-                                html += '</div>'
-                                html += '</select>'
-                            }
-                            html += '</div>'
+                            $('#attributes').html(html);
+                        } else {
+                            $("#attributes").html('');
                         }
-                        $('#attributes').html(html);
-                    } else {
-                        $("#attributes").html('');
                     }
-                }
-            });
-        });
-                    console.log(data)
-                    $("select[name='ward']").html('');
-                    $.each(data, function (key, value) {
-                        console.log(value)
-                        $("select[name='ward']").append(
-                            "<option value=" + value.xaid + ">" + value.name + "</option>"
-                        );
-                    });
-                }
-            });
-        });
+                });
+            })
 
         function chooseCustomer(customer) {
             var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
