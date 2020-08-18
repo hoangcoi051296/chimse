@@ -30,8 +30,7 @@ class CustomerRegisterController extends Controller
         $rules = [
             'email' => 'required|email|unique:customer',
             'password' => 'required',
-            'name' => 'required',
-            'address' => 'required'
+            'name' => 'required'
         ];
         $validator = Validator::make($data, $rules);
         if ($validator->fails()) {

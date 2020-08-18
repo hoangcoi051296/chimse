@@ -13,9 +13,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 //        $this->call(Hseeder::class);
-        DB::table('customer')->insert([
+        DB::table('managers')->insert([
             'name' => 'thaihoang',
-            'phone'=>1234,
             'email' => 'thaihoangdo0512@gmail.com',
             'password' => bcrypt('12345678'),
         ]);

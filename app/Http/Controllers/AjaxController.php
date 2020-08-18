@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Commune;
 use App\Models\District;
 use App\Models\Province;
+use App\Models\Ward;
 use Illuminate\Http\Request;
 
 class AjaxController extends Controller
@@ -23,7 +24,7 @@ class AjaxController extends Controller
     }
     public function getCommuneByDis(Request $request)
     {
-        $communes = Commune::where('maqh',$request->get('id'))->get();
+        $communes = Ward::where('maqh',$request->get('id'))->get();
         return response()->json([
             'errors' => false,
             'data' => $communes

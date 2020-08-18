@@ -29,16 +29,13 @@ class PostController extends Controller
         $user = Auth::guard('customer')->user();
         $request['customer_id'] = $user->id;
         $posts = $this->post->getData($request);
-        $posts = Post::all();
-    return view('customer.post.index', compact('posts'));
+        return view('customer.post.index', compact('posts'));
     }
-    public function showWardInDistrict(Request $request){
 
-        if ($request->ajax()) {
-            $wards = Ward::Where('maqh',$request->address)->get();
+    public function showWardInDistrict(Request $request)
+    {
+            $wards = Ward::Where('maqh', $request->address)->get();
             return response()->json($wards);
-        }
-
     }
 
     public function create()
@@ -46,18 +43,15 @@ class PostController extends Controller
         $categories = $this->category->all();
         return view('customer.post.create', compact('categories'));
     }
-    public function store(Request  $request)
-    {
-        $data = $request->all();
-        $request->validate($this->post->rules());
-        $data['status']=Post::ChoDuyet;
-        $data['customer_id']=Auth::guard('customer')->user()->id;
-        $this->post->createData($data);
-        try {
 
-        } catch (\Exception $e) {
-            return redirect()->back()->with("error", $e->getMessage());
-        }
+    public function store(Request $request)
+    {
+            $data = $request->all();
+            $request->validate($this->post->rules());
+            $data['status'] = Post::ChoDuyet;
+            $data['customer_id'] = Auth::guard('customer')->user()->id;
+            $this->post->createData($data);
+
         return redirect()->route('customer.post.index')->with("success", "Create Success");
     }
 
@@ -68,19 +62,15 @@ class PostController extends Controller
         return view('customer.post.edit', compact('post', 'categories'));
     }
 
-    public function update($id,Request $request)
+    public function update($id, Request $request)
     {
         $data = $request->all();
         $request->validate($this->post->rules());
 
-        $data['status']=Post::ChoDuyet;
-        $data['customer_id']=Auth::guard('customer')->user()->id;
+        $data['status'] = Post::ChoDuyet;
+        $data['customer_id'] = Auth::guard('customer')->user()->id;
         $this->post->updateData($data, $id);
-        try {
 
-        } catch (\Exception $e) {
-            return redirect()->back()->with("error", $e->getMessage());
-        }
         return redirect()->route('customer.post.index')->with("success", "Create Success");
     }
 

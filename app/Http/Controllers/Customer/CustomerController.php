@@ -25,7 +25,7 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $customers = $this->customer->data($request);
-        $posts = Post::all();
+        $posts = Post::get();
         return view('customer.dashboard', compact('customers', 'posts'));
     }
 

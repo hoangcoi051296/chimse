@@ -28,14 +28,29 @@
 <script src="{{asset("dist/js/demo.js")}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset("dist/js/pages/dashboard.js")}}"></script>
-<script src="{{asset("js/jquery.pjax.js")}}"></script>
+{{--<script src="{{asset("js/jquery.pjax.js")}}"></script>--}}
 <script>
-    // $(document).ready(function(){
-    //     $(document).pjax('a','#body')
-    //     // does current browser support PJAX
-    //     if ($.support.pjax) {
-    //         $.pjax.defaults.timeout = 1000; // time in milliseconds
-    //     }
-    //
-    // });
+    var url = "{{ route('commune.by.district') }}";
+    $("select[name='district']").change(function () {
+        var address = $(this).val();
+        var token = $("input[name='_token']").val();
+        $.ajax({
+            url: url,
+            method: 'GET',
+            data: {
+                id: address,
+                _token: token,
+            },
+            success: function (data) {
+                console.log(data);
+                $("select[name='ward']").html('');
+                $.each(data.data, function (key, value) {
+                    console.log(value)
+                    $("select[name='ward']").append(
+                        "<option value=" + value.xaid + ">" + value.name + "</option>"
+                    );
+                });
+            }
+        });
+    });
 </script>
