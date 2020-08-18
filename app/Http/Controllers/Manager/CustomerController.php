@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostCreated;
 use App\Models\District;
 use App\Models\Customer;
 use App\Models\Post;
@@ -47,7 +48,8 @@ class CustomerController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'phone' => $request->phone,
-            'address' => $request->ward
+            'ward_id' => $request->ward,
+            'district_id' => $request->district
         ]);
         return redirect()->route('manager.customer.index')->with("success", "Create Success");
     }
@@ -65,7 +67,13 @@ class CustomerController extends Controller
             ]
         );
        $customer = $this->customer->find($id);
-       $customer->update($request->all());
+       $customer->update([
+           'name' => $request->name,
+           'email' => $request->email,
+           'phone' => $request->phone,
+           'ward_id' => $request->ward,
+           'district_id' => $request->district
+       ]);
         return redirect()->route('manager.customer.index');
     }
 
@@ -84,6 +92,6 @@ class CustomerController extends Controller
         $request['customer_id'] = $customer->id;
         $posts = $this->post->getData($request);
 
-        return view('customer.post',compact('customer','posts'));
+        return view('manager.customer.post.index',compact('customer','posts'));
     }
 }

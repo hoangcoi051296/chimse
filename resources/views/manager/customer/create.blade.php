@@ -96,31 +96,7 @@
             </form>
         </div><!-- /.container-fluid -->
     </section>
-    <script>
-        var url = "{{ url('customer/post/showWard') }}";
-        $("select[name='district']").change(function () {
-            var address = $(this).val();
-            var token = $("input[name='_token']").val();
-            $.ajax({
-                url: url,
-                method: 'GET',
-                data: {
-                    address: address,
-                    _token: token,
-                },
-                success: function (data) {
-                    console.log(data)
-                    $("select[name='ward']").html('');
-                    $.each(data, function (key, value) {
-                        console.log(value)
-                        $("select[name='ward']").append(
-                            "<option value=" + value.xaid + ">" + value.name + "</option>"
-                        );
-                    });
-                }
-            });
-        });
-    </script>
+--}}
 
     <!-- /.content -->
 @endsection

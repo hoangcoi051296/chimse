@@ -13,7 +13,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Danh sách công việc</h1>
+                    <h1 class="m-0 text-dark">Danh sách công việc của {{$customer->name}}</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -80,9 +80,6 @@
                             </div>
                         </div>
                     </form>
-
-                    <a href="{{route('manager.post.create')}}" class="btn btn-success float-right "
-                       style="margin-bottom: 10px">Tạo bài đăng</a>
                 </div>
                 <div class="col-md-12">
                     <div class="card">
@@ -93,7 +90,6 @@
                                     <th>Tiêu đề</th>
                                     <th>Địa chỉ</th>
                                     <th>Trạng thái</th>
-                                    <th>Khách hàng</th>
                                     <th>Danh mục</th>
                                     <th style="width: 8%">Action</th>
                                 </tr>
@@ -116,7 +112,6 @@
                                                 <div class="row postStatus" data-value="{{$post->id}}">
                                                     {{getStatus($post->status)}}</div>
                                             </td>
-                                            <td>{{$post->customer->name}}</td>
                                             <td>{{$post->category->name}}<br/>
                                                 {{--                                        @if($post->attributes)--}}
 
@@ -128,20 +123,20 @@
                                                 {{--                                            @endif--}}
                                             </td>
                                             <td class="align-self-center">
-                                                <a href="{{ route('manager.post.details',['id' => $post->id])}}"
-                                                   class="btn btn-info btn-xs"><i class="far fa-eye"></i></a>
-                                                @if($post->status==1)
-                                                    <a id="{{$post->id}}"
-                                                       class="btn btn-primary btn-xs changeStatus"><i
-                                                                class="fas fa-exchange-alt"></i></a>
-                                                @endif
+                                                {{--<a href="{{ route('manager.post.details',['id' => $post->id])}}"--}}
+                                                   {{--class="btn btn-info btn-xs"><i class="far fa-eye"></i></a>--}}
+                                                {{--@if($post->status==1)--}}
+                                                    {{--<a id="{{$post->id}}"--}}
+                                                       {{--class="btn btn-primary btn-xs changeStatus"><i--}}
+                                                                {{--class="fas fa-exchange-alt"></i></a>--}}
+                                                {{--@endif--}}
 
-                                                <a href="{{ route('manager.post.edit',['id' => $post->id])}}"
-                                                   class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                                                <a href="{{ route('manager.post.delete',['id'=> $post->id])}}"
-                                                   onclick="return confirm('Bạn muốn xóa không?');"
-                                                   class="btn btn-danger btn-xs "><i
-                                                            class="fa fa-trash"></i></a>
+                                                {{--<a href="{{ route('manager.post.edit',['id' => $post->id])}}"--}}
+                                                   {{--class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>--}}
+                                                {{--<a href="{{ route('manager.post.delete',['id'=> $post->id])}}"--}}
+                                                   {{--onclick="return confirm('Bạn muốn xóa không?');"--}}
+                                                   {{--class="btn btn-danger btn-xs "><i--}}
+                                                            {{--class="fa fa-trash"></i></a>--}}
 
                                             </td>
                                         </form>

@@ -26,8 +26,12 @@ if (!function_exists("sidebarManager")) {
                     'child' => [
                         [
                             'name' => 'Danh sách',
-                            'route' => route('manager.customer.index')
+                            'route' => route('manager.customer.index'),
                         ],
+                        [
+                            'name' => 'Tạo mới',
+                            'route' => route('manager.customer.create')
+                        ]
                     ],
                     'icon' => 'nav-icon fas fa-tachometer-alt'
                 ],
