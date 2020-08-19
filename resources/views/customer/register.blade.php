@@ -58,7 +58,7 @@
                     <span class="focus-input100"></span>
                 </div>
                 <div class="form-group" data-validate="Address is required">
-                    <label for="inputStatus">Address</label>
+                    <label for="inputStatus">District</label>
                     <select class="form-control custom-select option" name="district" type="text">
                         <option value="">Hà Nội</option>
                         @foreach($address as $a)

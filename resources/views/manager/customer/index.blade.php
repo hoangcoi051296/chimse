@@ -10,7 +10,6 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{route('manager.index')}}">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="{{url('/')}}"></a>Danh sách</li>
                     <li class="breadcrumb-item active"><a href="{{route('customer.login')}}"><i
                                 class="zmdi zmdi-power"></i>Logout</a>
                     </li>
@@ -74,7 +73,7 @@
                                         <a href="{{ route('manager.customer.delete',['id'=> $customer->id])}}"
                                             onclick="return confirm('Bạn muốn xóa không?');"
                                             class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>
-                                        <a href="{{route('manager.customer.index',['id' => $customer->id])}}"
+                                        <a href="{{route('manager.customer.post.index',['id' => $customer->id])}}"
                                             class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
                                     </td>
                                 </tr>

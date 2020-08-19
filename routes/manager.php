@@ -16,6 +16,7 @@ Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], f
     });
     Route::group(['prefix' => 'customer'], function () {
         Route::get('/', 'CustomerController@index')->name('manager.customer.index');
+        Route::get('/{id}/post', 'CustomerController@posts')->name('manager.customer.post.index');
         Route::get('create', 'CustomerController@create')->name('manager.customer.create');
         Route::post('store', 'CustomerController@store')->name('manager.customer.store');
         Route::get('edit/{id}', 'CustomerController@edit')->name('manager.customer.edit');

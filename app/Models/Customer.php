@@ -33,8 +33,8 @@ class Customer extends Model implements Authenticatable
         return $this->hasMany(Post::class,'customer_id','id');
     }
 
-    public function Ward()
+    public function ward()
     {
-        return $this->hasOne("\App\Models\Ward", 'xaid', 'address');
+        return $this->belongsTo(Ward::class, 'ward_id', 'xaid');
     }
 }

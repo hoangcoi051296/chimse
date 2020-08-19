@@ -17,8 +17,6 @@ class AttributeController extends Controller
     public function index(){
 
         $attributes=Attribute::all();
-//        unset($options[$a]);
-//        dd($options);
         return view('manager.category.attribute.index',compact('attributes'));
     }
     public function create(){
@@ -42,9 +40,8 @@ class AttributeController extends Controller
     public function update(Request $request ,$id){
         $data=$request->all();
         $request->validate($this->attribute->rules($id),$this->attribute->message());
-        $this->attribute->updateData($data,$id);
         try {
-
+            $this->attribute->updateData($data,$id);
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }

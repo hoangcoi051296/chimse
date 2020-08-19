@@ -51,27 +51,26 @@
                                     <input name="phone" type="text" class="form-control" value="{{$customer->phone}}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputStatus">Address</label>
-                                    <select class="form-control custom-select option" name="district" type="text">
+                                    <label>District:</label>
+                                    @if($customer->district_id)
+                                        <input id="districtPost" value="{{$customer->ward->district->maqh}}" hidden>
+                                    @endif
+                                    <select class="form-control custom-select option" name="district"
+                                            type="text">
+                                        <option value="">Hà Nội</option>
                                         @foreach($address as $a)
-                                            @if($customer->ward->district->maqh == $a->maqh)
-                                                <option value="{{$a->maqh}}" selected>{{$a->name}}</option>
-                                            @else
-                                                <option value="{{$a->maqh}}">{{$a->name}}</option>
-                                            @endif
+                                            <option
+                                                    {{$customer->district_id==$a->maqh?"selected='selected'":''}} value="{{$a->maqh}}">{{$a->name}}
+                                            </option>
                                         @endforeach
                                     </select>
-                                    @if($errors->has('district'))
-                                        <div class="messages-error">
-                                            {{$errors->first('district')}}
-                                        </div>
-                                    @endif
                                 </div>
                                 <div class="form-group">
-                                    <label>Ward</label>
-                                    <select class="form-control" name="address">
-                                        <option value="{{$customer->ward->xaid}}" selected>{{$customer->ward->name}}
-                                        </option>
+                                    <label>Ward:</label>
+                                    @if($customer->ward_id)
+                                        <input id="wardPost" value="{{$customer->ward->xaid}}" hidden>
+                                    @endif
+                                    <select class="form-control" name="ward" id="ward">
                                     </select>
                                 </div>
                                 @if($errors->has('ward'))
@@ -103,31 +102,10 @@
             </form>
         </div><!-- /.container-fluid -->
     </section>
-    <script>
-        var url = "{{ url('customer/post/showWard') }}";
-        $("select[name='district']").change(function () {
-            var address = $(this).val();
-            var token = $("input[name='_token']").val();
-            $.ajax({
-                url: url,
-                method: 'GET',
-                data: {
-                    address: address,
-                    _token: token,
-                },
-                success: function (data) {
-                    console.log(data)
-                    $("select[name='address']").html('');
-                    $.each(data, function (key, value) {
-                        console.log(value)
-                        $("select[name='address']").append(
-                            "<option value=" + value.xaid + ">" + value.name + "</option>"
-                        );
-                    });
-                }
-            });
-        });
-    </script>
+
 
     <!-- /.content -->
+@endsection
+@section('script')
+    <script src="{{asset("js/getAddress.js")}}"></script>
 @endsection

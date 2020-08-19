@@ -69,6 +69,17 @@
                                     @endforeach
                                 @endif
 
+                                <strong>{{$post->category->name}}</strong><br>
+                                @if($post->attributes)
+                                    @foreach( json_decode($post->attributes,true) as $key => $attribute )
+                                        @if(getAttributes($key)->type=="select"||getAttributes($key)->type=="radio")
+                                            <b>{{getAttributes($key)->name}}</b>
+                                            : {{json_decode(getAttributes($key)->options,true)[$attribute]}}<br/>
+                                        @elseif(getAttributes($key)->type=="textarea"||getAttributes($key)->type=="input")
+                                            <b>{{getAttributes($key)->name}}</b> : {{$attribute}}<br/>
+                                        @endif
+                                    @endforeach
+                                @endif
                             </div>
                             <!-- /.col -->
                             @if($post->employee_id)

@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 class Post extends Model
 {
     protected $table = 'post';
-    protected $fillable = ['title', 'status', 'description', 'price', 'district_id','ward_id', 'category_id', 'helper_id', 'customer_id','time'];
+    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id', 'category_id', 'helper_id', 'customer_id', 'time'];
     const DaHuy = 0;
     const ChoDuyet = 1;
     const DaDuyet = 2;
@@ -61,36 +61,44 @@ class Post extends Model
             });
         }
         return $posts;
-        }
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
+
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
     public function ward()
     {
         return $this->hasOne("\App\Models\Ward", 'xaid', 'ward_id');
     }
+
     public function district()
     {
         return $this->hasOne(District::class, 'maqh', 'district_id');
     }
+
     public function rating()
     {
         return $this->hasMany(Feedback::class, 'post_id', 'id');
     }
+
     public function avgRate()
     {
         return $this->rating()->avg('rating');
     }
-    public function rules($id = null)
+
+    public function rules()
     {
         $validate = [
             'title' => "required| string",
@@ -100,9 +108,6 @@ class Post extends Model
             'time'=>'required',
 //            'customer_id' => "required",
         ];
-        if ($id) {
-            return $validate;
-        }
         return array_merge($validate, ['district' => 'required',
             'ward' => "required", 'customer_id' => "required",'category_id' => "required"]);
 
@@ -128,7 +133,6 @@ class Post extends Model
     public function createData($data)
     {
         $attribute=$data['attributes'];
-//        $data['time'] = json_encode($data['time']);
         $data['district_id']=$data['district'];
         $data['ward_id']=$data['ward'];
         $data = array_filter($data);
@@ -138,11 +142,11 @@ class Post extends Model
             $this->attributes()->attach($key, ['value' => $value]);
         }
     }
+
     public function updateData($data, $id)
     {
         $attribute=$data['attributes'];
         $data['status']=Post::ChoDuyet;
-        $data=array_filter($data);
         $data['district_id']=$data['district'];
         $data['ward_id']=$data['ward'];
         foreach ($attribute as $key => $value) {
