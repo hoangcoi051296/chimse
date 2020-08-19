@@ -17,7 +17,7 @@ class CreateTablePostAttributes extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('attribute_id');
-            $table->string('value');
+            $table->string('value')->nullable();
             $table->foreign('attribute_id')->references('id')->on('attribute')->onDelete('cascade');
             $table->foreign('post_id')->references('id')->on('post')->onDelete('cascade');
             $table->timestamps();

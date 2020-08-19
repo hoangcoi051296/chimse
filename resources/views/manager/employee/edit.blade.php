@@ -1,5 +1,13 @@
 @extends('manager.layout.layout')
-
+@section('style')
+    <style>
+        .errorCustom {
+            margin-left: 10px;
+            font-style: italic;
+            color: firebrick;
+        }
+    </style>
+@endsection
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -39,15 +47,24 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="inputName">Tên </label>
-                                    <input type="text" name="name" value="{{$helper->name}}" id="inputName" class="form-control">
+                                    <input type="text" name="name" value="{{$helper->name}}" id="inputName" class="form-control @if($errors->has('name'))  border border-info @endif">
+                                    @if($errors->has('name'))
+                                        <span class="errorCustom">{{$errors->first('name')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputEmail">Email</label>
-                                    <input name="email" type="email" value="{{$helper->email}}"  class="form-control"  disabled>
+                                    <input name="email" type="email" value="{{$helper->email}}"  class="form-control @if($errors->has('email'))  border border-info @endif"  disabled>
+                                    @if($errors->has('email'))
+                                        <span class="errorCustom">{{$errors->first('email')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputEmail">Số điện thoại</label>
-                                    <input name="phone" value="{{$helper->phone}}" type="text"   class="form-control" >
+                                    <input name="phone" value="{{$helper->phone}}" type="text"   class="form-control @if($errors->has('phone'))  border border-info @endif" >
+                                    @if($errors->has('phone'))
+                                        <span class="errorCustom">{{$errors->first('phone')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     @if($helper->district_id)
@@ -60,6 +77,9 @@
                                             <option value="{{$a->maqh}}"}} @if($helper->district_id){{$helper->district_id==$a->maqh?"selected='selected'":''}} @endif >{{$a->name}}</option>
                                         @endforeach
                                     </select>
+                                        @if($errors->has('district'))
+                                            <span class="errorCustom">{{$errors->first('district')}}</span>
+                                        @endif
                                 </div>
                                 <div class="form-group">
                                     @if($helper->ward_id)
@@ -68,6 +88,9 @@
                                     <label for="inputStatus">Xã phường</label>
                                     <select  class="form-control custom-select" name="ward" id="ward">
                                     </select>
+                                        @if($errors->has('ward'))
+                                            <span class="errorCustom">{{$errors->first('ward')}}</span>
+                                        @endif
                                 </div>
                                 <div>
                                     <input class="form-group" type="checkbox" name="changepass" id="checkbox" value="1"> <span>Thay đổi mật khẩu</span>
@@ -75,7 +98,10 @@
                                 <div id="password" style="display: none">
                                     <div class="form-group">
                                         <label for="inputPassword">Mật khẩu </label>
-                                        <input type="password" name="password" id="inputClientCompany" class="form-control">
+                                        <input type="password" name="password" id="inputClientCompany" class="form-control @if($errors->has('phone'))  border border-info @endif">
+                                        @if($errors->has('password'))
+                                            <span class="errorCustom">{{$errors->first('password')}}</span>
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label for="inputProjectLeader">Nhập lại mật khẩu</label>
@@ -87,16 +113,6 @@
                         </div>
                         <!-- /.card -->
                     </div>
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            There were some errors with your request.
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
                 </div>
                 <div class="row " style="margin-bottom: 40px" >
                     <div class="col-12">

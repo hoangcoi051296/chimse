@@ -1,5 +1,13 @@
 @extends('manager.layout.layout')
-
+@section('style')
+    <style>
+        .errorCustom {
+            margin-left: 10px;
+            font-style: italic;
+            color: firebrick;
+        }
+    </style>
+@endsection
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -38,20 +46,24 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="inputName">Tên</label>
-                                <input type="text" name="name" id="inputName" class="form-control">
+                                <input type="text" name="name" id="inputName" class="form-control @if($errors->has('name'))  border border-info @endif">
+                                @if($errors->has('name'))
+                                    <span class="errorCustom">{{$errors->first('name')}}</span>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="inputEmail">Email</label>
-                                <input name="email" type="email"  class="form-control" >
+                                <input name="email" type="email"  class="form-control @if($errors->has('email'))  border border-info @endif" >
+                                @if($errors->has('email'))
+                                    <span class="errorCustom">{{$errors->first('email')}}</span>
+                                @endif
                             </div>
-                            @error('email')
-                            <p style="color: red">
-                                        {{ $message }}
-                                    </p>
-                            @enderror
                             <div class="form-group">
                                 <label for="inputEmail">Số điện thoại</label>
-                                <input name="phone" type="number"  class="form-control" >
+                                <input name="phone" type="number"  class="form-control @if($errors->has('phone'))  border border-info @endif" >
+                                @if($errors->has('phone'))
+                                    <span class="errorCustom">{{$errors->first('phone')}}</span>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="inputStatus">Quận huyện</label>
@@ -61,19 +73,31 @@
                                         <option value="{{$a->maqh}}">{{$a->name}}</option>
                                     @endforeach
                                 </select>
+                                @if($errors->has('district'))
+                                    <span class="errorCustom">{{$errors->first('district')}}</span>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="inputStatus">Xã phường</label>
                                 <select class="form-control custom-select" name="ward">
                                 </select>
+                                @if($errors->has('ward'))
+                                    <span class="errorCustom">{{$errors->first('ward')}}</span>
+                                @endif
                             </div>
                             <div class="form-group">
-                                <label for="inputPassword">Password</label>
-                                <input type="password" name="password" id="inputClientCompany" class="form-control">
+                                <label for="inputPassword">Mật khẩu</label>
+                                <input type="password" name="password" id="inputClientCompany" class="form-control  @if($errors->has('phone'))  border border-info @endif">
+                                @if($errors->has('password'))
+                                    <span class="errorCustom">{{$errors->first('password')}}</span>
+                                @endif
                             </div>
                             <div class="form-group">
-                                <label for="inputProjectLeader">Repeat Password</label>
-                                <input type="password" name="password_confirmation" id="inputProjectLeader" class="form-control">
+                                <label for="inputProjectLeader">Nhập lại mật khẩu</label>
+                                <input type="password" name="password_confirmation" id="inputProjectLeader" class="form-control  @if($errors->has('phone'))  border border-info @endif">
+                                @if($errors->has('password_confirmation'))
+                                    <span class="errorCustom">{{$errors->first('password_confirmation')}}</span>
+                                @endif
                             </div>
                         </div>
                         <!-- /.card-body -->

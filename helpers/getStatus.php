@@ -70,8 +70,28 @@ if (!function_exists("listStatus")) {
         ];
     }
 }
+if (!function_exists("employeeStatus")) {
+    function employeeStatus()
+    {
+        return $status =[
+            [
+                'value' => 4,
+                'name' => 'Xác nhận CV'
+            ],
+            [
+                'value' => 5,
+                'name' => 'Bắt đầu'
+            ],
+            [
+                'value' => 6,
+                'name' => 'Hoàn thành CV'
+            ],
+        ];
+    }
+}
+
 if (!function_exists("getAttributes")) {
-    function getAttributes($key)
+    function getValueAttribute($key)
     {
         $attribute =Attribute::find($key);
         return $attribute;

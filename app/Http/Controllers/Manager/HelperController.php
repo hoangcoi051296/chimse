@@ -42,7 +42,7 @@ class HelperController extends Controller
     public function store(Request $request)
     {
         $data=$request->all();
-        $request->validate($this->helper->rules());
+        $request->validate($this->helper->rules(),$this->helper->messages());
         try {
             $this->helper->createData($data);
         } catch (\Exception $e) {
@@ -62,7 +62,7 @@ class HelperController extends Controller
     public function update(Request $request)
     {
         $data=$request->all();
-        $request->validate($this->helper->rules($request->id));
+        $request->validate($this->helper->rules($request->id),$this->helper->messages());
         try {
             $this->helper->updateData($data, $request->id);
         } catch (\Exception $e) {

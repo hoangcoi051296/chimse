@@ -84,6 +84,20 @@ class Employee extends Model implements Authenticatable
         return Arr::add($validate,  'password', 'sometimes|nullable|min:6|confirmed');
 
     }
+    public function messages()
+    {
+        return [
+            'name.required' => 'Nhập tên tài khoản',
+            'phone.required' => 'Nhập số điện thoại',
+            'phone.unique' => 'Số điện thoại đã tồn tại',
+            'email.required' => 'Nhập địa chỉ email',
+            'email.regex' => 'Email không đúng định dạng',
+            'district.required' => 'Chọn quận huyện',
+            'ward.required' => 'Chọn xã phường',
+            'password.required' => 'Nhập mật khẩu',
+            'password.confirmed'=>"Xác nhận mật khẩu không khớp",
+        ];
+    }
 
     public $perPage = 10;
 

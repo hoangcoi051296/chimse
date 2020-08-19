@@ -93,39 +93,65 @@ class Post extends Model
     public function rules($id = null)
     {
         $validate = [
-            'title' => "required| string| max:255",
-            'description' => "required|string|max:255",
+            'title' => "required| string",
+            'description' => "required|string",
             'price' => "required",
-            'category_id' => "required",
+            'attributes.*'=>'required',
+            'time'=>'required',
 //            'customer_id' => "required",
         ];
         if ($id) {
             return $validate;
         }
         return array_merge($validate, ['district' => 'required',
-            'ward' => "required"]);
+            'ward' => "required", 'customer_id' => "required",'category_id' => "required"]);
 
+    }
+    public function messages()
+    {
+        return [
+            'title.required' => 'Nhập tiêu đề',
+            'description.required' => 'Nhập mô tả',
+            'price.required' => 'Nhập giá',
+            'district.required' => 'Chọn quận huyện',
+            'ward.required' => 'Chọn xã phường',
+            'category_id.required' => 'Chọn danh mục',
+            'customer_id.required'=>"Chọn người thuê",
+            'time.required'=>"Chọn thời gian bắt đầu",
+            'attributes.*.required'=>"Thuộc tính không được bỏ trống",
+
+        ];
+    }
+    public function attributes(){
+        return $this->belongsToMany(Attribute::class,'post_attribute','post_id','attribute_id')->withPivot('value');
     }
     public function createData($data)
     {
-        $data['time'] = json_encode($data['time']);
-        $data['address'] = $data['ward'];
+        $attribute=$data['attributes'];
+//        $data['time'] = json_encode($data['time']);
+        $data['district_id']=$data['district'];
+        $data['ward_id']=$data['ward'];
         $data = array_filter($data);
-        return $this->fill($data)->save();
+        $this->fill($data)->save();
+        foreach ($attribute as $key => $value) {
+            $value = json_encode($value);
+            $this->attributes()->attach($key, ['value' => $value]);
+        }
     }
     public function updateData($data, $id)
     {
-        if ($data['district'] && $data['ward']) {
-            $data['address'] = $data['ward'];
-        }
-
+        $attribute=$data['attributes'];
         $data['status']=Post::ChoDuyet;
         $data=array_filter($data);
         $data['district_id']=$data['district'];
         $data['ward_id']=$data['ward'];
-        $data['attributes']= json_encode($data['attributes']);
-        $data['status'] = Post::ChoDuyet;
+        foreach ($attribute as $key => $value) {
+            $value = json_encode($value);
+            $attr[$key] = ['value' => $value];
+        }
+        $this->find($id)->attributes()->sync($attr);
         $data = array_filter($data);
+
         $this->find($id)->fill($data)->save();
     }
 }

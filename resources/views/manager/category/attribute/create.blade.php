@@ -1,5 +1,13 @@
 @extends('manager.layout.layout')
-
+@section('style')
+    <style>
+        .errorCustom {
+            margin-left: 5px;
+            font-style: italic;
+            color: firebrick;
+        }
+    </style>
+@endsection
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -47,7 +55,10 @@
                                 </div>
                                 <div class="form-group ">
                                     <label for="inputName">Tên thuộc tính</label>
-                                    <input type="text" name="name" class="form-control ">
+                                    <input type="text" name="name" class="form-control  @if($errors->has('name'))  border border-info @endif ">
+                                    @if($errors->has('name'))
+                                        <span class="errorCustom">{{$errors->first('name')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group ">
                                     <label for="inputName">Kiểu hiển thị</label>
@@ -59,7 +70,9 @@
                                         <option value="textarea">Textarea</option>
                                     </select>
                                 </div>
-
+                                @if($errors->has('key.*'))
+                                    <span class="errorCustom">{{$errors->first('key.*')}}</span>
+                                @endif
 
                                 <div id="attributeValue">
                                     <div id="newRow"></div>
@@ -72,25 +85,6 @@
                         </div>
                         <!-- /.card -->
                     </div>
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            There were some errors with your request.
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-
-                        </div>
-                    @endif
-
-                    @if (session()->has('error'))
-                        <div class="alert alert-danger">
-                            <ul>
-                                {{session('error')}}
-                            </ul>
-                        </div>
-                    @endif
                 </div>
                 <div class="row " style="margin-bottom: 40px">
                     <div class="col-12">

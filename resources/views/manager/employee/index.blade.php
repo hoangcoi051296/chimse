@@ -59,7 +59,7 @@
                             <div class="form-group" style="margin-left: 20px;width: 200px">
                                 <select class="form-control orderByStatus" name="status">
                                     <option value="">Trạng thái</option>
-                                    @foreach(listStatus() as $status)
+                                    @foreach(employeeStatus() as $status)
                                         <option
                                             {{Request::get('status')==$status['value']&&Request::get('status')!=null ?"selected='selected'":''}} value="{{$status['value']}}">{{$status['name']}}</option>
                                     @endforeach
@@ -92,19 +92,18 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Trạng thái</th>
                                     <th>Tên</th>
                                     <th>Email</th>
                                     <th>Số điện thoại</th>
                                     <th>Địa chỉ</th>
-                                    <th>Đánh giá</th>
+                                    <th>Đánh giá trung bình</th>
+                                    <th>Trạng thái</th>
                                     <th style="width: 40px">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @forelse($helpers as $helper)
                                     <tr>
-                                        <td></td>
                                         <td>{{$helper->name}}</td>
                                         <td>{{$helper->email}}</td>
                                         <td>{{$helper->phone}}</td>
@@ -112,12 +111,15 @@
                                             @if($helper->district_id)
                                                 {{$helper->ward->district->name}}
                                             @endif
-                                            @if($helper->ward_id)
+                                            @if($helper->ward_id),
                                                 {{$helper->ward->name}}
                                             @endif
                                         </td>
                                         <td></td>
+                                        <td></td>
                                         <td>
+                                            <a href="{{ route('manager.employee.details',['id' => $helper->id])}}"
+                                               class=" btn-xs btn-default" style="background-color: lightgrey"><i class="far fa-eye"></i></a>
                                             <a class="edit"
                                                href="{{route('manager.employee.edit',['id'=>$helper->id])}}"><i
                                                     class="fas fa-edit"></i></a>
@@ -153,12 +155,4 @@
 @endsection
 @section('script')
     <script src="{{asset("js/getAddress.js")}}"></script>
-    <script>
-        $(function () {
-            $('.orderByStatus').change(function () {
-                $('.form').submit(
-                )
-            })
-        })
-    </script>
 @endsection

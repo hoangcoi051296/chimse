@@ -61,6 +61,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                                @include("manager.components.notified")
                         </div>
                         <div class="card">
                             <div class="input-group input-group-sm" >
@@ -76,7 +77,6 @@
                             </div>
                         </div>
                     </form>
-
                     <a  href="{{route('manager.post.create')}}" class="btn btn-success float-right " style="margin-bottom: 10px">Tạo bài đăng</a>
                 </div>
                 <div class="col-md-12">
@@ -128,6 +128,9 @@
                                                 @if($post->status==1)
                                                 <a id="{{$post->id}}"
                                                    class="btn btn-primary btn-xs changeStatus"><i class="fas fa-exchange-alt"></i></a>
+                                                @else
+                                                <a
+                                                   class="btn btn-primary btn-xs "><i class="fas fa-exchange-alt"></i></a>
                                                 @endif
 
                                             <a href="{{ route('manager.post.edit',['id' => $post->id])}}"

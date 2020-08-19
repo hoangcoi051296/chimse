@@ -27,7 +27,7 @@ class AttributeController extends Controller
     }
     public function store(Request $request){
         $data=$request->all();
-        $request->validate($this->attribute->rules());
+        $request->validate($this->attribute->rules(),$this->attribute->message());
         try {
             $this->attribute->saveData($data);
         } catch (\Exception $e) {
@@ -41,9 +41,10 @@ class AttributeController extends Controller
     }
     public function update(Request $request ,$id){
         $data=$request->all();
-        $request->validate($this->attribute->rules($id));
+        $request->validate($this->attribute->rules($id),$this->attribute->message());
+        $this->attribute->updateData($data,$id);
         try {
-            $this->attribute->updateData($data,$id);
+
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }

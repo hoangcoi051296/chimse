@@ -40,15 +40,6 @@
                                     <label for="inputName">Name</label>
                                     <input type="text" name="name" id="inputName" class="form-control ">
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputStatus">Status</label>
-                                    <select id="inputStatus" class="form-control custom-select">
-                                        <option selected="" disabled="">Select one</option>
-                                        <option>On Hold</option>
-                                        <option>Canceled</option>
-                                        <option>Success</option>
-                                    </select>
-                                </div>
                             </div>
                             <!-- /.card-body -->
                         </div>

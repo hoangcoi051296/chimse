@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class PostController extends Controller
 {
@@ -43,7 +44,7 @@ class PostController extends Controller
     }
     public function store(Request  $request){
         $data=$request->all();
-        $request->validate($this->post->rules());
+        $request->validate($this->post->rules(),$this->post->messages());
         try {
             $this->post->createData($data);
         } catch (\Exception $e) {
@@ -67,13 +68,13 @@ class PostController extends Controller
     public function update($id,Request $request)
     {
         $data=$request->all();
-        $request->validate($this->post->rules($id));
+        $request->validate($this->post->rules($id),$this->post->messages());
         try {
             $this->post->updateData($data, $id);
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.post.index')->with("success", "Update Success");
+        return redirect()->route('manager.post.index')->with("success", "Cập nhật thành công");
     }
 
     public function delete($id,$post_id)

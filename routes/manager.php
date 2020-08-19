@@ -10,6 +10,7 @@ Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], f
         Route::get('create', 'HelperController@create')->name('manager.employee.create');
         Route::post('store', 'HelperController@store')->name('manager.employee.store');
         Route::get('edit/{id}', 'HelperController@edit')->name('manager.employee.edit');
+        Route::get('details/{id}', 'HelperController@details')->name('manager.employee.details');
         Route::post('update/{id}', 'HelperController@update')->name('manager.employee.update');
         Route::get('delete/{id}', 'HelperController@delete')->name('manager.employee.delete');
     });

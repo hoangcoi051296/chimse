@@ -37,8 +37,8 @@
                     </div>
                 </form>
 
-                <a href="{{route('manager.customer.create')}}" class="btn btn-success float-right "
-                    style="margin-bottom: 10px">Tạo người thuê</a>
+                <a href="{{route('manager.category.create')}}" class="btn btn-success float-right "
+                    style="margin-bottom: 10px">Tạo danh mục</a>
             </div>
             <div class="col-md-12">
                 <div class="card">
@@ -47,27 +47,23 @@
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>Name</th>
-                                    <th>email</th>
-                                    <th>phone</th>
-                                    <th>address</th>
+                                    <th>Tên</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Ngày cập nhật</th>
                                     <th style="width: 113px">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($customers as $key => $customer)
+                                @foreach($categories as $category)
                                 <tr>
-                                    <td>{{$key + 1}}</td>
-                                    <td>{{ $customer->name}}</td>
+                                    <td>{{$category->id}}</td>
+                                    <td>{{$category->name}}</td>
+                                    <td>{{$category->created_at}}</td>
+                                    <td>{{$category->updated_at}}</td>
                                     <td>
-                                        {{$customer->email}}
-                                    </td>
-                                    <td>{{$customer->phone}}</td>
-                                    <td>{{$customer->address}}</td>
-                                    <td>
-                                        <a href="{{ route('manager.customer.edit',['id' => $customer->id])}}"
+                                        <a href="{{ route('manager.category.edit',['id' => $category->id])}}"
                                             class="btn btn-primary"><i class="fa fa-edit"></i></a>
-                                        <a href="{{ route('manager.customer.delete',['id'=> $customer->id])}}"
+                                        <a href="{{ route('manager.category.delete',['id'=> $category->id])}}"
                                             onclick="return confirm('Bạn muốn xóa không?');" class="btn btn-danger"><i
                                                 class="fa fa-trash"></i></a>
                                     </td>
@@ -78,7 +74,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        {{$customers->links()}}
+{{--                        {{$categories->links()}}--}}
                     </div>
                 </div>
                 <!-- /.card -->

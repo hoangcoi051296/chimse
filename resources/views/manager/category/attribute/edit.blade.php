@@ -1,5 +1,13 @@
 @extends('manager.layout.layout')
-
+@section('style')
+    <style>
+        .errorCustom {
+            margin-left: 5px;
+            font-style: italic;
+            color: firebrick;
+        }
+    </style>
+@endsection
 @section('content')
 <!-- Content Header (Page header) -->
 <div class="content-header">
@@ -38,12 +46,15 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="inputName">Tên thuộc tính</label>
-                                <input type="text" name="name" id="inputName" class="form-control"
+                                <input type="text" name="name" id="inputName" class="form-control @if($errors->has('name'))  border border-info @endif"
                                     value="{{$attribute->name}}">
+                                @if($errors->has('name'))
+                                    <span class="errorCustom">{{$errors->first('name')}}</span>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="inputEmail">Danh mục</label>
-                                <input disabled name="email" type="email" class="form-control" value="{{$attribute->category->name}}">
+                                <input disabled name="category_id"  class="form-control" value="{{$attribute->category->name}}">
                             </div>
                             <div class="form-group">
                                 <label for="inputName">Kiểu hiển thị</label>
