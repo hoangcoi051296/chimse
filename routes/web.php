@@ -27,7 +27,7 @@ Route::get('showWard','HomeController@showWardInDistrict')->name('showWard');
 Route::get('getAttribute','HomeController@getAttribute')->name('getAttributes');
 
 
-
+Route::get('autocomplete','HomeController@search')->name('autocomplete');
 
 
 

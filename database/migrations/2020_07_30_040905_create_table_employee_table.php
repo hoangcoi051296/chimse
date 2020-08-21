@@ -18,6 +18,7 @@ class CreateTableEmployeeTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('avatar')->nullable();
+            $table->tinyInteger('status')->nullable();
             $table->string('phone');
             $table->string('password');
             $table->unsignedBigInteger('ward_id')->nullable();

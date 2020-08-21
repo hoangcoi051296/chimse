@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Ward;
 use Illuminate\Http\Request;
 
@@ -44,5 +45,25 @@ class HomeController extends Controller
             return response()->json($attributes);
         }
 
+    }
+
+    public function search(Request $request)
+    {
+        if ($request->ajax()) {
+            $output = '';
+            $posts = Post::where('title', 'LIKE', '%' . $request->search . '%')->get();
+            if ($posts) {
+                foreach ($posts as $post) {
+                    $output .= '<tr>
+                    <td>' .  $post->title . '</td>
+                    <td>'. getStatus($post->status)  .'</td>
+                    <td>' . $post->description . '</td>
+                    <td>' . $post->price . '</td>
+                    </tr>';
+                }
+            }
+
+            return Response($output);
+        }
     }
 }

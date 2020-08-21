@@ -31,7 +31,7 @@ class AttributeController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.attribute.index')->with("success", "Create Success");
+        return redirect()->route('manager.attribute.index')->with("success", "Tạo thuộc tính thành công");
     }
     public function edit($id){
         $attribute=Attribute::find($id);
@@ -45,9 +45,14 @@ class AttributeController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.attribute.index')->with("success", "Create Success");
+        return redirect()->route('manager.attribute.index')->with("success", "Cập nhật thành công");
     }
     public  function delete($id){
-
+        try {
+            $this->attribute->deleteData($id);
+        } catch (\Exception $e) {
+            return redirect()->back()->with("error", $e->getMessage());
+        }
+        return redirect()->route('manager.attribute.index')->with("success", "Xoá thành công");
     }
 }

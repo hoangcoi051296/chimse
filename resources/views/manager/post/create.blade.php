@@ -16,12 +16,7 @@
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Tạo bài đăng</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('customer.index')}}"></a>Danh sách</li>
-                    </ol>
-                </div><!-- /.col -->
+                <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -82,79 +77,16 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-info" data-toggle="modal"
-                                            data-target="#fullHeightModalRight">
-                                        Chọn người thuê
-                                    </button>
+                                    <label>Chọn người thuê</label>
+                                    <select class="chzn-select " data-placeholder="Chọn người thuê...."  name="customer_id" style="width:100%">
+                                        <option value="" selected disabled >Chọn</option>
+                                        @foreach($customers as $customer)
+                                        <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                        @endforeach
+                                    </select>
                                     @if($errors->has('customer_id'))
                                         <br/><span class="errorCustom">{{$errors->first('customer_id')}}</span>
                                     @endif
-                                </div>
-                                <div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog"
-                                     aria-labelledby="myModalLabel"
-                                     aria-hidden="true">
-
-                                    <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
-                                    <div class="modal-dialog modal-full-height modal-right modal-lg" role="document">
-
-
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title w-100" id="myModalLabel">Chọn người thuê</h4>
-                                                <input value="{{Request::get('search')}}" id="findCustomer"
-                                                       placeholder="Tìm kiếm" type="text" class="form-control"
-                                                       name="search">
-                                                <span class="input-group-append">
-                                                 <button type="button"
-                                                         onclick="chooseCustomer(document.getElementById('findCustomer').value)"
-                                                         class="btn btn-info btn-flat">Go!</button>
-                                                </span>
-                                                <span class="input-group-append">
-                                                    <button type="button" onclick="chooseCustomer('')"
-                                                            class="btn btn-secondary btn-flat"><i class="fas fa-redo"
-                                                                                                  style="padding-top: 3px"></i></button>
-                                                    </span>
-
-                                            </div>
-                                            <div class="modal-body">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Chọn</th>
-                                                        <th>Ảnh</th>
-                                                        <th>Tên</th>
-                                                        <th>Email</th>
-                                                        <th>Số điện thoại</th>
-                                                        {{--                                                        <th>Địa chỉ</th>--}}
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @foreach($customers as $customer)
-                                                        <tr>
-                                                            <td><input type="radio" name="customer_id"
-                                                                       value="{{$customer->id}}"></td>
-                                                            @if($customer->avatar)
-                                                                <td><img src="{{$post->avatar}}"></td>
-                                                            @else
-                                                                <td><img src="{{asset('images/avt.jpeg')}}"
-                                                                         style="width:40px;height: 40px"></td>
-                                                            @endif
-                                                            <td>{{ $customer->name}}</td>
-                                                            <td>{{$customer->email}}</td>
-                                                            <td>{{$customer->phone}}</td>
-                                                            {{--                                                                <td>{{$customer->getAddress->name}}</td>--}}
-                                                        </tr>
-                                                    @endforeach
-                                                    </tbody>
-                                                    {{$customers->appends(request()->query())->links()}}
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer justify-content-center">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Lưu
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -239,12 +171,11 @@
         });
     </script>
     <script type="text/javascript">
-        function chooseCustomer(customer) {
-            var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
-            window.history.pushState({}, '', url);
-            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
-        }
-
+        $(function() {
+            $(".chzn-select").chosen();
+        });
+    </script>
+    <script type="text/javascript">
         $("select[name='category_id']").change(function () {
             var category_id = $(this).val();
             console.log(category_id)

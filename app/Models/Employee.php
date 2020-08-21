@@ -21,10 +21,12 @@ class Employee extends Model implements Authenticatable
         'password',
         'remember_token',
     ];
-
-    public function getData($condition, $request)
+    const ChoViec =0 ;
+    const XacNhanCV = 1;
+    const BatDau = 2;
+    const HoanThanh = 3;
+    public function getData($condition)
     {
-
         $helpers = $this->query()->orderBy('created_at', 'desc');
         if (!$condition) {
             return $helpers;
@@ -42,8 +44,7 @@ class Employee extends Model implements Authenticatable
                        where('xaid',$wardFilter);
                 });
             }
-
-        if (isset($condition['search'])) {
+            if (isset($condition['search'])) {
             $search = $condition['search'];
            $helpers->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', '%' . $search . '%')

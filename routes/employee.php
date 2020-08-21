@@ -7,6 +7,8 @@ Route::group(['namespace'=>'Employee','middleware'=>'checkLoginEmployee'],functi
         Route::post('/edit/{id}', 'EmployeeController@updateAccount')->name('employee.account.update');
     });
     Route::get('post','PostController@index')->name('employee.post.index');
+    Route::get('post/details/{id}','PostController@details')->name('employee.post.details');
+    Route::post('post/update/{id}','PostController@update')->name('employee.post.update');
 });
 Route::group(['namespace' => 'Auth\Employee'], function () {
     Route::get('/login', 'EmployeeLoginController@showLoginForm')->name('employee.login');

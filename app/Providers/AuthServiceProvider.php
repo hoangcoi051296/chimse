@@ -24,7 +24,24 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+    }
 
-        //
+    public function changeStatusManager()
+    {
+        Gate::define('managerChangeStatus', function ($user, $post) {
+            return $post->status==1 ||$post->status==2;
+        });
+    }
+    public function editPostManager()
+    {
+        Gate::define('editPost',function ($user,$post){
+            return permissionManager($user,$post);
+        });
+    }
+    public function cancelPostManager()
+    {
+        Gate::define('cancelPost', function ($user, $post) {
+            return $post->status==1 ||$post->status==2 ||$post->status==3 ||$post->status==4;
+        });
     }
 }

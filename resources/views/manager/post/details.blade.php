@@ -7,12 +7,6 @@
                 <div class="col-sm-6">
                     <h1>Invoice</h1>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Chi tiết công việc</li>
-                    </ol>
-                </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -22,7 +16,9 @@
             <div class="row">
                 <div class="col-12">
                     <div class="callout callout-info">
-                        <h5><i class="fas fa-info"></i> Bài đăng : #{{$post->id}}</h5>
+                        <h3><i class="fas fa-info"></i> Bài đăng : #{{$post->id}}</h3>
+                        <input id="postID" value="{{$post->id}}" hidden>
+                        <h5>Trạng thái : {{getStatus($post->status)}}</h5>
                     </div>
 
 
@@ -33,17 +29,27 @@
                             <div class="col-12">
                                 <h4>
                                     <i class="fas fa-globe"></i> AdminLTE, Inc.
-                                    <small class="float-right">Date: {{now()}}</small>
+                                    @if($post->status==1||$post->status==2)
+                                    <small class="float-right"><button type="button"   data-toggle="modal" class="btn btn-secondary"
+                                                              data-target="#fullHeightModalRight"> Chọn người giúp việc
+                                        </button></small>
+                                    @elseif($post->status==3)
+                                        <small class="float-right"><button type="button"   data-toggle="modal" class="btn btn-secondary"
+                                                                           data-target="#fullHeightModalRight"> Thay đổi người giúp việc
+                                            </button></small>
+                                    @endif
                                 </h4>
+
+
                             </div>
                             <!-- /.col -->
                         </div>
                         <!-- info row -->
                         <div class="row invoice-info">
                             <div class="col-sm-4 invoice-col">
-                                Người thuê
+                                <b>Người thuê</b>
                                 <address>
-                                    <strong>{{$post->customer->name}}</strong><br>
+                                    <ins><i>{{$post->customer->name}}</i></ins><br>
                                     @if($post->ward_id && $post->district_id)
                                         <span>Địa chỉ : {{$post->ward->name}} , {{$post->district->name}} </span><br/>
                                     @endif
@@ -52,58 +58,62 @@
                                 </address>
                             </div>
                             <div class="col-sm-4 invoice-col">
-                                Danh mục <br>
+                              <b>Công việc</b>   <br>
                                 @if($post->attributes)
                                     @foreach ($post->attributes as $attribute)
                                     @if($attribute->type=="select"||$attribute->type=="radio")
-                                        <b>{{$attribute->name}}</b> :  {{json_decode($attribute['options'],true)[$value]}}
+                                        {{$attribute->name}} :  {{json_decode($attribute['options'],true)[$value]}}
                                         <br/>
                                     @elseif($attribute->type=="checkbox")
-                                            <b>{{$attribute->name}}</b> :
+                                            {{$attribute->name}} :
                                         @foreach(json_decode($attribute->pivot->value,true) as $value)
                                                 {{json_decode($attribute['options'],true)[$value]}}
                                             @endforeach<br/>
                                     @elseif($attribute->type=='input'||$attribute->type=='textarea')
-                                            <b>{{$attribute->name}}</b> :  {{json_decode($attribute->pivot->value,true)}}<br/>
+                                            {{$attribute->name}} :  {{json_decode($attribute->pivot->value,true)}}<br/>
                                     @endif
                                     @endforeach
                                 @endif
 
-                                <strong>{{$post->category->name}}</strong><br>
+                                <ins><i>{{$post->category->name}}</i></ins><br>
                                 @if($post->attributes)
                                     @foreach( json_decode($post->attributes,true) as $key => $attribute )
                                         @if(getAttributes($key)->type=="select"||getAttributes($key)->type=="radio")
-                                            <b>{{getAttributes($key)->name}}</b>
+                                            {{getAttributes($key)->name}}
                                             : {{json_decode(getAttributes($key)->options,true)[$attribute]}}<br/>
                                         @elseif(getAttributes($key)->type=="textarea"||getAttributes($key)->type=="input")
-                                            <b>{{getAttributes($key)->name}}</b> : {{$attribute}}<br/>
+                                            {{getAttributes($key)->name}} : {{$attribute}}<br/>
                                         @endif
                                     @endforeach
                                 @endif
                             </div>
-                            <!-- /.col -->
-                            @if($post->employee_id)
-                                <div class="col-sm-4 invoice-col">
-                                    Người giúp việc
-                                    <address>
-                                        <strong>{{$post->employee->name}}</strong><br>
-                                        @if($post->employee->ward_id && $post->employee->district_id)
-                                            <span>Địa chỉ : {{$post->employee->ward->name}} , {{$post->employee->district->name}} </span>
-                                            <br/>
-                                        @endif
-                                        Phone: {{$post->employee->phone}}<br>
-                                        Email: {{$post->employee->email}}
-                                    </address>
+                            <div class="col-sm-4 invoice-col">
+
+                                    @if($post->employee_id)
+                                        <b>Người giúp việc</b>
+                                        <div id="employee">
+                                            <address>
+                                                <ins><i>{{$post->employee->name}}</i></ins><br>
+                                                @if($post->employee->ward_id && $post->employee->district_id)
+                                                    <span>Địa chỉ : {{$post->employee->ward->name}} , {{$post->employee->district->name}} </span>
+                                                    <br/>
+                                                @endif
+                                                Phone: {{$post->employee->phone}}<br>
+                                                Email: {{$post->employee->email}}
+                                            </address>
+                                        </div>
+                                    @else
+                                        <b>Người giúp việc</b>
+                                        <div id="employee"></div>
+                                    @endif
                                 </div>
-                        @endif
-                        <!-- /.col -->
-                            <!-- /.col -->
                         </div>
                         <!-- /.row -->
 
                         <!-- Table row -->
                         <!-- /.row -->
-
+                        <form action="{{route('manager.post.updateStatus',['id'=>$post->id])}}" method="post">
+                            @csrf
                         <div class="row">
                             <!-- accepted payments column -->
                             <div class="col-6">
@@ -115,26 +125,36 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-6">
-                                <p class="lead">Amount Due 2/22/2014</p>
 
                                 <div class="table-responsive">
                                     <table class="table">
                                         <tbody>
                                         <tr>
-                                            <th>Thời gian thuê</th>
-                                            <td></td>
+                                            @if($post->status==1||$post->status==2||$post->status==3)
+                                            <th>Chuyển trạng thái</th>
+                                            <td>
+
+                                                    <select name="statusPost" style="width: 150px" id="changeStatusPost" >
+                                                        @foreach(managerPostStatus() as $status)
+                                                            <option value="{{$status['value']}}" {{$status['value']==3?'disabled':''}} {{$status['value']==$post->status?"selected='selected'":''}} >{{$status['name']}}</option>
+                                                        @endforeach
+                                                    </select>
+                                            </td>
+                                                @else
+                                                <th>Trạng thái công việc</th>
+                                                <td> {{getStatus($post->status)}}
+                                                    </td>
+                                                @endif
+
+                                        </tr>
+                                        <tr>
+                                            <th>Thời gian thuê :
+                                               </th>
+                                            <td> @if($post->time)<span>{{$post->time}}</span> @endif</td>
                                         </tr>
                                         <tr>
                                             <th style="width:50%">Giá:</th>
                                             <td>$ {{$post->price}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Trạng thái công việc</th>
-                                            <td>{{getStatus($post->status)}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Total:</th>
-                                            <td></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -145,21 +165,21 @@
                         <!-- /.row -->
 
                         <!-- this row will not appear when printing -->
+
                         <div class="row no-print">
                             <div class="col-12">
-                                <a href="#" rel="noopener" target="_blank" class="btn btn-default"><i
-                                        class="fas fa-print"></i> Print</a>
-                                <button type="button" class="btn btn-danger float-right" style="margin-right: 5px;">
+                                @if($post->status==1||$post->status==2||$post->status==3)
+                                <button type="submit" class="btn btn-info float-left" ><i class="fas fa-sync"></i>
+                                    Cập nhật
+                                </button>
+                                @endif
+                                @if($post->status!=0)
+                                <button type="button" id="delete" class="btn btn-danger float-right" style="margin-right: 5px;">
                                     <i class="far fa-trash-alt"></i> Huỷ
                                 </button>
-                                <button type="button" class="btn btn-success float-right"><i
-                                        class="fas fa-exchange-alt"></i> Thay đổi trạng thái
-                                </button>
+                                @endif
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                        data-target="#fullHeightModalRight">
-                                    Launch demo modal
-                                </button>
+
 
                                 <!-- Full Height Modal Right -->
                                 <div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog"
@@ -167,25 +187,88 @@
                                      aria-hidden="true">
 
                                     <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
-                                    <div class="modal-dialog modal-full-height modal-right" role="document">
+                                    <div class="modal-dialog modal-full-height modal-right modal-lg" role="document">
 
 
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title w-100" id="myModalLabel">Modal title</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
+                                                <div class="form-group filterData">
+                                                    @if(Request::get('district'))
+                                                        <input id="districtPost" value="{{Request::get('district')}}" hidden>
+                                                    @endif
+                                                    <select class="form-control" name="district" id="district">
+                                                        <option value="">Quận huyện</option>
+                                                        @foreach($address as $a)
+                                                            <option {{Request::get('district')==$a->maqh?"selected='selected":''}} value="{{$a->maqh}}">{{$a->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group filterData ">
+                                                    <select class="form-control" name="status" id="status">
+                                                        <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
+                                                            thái
+                                                        </option>
+                                                        @foreach(employeeStatus() as $status)
+                                                            <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="filterData" style="width: 45%">
+                                                    <input value="{{Request::get('search')}}" id="findEmployee"
+                                                           placeholder="Tìm kiếm" type="text" class="form-control"
+                                                           name="search">
+                                                </div>
+                                                <span class="input-group-append">
+                                                    <input value="{{$post->id}}" id="post_id" hidden>
+                                                 <button type="button" onclick="chooseEmployee()"
+                                                         class="btn btn-info btn-flat">Go!</button>
+
+                                                </span>
+                                                <span class="input-group-append">
+                                                    <button type="button" onclick="refresh()"
+                                                            class="btn btn-secondary btn-flat"><i class="fas fa-redo"
+                                                                                                  style="padding-top: 3px"></i></button>
+                                                    </span>
                                             </div>
                                             <div class="modal-body">
-                                                ...
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Chọn</th>
+                                                        <th>Ảnh</th>
+                                                        <th>Tên</th>
+                                                        <th>Email</th>
+                                                        <th>Số điện thoại</th>
+                                                        <th>Địa chỉ</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($employees as $employee)
+                                                        <tr>
+                                                            <td><input type="radio" name="employee_id" data-employee="{{$employee}}"
+                                                                       value="{{$employee->id}}"></td>
+                                                            @if($employee->avatar)
+                                                                <td><img style="width: 40px;height: 40px" src="{{asset($employee->avatar)}}"></td>
+                                                            @else
+                                                                <td><img src="{{asset('images/avt.jpeg')}}"
+                                                                         style="width:40px;height: 40px"></td>
+                                                            @endif
+                                                            <td>{{ $employee->name}}</td>
+                                                            <td>{{$employee->email}}</td>
+                                                            <td>{{$employee->phone}}</td>
+                                                            <td>
+                                                                @if($employee->ward_id && $employee->district_id)
+                                                                    {{$employee->ward->name}} , {{$employee->district->name}}
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
                                             <div class="modal-footer justify-content-center">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                    Close
+                                                <button type="button" class="btn btn-primary" id="save" data-dismiss="modal">Lưu
                                                 </button>
-                                                <button type="button" class="btn btn-primary">Save changes</button>
                                             </div>
                                         </div>
                                     </div>
@@ -193,6 +276,7 @@
                                 <!-- Full Height Modal Right -->
                             </div>
                         </div>
+                        </form>
                     </div>
                     <!-- /.invoice -->
                 </div><!-- /.col -->
@@ -200,4 +284,64 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+@endsection
+@section('script')
+    <script type="text/javascript">
+        $('#delete').click(function (){
+            var answer = confirm("Xoá bài đăng")
+            if (answer){
+                alert("bi bi");
+                var token = $("input[name='_token']").val();
+                var id = $("#post_id").val()
+                var url='{!! route('manager.post.updateStatus',[':id']) !!}';
+                url=url.replace(':id',id)
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        status: 0,
+                        _token: token,
+                    },
+                    success :function (data){
+                        location.reload()
+                    }
+                })
+            }
+            else{
+
+            }
+
+        })
+        $('#save').on('click', function(e) {
+            $('#changeStatusPost').attr("disabled",true)
+            var html =''
+            $('#employee').html('')
+            var x= JSON.parse(document.querySelector('input[name="employee_id"]:checked').getAttribute('data-employee'))
+            html+=    "<address>"
+            html+=    "<ins><i>"+x.name+"</i></ins><br>"
+            html+=    "Phone: "+x.phone+"<br>"
+            html+= "Email: "+x.email+""
+            html+= "</address>"
+            $('#employee').html(html)
+        });
+        function chooseEmployee() {
+            var id=$('#post_id').val();
+                var district =$('#district').val()
+                var status =$('#status').val()
+                var search =$('#findEmployee').val()
+            var url = "{!! route('manager.post.details',[':id']) !!}";
+            url = url.replace(':id', id);
+            url = url+'?district='+district +'&status='+status +'&search='+search ;
+            window.history.pushState({}, '', url);
+            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
+        }
+
+        function refresh() {
+            var id=$('#post_id').val();
+            var url = "{!! route('manager.post.details',[':id']) !!}";
+            url = url.replace(':id', id);
+            window.history.pushState({}, '', url);
+            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
+        }
+    </script>
 @endsection

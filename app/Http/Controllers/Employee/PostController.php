@@ -22,8 +22,22 @@ class PostController extends Controller
         view()->share(compact('address','categories'));
     }
     public function index(Request $request){
-       $post=Post::where('employee_id',Auth::guard('employee')->user()->id)->get();
-       dd($post);
-        return view('manager.post.index',compact('posts'));
+       $posts=Post::where('employee_id',Auth::guard('employee')->user()->id)->get();
+        return view('employee.post.index',compact('posts'));
+    }
+    public function details($id){
+        $post = $this->post->find($id);
+        return view('employee.post.details',compact('post'));
+    }
+    public function update($id, Request $request){
+        $post=Post::find($id);
+        if ($request->status==0){
+            $data['status']=2;
+            $data['employee_id']=null;
+            $post->fill($data)->save();
+        }else{
+            $data['status']=$request->status+1;
+        }
+        $post->fill($data)->save();
     }
 }
