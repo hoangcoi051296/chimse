@@ -7,15 +7,6 @@
             <div class="col-sm-6">
                 <h1 class="m-0 text-dark">Danh sách người thuê</h1>
             </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{route('manager.index')}}">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="{{route('customer.login')}}"><i
-                                class="zmdi zmdi-power"></i>Logout</a>
-                    </li>
-            </div>
-
-            </ol>
         </div><!-- /.col -->
     </div><!-- /.row -->
 </div><!-- /.container-fluid -->
@@ -47,7 +38,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="width: 10px">Id</th>
+                                    <th>Avatar</th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
@@ -58,7 +49,7 @@
                             <tbody>
                                 @foreach($customers as $key => $customer)
                                 <tr>
-                                    <td>{{$key + 1}}</td>
+                                    <td><img src="{{$customer->avatar}}" style="width: 40px;height: 40px"></td>
                                     <td>{{ $customer->name}}</td>
                                     <td>
                                         {{$customer->email}}

@@ -17,12 +17,7 @@
                     <h1 class="m-0 text-dark">Sửa người giúp việc</h1>
 
                 </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Danh sách</li>
-                    </ol>
-                </div><!-- /.col -->
+               <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>

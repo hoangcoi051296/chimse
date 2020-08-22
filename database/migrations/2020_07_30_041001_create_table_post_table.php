@@ -18,7 +18,7 @@ class CreateTablePostTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->float('price');
-            $table->boolean('status')->default(1);
+            $table->tinyInteger('status')->default(1);
             $table->string('review')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('employee_id')->nullable();

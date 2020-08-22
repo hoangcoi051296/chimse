@@ -2,8 +2,8 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], function () {
-    Route::get('/', 'ManagerController@index')->name('manager.index');
-    Route::get('/edit/{id}', 'ManagerController@editAccount')->name('manager.account.edit');
+    Route::get('/', 'ManagerController@index')->name('manager.index')->middleware(['can:editPost']);
+    Route::get('/edit', 'ManagerController@editAccount')->name('manager.account.edit');
     Route::post('/edit/{id}', 'ManagerController@updateAccount')->name('manager.account.update');
     Route::group(['prefix' => 'employee'], function () {
         Route::get('/', 'HelperController@index')->name('manager.employee.index');
@@ -48,6 +48,7 @@ Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], f
         Route::post('changeStatus', 'PostController@changeStatus')->name('manager.post.changeStatus');
         Route::get('edit/{id}', 'PostController@edit')->name('manager.post.edit');
         Route::post('update/{id}', 'PostController@update')->name('manager.post.update');
+        Route::post('updateStatus/{id}', 'PostController@updateStatus')->name('manager.post.updateStatus');
         Route::get('delete/{id}', 'PostController@delete')->name('manager.post.delete');
     });
 

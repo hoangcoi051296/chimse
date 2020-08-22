@@ -75,6 +75,33 @@ if (!function_exists("employeeStatus")) {
     {
         return $status =[
             [
+                'value' => 0,
+                'name' => 'Chờ việc'
+            ],
+            [
+                'value' => 1,
+                'name' => 'Xác nhận CV'
+            ],
+            [
+                'value' => 2,
+                'name' => 'Bắt đầu'
+            ],
+            [
+                'value' => 3,
+                'name' => 'Hoàn thành CV'
+            ],
+        ];
+    }
+}
+if (!function_exists("employeePostStatus")) {
+    function employeePostStatus()
+    {
+        return $status =[
+            [
+                'value' => 3,
+                'name' => 'Chờ xác nhận'
+            ],
+            [
                 'value' => 4,
                 'name' => 'Xác nhận CV'
             ],
@@ -85,6 +112,54 @@ if (!function_exists("employeeStatus")) {
             [
                 'value' => 6,
                 'name' => 'Hoàn thành CV'
+            ],
+            [
+                'value' => 7,
+                'name' => 'Người thuê xác nhận hoàn thành'
+            ],
+            [
+                'value' => 0,
+                'name' => 'Đã huỷ'
+            ],
+        ];
+    }
+}
+if (!function_exists("employeeGetStatus")) {
+    function employeeGetStatus($status_id)
+    {
+        if ($status_id==Post::DaHuy){
+            $status='Đã huỷ';
+        }elseif ($status_id==Post::TimDuocNGV){
+            $status='Chờ xác nhận';
+        }elseif ($status_id==Post::NGVXacNhanCV){
+            $status='Xác nhận công việc';
+        }elseif ($status_id==Post::NGVBatDau){
+            $status='Bắt đầu';
+        }elseif ($status_id==Post::NGVKetThuc){
+            $status='Kết thúc';
+        }
+        else ($status_id==Post::NTXacNhan){
+        $status='Người thuê xác nhận hoàn thành'
+        };
+        return $status;
+    }
+}
+
+if (!function_exists("managerPostStatus")) {
+    function managerPostStatus()
+    {
+        return $status =[
+            [
+                'value' => 1,
+                'name' => 'Chờ Duyệt'
+            ],
+            [
+                'value' => 2,
+                'name' => 'Duyệt Bài'
+            ],
+            [
+                'value' => 3,
+                'name' => 'Tìm được NGV'
             ],
         ];
     }

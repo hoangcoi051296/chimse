@@ -11,7 +11,7 @@ class Manager extends Model implements Authenticatable
 {
     use AuthenticableTrait;
     protected $table = 'managers';
-    protected $fillable = ['name','email','password'];
+    protected $fillable = ['name','email','password','avatar'];
     protected $hidden = [
         'password', 'remember_token',
     ];

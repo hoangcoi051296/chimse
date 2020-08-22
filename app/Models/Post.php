@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 class Post extends Model
 {
     protected $table = 'post';
-    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id', 'category_id', 'helper_id', 'customer_id', 'time'];
+    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id', 'category_id', 'employee_id','customer_id', 'time'];
     const DaHuy = 0;
     const ChoDuyet = 1;
     const DaDuyet = 2;
@@ -29,12 +29,7 @@ class Post extends Model
             $posts= $posts->where('status', $condition['status']);
         }
         if (isset($condition['district'])) {
-            $filter=$condition['district'];
-            $posts= $posts->whereHas('ward',function ($q) use ($filter){
-                $q->whereHas('district',function ($q)use($filter){
-                    $q->where('maqh',$filter);
-                });
-            });
+            $posts= $posts->where('district_id', $condition['district']);
         }
         if (isset($condition['ward'])) {
             $posts= $posts->where('ward_id', $condition['ward']);
@@ -62,54 +57,46 @@ class Post extends Model
         }
         return $posts;
     }
-
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
-
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
-
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
-
     public function ward()
     {
         return $this->hasOne("\App\Models\Ward", 'xaid', 'ward_id');
     }
-
     public function district()
     {
         return $this->hasOne(District::class, 'maqh', 'district_id');
     }
-
     public function rating()
     {
         return $this->hasMany(Feedback::class, 'post_id', 'id');
     }
-
     public function avgRate()
     {
         return $this->rating()->avg('rating');
     }
-
-    public function rules()
+    public function rules($id = null)
     {
         $validate = [
             'title' => "required| string",
             'description' => "required|string",
             'price' => "required",
-            'attributes.*'=>'required',
-            'time'=>'required',
-//            'customer_id' => "required",
         ];
+        if ($id) {
+            return $validate;
+        }
         return array_merge($validate, ['district' => 'required',
-            'ward' => "required", 'customer_id' => "required",'category_id' => "required"]);
+            'ward' => "required", 'customer_id' => "required",'category_id' => "required",'time'=>'required',]);
 
     }
     public function messages()
@@ -142,20 +129,36 @@ class Post extends Model
             $this->attributes()->attach($key, ['value' => $value]);
         }
     }
-
     public function updateData($data, $id)
     {
-        $attribute=$data['attributes'];
+        if (isset($data['attributes'])){
+            $attribute=$data['attributes'];
+            foreach ($attribute as $key => $value) {
+                $value = json_encode($value);
+                $attr[$key] = ['value' => $value];
+            }
+            $this->find($id)->attributes()->sync($attr);
+        }
         $data['status']=Post::ChoDuyet;
         $data['district_id']=$data['district'];
         $data['ward_id']=$data['ward'];
-        foreach ($attribute as $key => $value) {
-            $value = json_encode($value);
-            $attr[$key] = ['value' => $value];
-        }
-        $this->find($id)->attributes()->sync($attr);
         $data = array_filter($data);
 
         $this->find($id)->fill($data)->save();
+    }
+    public function updateStatus($data, $id){
+        $data =array_filter($data);
+        if (isset($data['employee_id'])){
+            $data['status']=Post::TimDuocNGV;
+
+        }else{
+            if (isset($data['statusPost'])){
+                $data['status']=$data['statusPost'];
+                $data['employee_id']=null;
+            }else{
+                $data['status']=Post::DaHuy;
+            }
+        }
+        $this->find($id)->fill($data)->update();
     }
 }

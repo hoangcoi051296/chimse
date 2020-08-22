@@ -45,7 +45,8 @@
         "files": [
             "helpers/sidebar-manager.php",
             "helpers/format_phoneNumber.php",
-            "helpers/getStatus.php"
+            "helpers/getStatus.php",
+            "helpers/permission.php"
         ]
     },
     "autoload-dev": {

@@ -82,7 +82,7 @@ if (!function_exists("sidebarManager")) {
                     'child' => [
                         [
                             'name' => 'Cập nhật tài khoản',
-                            'route' => '#'
+                            'route' => route('manager.account.edit'),
                         ],
                         [
                             'name' => 'Đăng xuất',

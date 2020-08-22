@@ -22,7 +22,12 @@ class Customer extends Model implements Authenticatable
             $search = $request->get('search');
             $data->where('name','LIKE','%'.$search.'%')
              ->orWhere('email','LIKE','%'.$search.'%')
-             ->orWhere('phone','LIKE','%'.$search.'%');
+             ->orWhere('phone','LIKE','%'.$search.'%')
+            ->orWhereHas('ward', function ($query) use ($search) {
+                $query->whereHas('district', function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
+                });
+            });
          }
         $data = $data->paginate($request->get('per_page',15));
         return $data;
@@ -36,5 +41,9 @@ class Customer extends Model implements Authenticatable
     public function ward()
     {
         return $this->belongsTo(Ward::class, 'ward_id', 'xaid');
+    }
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_id', 'maqh');
     }
 }

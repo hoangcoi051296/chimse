@@ -16,12 +16,7 @@
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Sửa bài đăng</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('manager.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('manager.index')}}"></a>Danh sách</li>
-                    </ol>
-                </div><!-- /.col -->
+                <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -64,16 +59,16 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Thời gian bắt đầu : </label>
-                                    <span>{{$post->time}}</span><input name="time" value="{{$post->time}}" hidden>
-{{--                                    <div class="input-group">--}}
-{{--                                        <div class="input-group-append" data-target="#timepicker"--}}
-{{--                                             data-toggle="datetimepicker">--}}
-{{--                                            <div class="input-group-text"><i class="far fa-clock"></i></div>--}}
-{{--                                        </div>--}}
-{{--                                        <input type="text" name="time"--}}
-{{--                                               class="form-control datetimepicker-input @if($errors->has('time'))  border border-info @endif"--}}
-{{--                                               data-target="#timepicker" id="timepicker">--}}
-{{--                                    </div>--}}
+                                    <span>{{$post->time}}</span>
+                                    <div class="input-group">
+                                        <div class="input-group-append" data-target="#timepicker"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                        <input type="text" name="time"
+                                               class="form-control datetimepicker-input @if($errors->has('time'))  border border-info @endif"
+                                               data-target="#timepicker" id="timepicker">
+                                    </div>
                                     @if($errors->has('time'))
                                         <span class="errorCustom">{{$errors->first('time')}}</span>
                                 @endif

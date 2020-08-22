@@ -49,6 +49,7 @@ class Attribute extends Model
         if (isset($data['key']) && isset($data['value'])) {
             $data['options'] = json_encode(array_combine($data['key'], $data['value']));
         }
+
         if ($data['type'] == 'input' || $data['type'] == 'textarea') {
             $data['options'] = null;
             if ($attribute->post) {
@@ -59,5 +60,8 @@ class Attribute extends Model
 
         }
         return $attribute->fill($data)->save();
+    }
+    public function deleteData($id){
+        $this->find($id)->delete();
     }
 }
