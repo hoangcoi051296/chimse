@@ -31,12 +31,9 @@ class PostController extends Controller
     }
     public function update($id, Request $request){
         $post=Post::find($id);
-        if ($request->status==0){
-            $data['status']=2;
+        $data=$request->all();
+        if ($request->status==Post::DaDuyet){
             $data['employee_id']=null;
-            $post->fill($data)->save();
-        }else{
-            $data['status']=$request->status+1;
         }
         $post->fill($data)->save();
     }

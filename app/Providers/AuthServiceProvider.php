@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -24,6 +25,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        $this->changeStatusManager();
+        $this->editPostManager();
+        Gate::define('edit-post', 'App\CustomPolicy@editPost');
     }
 
     public function changeStatusManager()
@@ -35,8 +39,9 @@ class AuthServiceProvider extends ServiceProvider
     public function editPostManager()
     {
         Gate::define('editPost',function ($user,$post){
-            return permissionManager($user,$post);
+            return true;
         });
+
     }
     public function cancelPostManager()
     {

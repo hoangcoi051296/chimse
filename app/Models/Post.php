@@ -149,11 +149,12 @@ class Post extends Model
     public function updateStatus($data, $id){
         $data =array_filter($data);
         if (isset($data['employee_id'])){
-
             $data['status']=Post::TimDuocNGV;
+
         }else{
             if (isset($data['statusPost'])){
                 $data['status']=$data['statusPost'];
+                $data['employee_id']=null;
             }else{
                 $data['status']=Post::DaHuy;
             }

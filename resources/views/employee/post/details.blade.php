@@ -1,5 +1,8 @@
 @extends('employee.layout.layout')
 @section('content')
+<?php
+    use App\Models\Post;
+?>
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -124,20 +127,20 @@
 
                             <div class="row no-print">
                                 <div class="col-12">
-                                    @if($post->status==3)
+                                    @if($post->status==Post::TimDuocNGV)
                                         <button type="button" data-status={{$post->status}} id="changeStatus" class="btn btn-info float-left" ><i class="fas fa-sync"></i>
                                             Xác nhận công việc
                                         </button>
-                                    @elseif($post->status==4)
+                                    @elseif($post->status==Post::NGVXacNhanCV)
                                         <button type="button" data-status={{$post->status}}  id="changeStatus" class="btn btn-info float-left" ><i class="fas fa-sync"></i>
                                             Bắt đầu công việc
                                         </button>
-                                    @elseif($post->status==5)
+                                    @elseif($post->status==Post::NGVBatDau)
                                         <button type="button" data-status={{$post->status}} id="changeStatus" class="btn btn-info float-left" ><i class="fas fa-sync"></i>
                                            Kết thúc công việc
                                         </button>
                                     @endif
-                                    @if($post->status==3)
+                                    @if($post->status==Post::TimDuocNGV)
                                         <button type="button" id="delete" class="btn btn-danger float-right" style="margin-right: 5px;">
                                             <i class="far fa-trash-alt"></i> Huỷ
                                         </button>
@@ -167,7 +170,7 @@
                     url: url,
                     method: 'POST',
                     data: {
-                        status: 0,
+                        status: {{Post::DaDuyet}},
                         _token: token,
                     },
                     success :function (data){
@@ -187,13 +190,23 @@
                 var token = $("input[name='_token']").val();
                 var id = $("#postID").val()
                 var status= $(this).data('status')
+                var statusPost
+                if (status=={{Post::TimDuocNGV}}){
+                    statusPost={{Post::NGVXacNhanCV}}
+                }
+                if (status=={{Post::NGVXacNhanCV}}){
+                    statusPost={{Post::NGVBatDau}}
+                }
+                if (status=={{Post::NGVBatDau}}){
+                    statusPost={{Post::NGVKetThuc}}
+                }
                 var url='{!! route('employee.post.update',[':id']) !!}';
                 url=url.replace(':id',id)
                 $.ajax({
                     url: url,
                     method: 'POST',
                     data: {
-                        status: status,
+                        status: statusPost,
                         _token: token,
                     },
                     success :function (data){

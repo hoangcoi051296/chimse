@@ -1,3 +1,4 @@
+<?php use App\Models\Post ?>
 @extends('manager.layout.layout')
 @section('content')
     <!-- Content Header (Page header) -->
@@ -136,7 +137,7 @@
 
                                                     <select name="statusPost" style="width: 150px" id="changeStatusPost" >
                                                         @foreach(managerPostStatus() as $status)
-                                                            <option value="{{$status['value']}}" {{$status['value']==3?'disabled':''}} {{$status['value']==$post->status?"selected='selected'":''}} >{{$status['name']}}</option>
+                                                            <option data-statusName="{{$status['name']}}" value="{{$status['value']}}" {{$status['value']==3?'disabled':''}} {{$status['value']==$post->status?"selected='selected'":''}} >{{$status['name']}}</option>
                                                         @endforeach
                                                     </select>
                                             </td>
@@ -168,12 +169,12 @@
 
                         <div class="row no-print">
                             <div class="col-12">
-                                @if($post->status==1||$post->status==2||$post->status==3)
-                                <button type="submit" class="btn btn-info float-left" ><i class="fas fa-sync"></i>
+                                @if($post->status==Post::ChoDuyet||Post::DaDuyet||Post::TimDuocNGV)
+                                <button type="submit" onclick=" return confirm('Cập nhật ')" class="btn btn-info float-left" ><i class="fas fa-sync"></i>
                                     Cập nhật
                                 </button>
                                 @endif
-                                @if($post->status!=0)
+                                @if($post->status!=Post::DaHuy)
                                 <button type="button" id="delete" class="btn btn-danger float-right" style="margin-right: 5px;">
                                     <i class="far fa-trash-alt"></i> Huỷ
                                 </button>
@@ -267,7 +268,7 @@
                                                 </table>
                                             </div>
                                             <div class="modal-footer justify-content-center">
-                                                <button type="button" class="btn btn-primary" id="save" data-dismiss="modal">Lưu
+                                                <button type="button" class="btn btn-primary" onclick="saveData()" id="save" data-dismiss="modal">Lưu
                                                 </button>
                                             </div>
                                         </div>
@@ -299,7 +300,7 @@
                     url: url,
                     method: 'POST',
                     data: {
-                        status: 0,
+                        status: {{Post::DaHuy}},
                         _token: token,
                     },
                     success :function (data){
@@ -312,18 +313,20 @@
             }
 
         })
-        $('#save').on('click', function(e) {
-            $('#changeStatusPost').attr("disabled",true)
-            var html =''
-            $('#employee').html('')
-            var x= JSON.parse(document.querySelector('input[name="employee_id"]:checked').getAttribute('data-employee'))
-            html+=    "<address>"
-            html+=    "<ins><i>"+x.name+"</i></ins><br>"
-            html+=    "Phone: "+x.phone+"<br>"
-            html+= "Email: "+x.email+""
-            html+= "</address>"
-            $('#employee').html(html)
-        });
+        function saveData(){
+           $('#changeStatusPost').attr("disabled",true)
+           var html =''
+           $('#employee').html('')
+           var x = $('input[name="employee_id"]:checked').data('employee');
+           var y= JSON.parse(document.querySelector('input[name="employee_id"]').getAttribute('data-employee'))
+           console.log(y)
+           html+=    "<address>"
+           html+=    "<ins><i>"+x.name+"</i></ins><br>"
+           html+=    "Phone: "+x.phone+"<br>"
+           html+= "Email: "+x.email+""
+           html+= "</address>"
+           $('#employee').html(html)
+       }
         function chooseEmployee() {
             var id=$('#post_id').val();
                 var district =$('#district').val()
@@ -334,8 +337,8 @@
             url = url+'?district='+district +'&status='+status +'&search='+search ;
             window.history.pushState({}, '', url);
             $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
+            $("#employee").load(" #employee > * ");
         }
-
         function refresh() {
             var id=$('#post_id').val();
             var url = "{!! route('manager.post.details',[':id']) !!}";
