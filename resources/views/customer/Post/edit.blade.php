@@ -11,7 +11,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('customer.index')}}"></a>Danh sách</li>
+                        <li class="breadcrumb-item active"><a href="{{route('customer.post.index')}}">Danh sách</a></li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -38,12 +38,12 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="inputName">Title</label>
+                                    <label for="inputName">Tên</label>
                                     <input type="text" name="title" id="inputName" value="{{$post->title}}"
                                            class="form-control @if($errors->has('description')) error-input @endif">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputName">Description</label>
+                                    <label for="inputName">Mô tả</label>
                                     <textarea class="form-control @if($errors->has('description')) error-input @endif" name="description" id="description1" rows="3">{!! $post->description !!}</textarea>
                                     @if($errors->has('description'))
                                         <div class="messages-error">
@@ -52,7 +52,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label>Date and time:</label>
+                                    <label>Thời gian:</label>
 
                                     <div class="input-group">
                                         <div class="input-group-append" data-target="#timepicker"
@@ -66,7 +66,7 @@
                                     <!-- /.input group -->
                                 </div>
                                 <div class="form-group">
-                                    <label>District:</label>
+                                    <label>Quận huyện:</label>
                                     @if($post->district_id)
                                         <input id="districtPost" value="{{$post->ward->district->maqh}}" hidden>
                                     @endif
@@ -80,7 +80,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Ward:</label>
+                                    <label>Xã phường:</label>
                                     @if($post->ward_id)
                                         <input id="wardPost" value="{{$post->ward->xaid}}" hidden>
                                     @endif
@@ -88,12 +88,12 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputName">Price</label>
+                                    <label for="inputName">Giá</label>
                                     <input type="text" name="price" id="inputName" value="{{$post->price}}"
                                            class="form-control @if($errors->has('description')) error-input @endif">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputName">Category</label>
+                                    <label for="inputName">Danh mục</label>
                                     <select name="category_id"
                                             class="form-control @if($errors->has('description')) error-input @endif"
                                             id="category">

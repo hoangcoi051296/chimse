@@ -29,13 +29,30 @@ class PostController extends Controller
         $user = Auth::guard('customer')->user();
         $request['customer_id'] = $user->id;
         $posts = $this->post->getData($request);
-        return view('customer.post.index', compact('posts'));
+        $category = Category::all();
+        return view('customer.post.index', compact('posts','category'));
     }
 
     public function showWardInDistrict(Request $request)
     {
             $wards = Ward::Where('maqh', $request->address)->get();
             return response()->json($wards);
+    }
+//    public function changeStatus(Request $request){
+//        if ($request->ajax()) {
+//            $post=$this->post->find($request->id);
+//            $post->status=$post->status+1;
+//            $post->save();
+//            return response()->json($post);
+//        }
+//    }
+    public function changeUserStatus(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $user->status = $request->status;
+        $user->save();
+
+        return response()->json(['success'=>'User status change successfully.']);
     }
 
     public function create()
@@ -52,7 +69,7 @@ class PostController extends Controller
             $data['customer_id'] = Auth::guard('customer')->user()->id;
             $this->post->createData($data);
 
-        return redirect()->route('customer.post.index')->with("success", "Create Success");
+        return redirect()->route('customer.post.index')->withSuccess("Tạo mới thành công");
     }
 
     public function edit($id)
@@ -71,7 +88,7 @@ class PostController extends Controller
         $data['customer_id'] = Auth::guard('customer')->user()->id;
         $this->post->updateData($data, $id);
 
-        return redirect()->route('customer.post.index')->with("success", "Create Success");
+        return redirect()->route('customer.post.index')->withSuccess("Sửa thành công");
     }
 
     public function delete($id)

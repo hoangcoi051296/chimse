@@ -33,7 +33,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="inputName">Name</label>
+                                    <label for="inputName">Tên</label>
                                     <input type="text" name="name" id="inputName" class="form-control"
                                            value="{{$customer->name}}">
                                 </div>
@@ -42,11 +42,11 @@
                                     <input name="email" type="email" class="form-control" value="{{$customer->email}}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputEmail">Phone</label>
+                                    <label for="inputEmail">Số điện thoại</label>
                                     <input name="phone" type="text" class="form-control" value="{{$customer->phone}}">
                                 </div>
                                 <div class="form-group">
-                                    <label>District:</label>
+                                    <label>Chọn quận huyện:</label>
                                     @if($customer->district_id)
                                         <input id="districtPost" value="{{$customer->ward->district->maqh}}" hidden>
                                     @endif
@@ -61,7 +61,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Ward:</label>
+                                    <label>Chọn xã phường:</label>
                                     @if($customer->ward_id)
                                         <input id="wardPost" value="{{$customer->ward->xaid}}" hidden>
                                     @endif

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class ManagerController extends Controller
 {
     public function index(){
+
         return view('manager.dashboard');
     }
     public function editAccount(){

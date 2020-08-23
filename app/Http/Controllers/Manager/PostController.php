@@ -22,30 +22,35 @@ class PostController extends Controller
 
     public function __construct(Post $post ,Customer $customer,Employee  $employee)
     {
-        $this->customer=$customer;
+        $this->customer = $customer;
         $this->post = $post;
         $this->employee=$employee;
         $address = District::where('matp', 01)->get();
-        $categories=Category::all();
-        view()->share(compact('address','categories'));
+        $categories = Category::all();
+        view()->share(compact('address', 'categories'));
     }
-    public function index(Request $request){
+
+    public function index(Request $request)
+    {
         $condition = $request->all();
-        $posts = $this->post->getData($condition)->paginate(10);
-        return view('manager.post.index',compact('posts'));
+        $posts = $this->post->getData($condition);
+        return view('manager.post.index', compact('posts'));
     }
-    public function changeStatus(Request $request){
+
+    public function changeStatus(Request $request)
+    {
         if ($request->ajax()) {
-           $post=$this->post->find($request->id);
-           $post->status=$post->status+1;
-           $post->save();
+            $post = $this->post->find($request->id);
+            $post->status = $post->status + 1;
+            $post->save();
             return response()->json($post);
         }
     }
+
     public function create(Request $request)
     {
-        $customers=  $this->customer->data($request);
-        return view('manager.post.create',compact('customers'));
+        $customers = $this->customer->data($request);
+        return view('manager.post.create', compact('customers'));
     }
     public function store(Request  $request){
         $data=$request->all();
@@ -74,13 +79,14 @@ class PostController extends Controller
         }
         return redirect()->back()->with("success", "Cập nhật thành công");
     }
+
     public function edit($id)
     {
         $post = $this->post->find($id);
-        return view('manager.post.edit',compact('post'));
+        return view('manager.post.edit', compact('post'));
     }
 
-    public function update($id,Request $request)
+    public function update($id, Request $request)
     {
         $data=$request->all();
         $request->validate($this->post->rules($id),$this->post->messages());
@@ -92,13 +98,13 @@ class PostController extends Controller
         return redirect()->route('manager.post.index')->with("success", "Cập nhật thành công");
     }
 
-    public function delete($id,$post_id)
+    public function delete($id, $post_id)
     {
         $customer = $this->customer->find($id);
         $post = $this->post->find($post_id);
 
         $post->delete();
 
-        return redirect()->route('manager.customer.post.index',['id' => $customer->id]);
+        return redirect()->route('manager.customer.post.index', ['id' => $customer->id]);
     }
 }

@@ -111,7 +111,17 @@
                                                     {{getStatus($post->status)}}</div>
                                             </td>
                                             <td>{{$post->customer->name}}</td>
-                                            <td>{{$post->category->name}}<br/>
+                                            <td>@if($post->category)
+                                                    {{$post->category->name}}
+                                                @endif</td>
+                                                {{--                                        @if($post->attributes)--}}
+
+                                                {{--                                           @foreach( json_decode($post->attributes,true) as $key => $attribute )--}}
+                                                {{--                                               <div class="row">--}}
+                                                {{--                                                   <span>{{getAttributes($key)->name}}</span> : <p>{{json_decode(getAttributes($key)->options,true)[$attribute]}}</p>--}}
+                                                {{--                                               </div>--}}
+                                                {{--                                                @endforeach--}}
+                                                {{--                                            @endif--}}
                                             </td>
                                             <td class="align-self-center">
                                                 <a href="{{ route('manager.post.details',['id' => $post->id])}}" data-toggle="tooltip" title="Xem chi tiết"

@@ -32,7 +32,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="inputName">Name</label>
+                                    <label for="inputName">Tên</label>
                                     <input type="text" name="name" id="inputName" class="form-control ">
                                 </div>
                                 <div class="form-group">
@@ -40,11 +40,11 @@
                                     <input name="email" type="email"  class="form-control" >
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputEmail">Phone</label>
+                                    <label for="inputEmail">Số điện thoại</label>
                                     <input name="phone" type="phone"  class="form-control" >
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputStatus">Address</label>
+                                    <label for="inputStatus">Quận huyện</label>
                                     <select  class="form-control custom-select option" name="district"
                                              type="text">
                                         <option value="" >Hà Nội</option>
@@ -54,16 +54,16 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Ward</label>
+                                    <label>Xã phường</label>
                                     <select class="form-control" name="ward">
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputPassword">Password</label>
+                                    <label for="inputPassword">Mật khẩu</label>
                                     <input type="password" name="password" id="inputClientCompany" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputProjectLeader">Repeat Password</label>
+                                    <label for="inputProjectLeader">Nhập lại mật khẩu</label>
                                     <input type="password" name="password_confirmation" id="inputProjectLeader" class="form-control">
                                 </div>
 
@@ -72,16 +72,6 @@
                         </div>
                         <!-- /.card -->
                     </div>
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            There were some errors with your request.
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
                 </div>
                 <div class="row " style="margin-bottom: 40px" >
                     <div class="col-12">
@@ -91,7 +81,5 @@
             </form>
         </div><!-- /.container-fluid -->
     </section>
---}}
-
     <!-- /.content -->
 @endsection
