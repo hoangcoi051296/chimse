@@ -166,7 +166,7 @@ $listStatus = listStatus();
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    {{-- {{$posts->links()}} --}}
+                    {{$posts->appends(request()->query())->links()}}
                 </div>
             </div>
             <!-- /.card -->
