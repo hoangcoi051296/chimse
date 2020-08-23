@@ -1,5 +1,13 @@
 @extends('manager.layout.layout')
-
+@section('style')
+    <style>
+        .errorCustom {
+            margin-left: 5px;
+            font-style: italic;
+            color: firebrick;
+        }
+    </style>
+@endsection
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -8,12 +16,7 @@
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Sửa bài đăng</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('customer.index')}}"></a>Danh sách</li>
-                    </ol>
-                </div><!-- /.col -->
+                <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -39,19 +42,45 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="inputName">Tiêu đề</label>
-                                    <input type="text" value="{{$post->title}}" name="title" class="form-control">
+                                    <input type="text" value="{{$post->title}}" name="title" class="form-control @if($errors->has('title'))  border border-info @endif ">
+                                    @if($errors->has('title'))
+                                        <span class="errorCustom">{{$errors->first('title')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Mô tả chi tiết</label>
-                                    <div id="description" style="background-color: whitesmoke; border-radius: 10px; height: 150px">
+                                    <div id="description" class="@if($errors->has('description'))  border border-info @endif"
+                                         style="background-color: whitesmoke; border-radius: 10px; height: 150px">
                                         {!!$post->description!!}
                                     </div>
-
+                                    @if($errors->has('description'))
+                                        <span class="errorCustom">{{$errors->first('description')}}</span>
+                                    @endif
                                 </div>
-                                <div class="form-group" style="padding-top: 50px">
+                                <div class="form-group">
+                                    <label>Thời gian bắt đầu : </label>
+                                    <span>{{$post->time}}</span>
+                                    <div class="input-group">
+                                        <div class="input-group-append" data-target="#timepicker"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                        <input type="text" name="time"
+                                               class="form-control datetimepicker-input @if($errors->has('time'))  border border-info @endif"
+                                               data-target="#timepicker" id="timepicker">
+                                    </div>
+                                    @if($errors->has('time'))
+                                        <span class="errorCustom">{{$errors->first('time')}}</span>
+                                @endif
+                                <!-- /.input group -->
+                                </div>
+                                <div class="form-group" style="padding-top: 10px">
                                     <label for="inputName"> Người thuê : </label>
                                     <input name="customer_id" value="{{$post->customer_id}}" hidden>
                                     <a href="#"> <span>{{$post->customer->name}}</span></a>
+                                    @if($errors->has('customer_id'))
+                                        <br/><span class="errorCustom">{{$errors->first('customer_id')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Chọn quận huyện:</label>
@@ -66,6 +95,9 @@
                                                 {{$post->district_id?$post->district->maqh==$a->maqh?"selected='selected'":'':''}} value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
                                     </select>
+                                    @if($errors->has('district'))
+                                        <br/><span class="errorCustom">{{$errors->first('district')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Chọn phường xã:</label>
@@ -74,11 +106,17 @@
                                     @endif
                                     <select class="form-control" name="ward" id="ward">
                                     </select>
+                                    @if($errors->has('ward'))
+                                        <span class="errorCustom">{{$errors->first('ward')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Giá</label>
                                     <input type="text" value="{{$post->price}}" name="price" id="inputName"
                                            class="form-control">
+                                    @if($errors->has('price'))
+                                        <span class="errorCustom">{{$errors->first('price')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Danh mục</label>
@@ -90,59 +128,63 @@
                                                 {{$post->category_id==$cat->id?"disabled".' '."selected='selected'":''}} value="{{$cat->id}}">{{$cat->name}}</option>
                                         @endforeach
                                     </select>
+                                    @if($errors->has('category_id'))
+                                        <span class="errorCustom">{{$errors->first('category_id')}}</span>
+                                    @endif
                                 </div>
+                                @if($errors->has('attributes.*'))
+                                    <span class="errorCustom">{{$errors->first('attributes.*')}}</span>
+                                @endif
                                 <div id="attributes">
-                                    @foreach(json_decode($post->attributes,true) as $key =>$attributes)
+                                    @foreach($post->attributes as $attribute)
                                         <div class="form-group">
-                                            <label>{{getAttributes($key)->name}}</label>
-                                            @if(getAttributes($key)->type=='select')
-                                                <select name="attributes[{{getAttributes($key)->id}}]"
+                                            <label>{{$attribute->name}}</label>
+                                            @if($attribute->type=='select')
+                                                <select name="attributes[{{$attribute->id}}]"
                                                         class="form-control">
-                                                    @foreach (json_decode(getAttributes($key)->options,true) as $keyOp => $option)
+                                                    @foreach (json_decode($attribute->options,true) as $keyOp => $option)
                                                         <option
-                                                            {{$attributes==$keyOp?"selected='selected'":''}} value="{{$keyOp}}">{{$option}}</option>
+                                                            {{json_decode($attribute->pivot->value,true)==$keyOp?"selected='selected'":''}} value="{{$keyOp}}">{{$option}}</option>
                                                     @endforeach
                                                 </select>
-                                            @elseif(getAttributes($key)->type=='radio')
-                                                @foreach (json_decode(getAttributes($key)->options,true) as $keyOp => $option)
-                                                    <label style="margin-left: 15px"><input type="radio" {{$attributes==$keyOp?"checked":''}} value="{{$keyOp}}" name="attributes[{{getAttributes($key)->id}}]">{{$option}}</label>
+                                            @elseif($attribute->type=='radio')
+                                                @foreach (json_decode($attribute->options,true) as $keyOp => $option)
+                                                    <label style="margin-left: 15px"><input type="radio"
+                                                                                            {{json_decode($attribute->pivot->value,true)==$keyOp?"checked":''}} value="{{$keyOp}}"
+                                                                                            name="attributes[{{$attribute->id}}]">{{$option}}
+                                                    </label>
                                                 @endforeach
-                                            @elseif(getAttributes($key)->type=='textarea')
-                                                <div class="row">
-                                                    <textarea class="form-control" name="attributes[{{getAttributes($key)->id}}]"
-                                                              rows="4" cols="50">{{$attributes}}
-                                                    </textarea>
-                                                    @elseif(getAttributes($key)->type=='input')
-                                                        <div class="row">
-                                                    <input class="form-control" name="attributes[{{getAttributes($key)->id}}]"
-                                                        value="{{$attributes}}"      >
-                                                    @endif
-                                                    @endforeach
-                                                </div>
-                                        </div>
-                                </div>
-                                <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                There were some errors with your request.
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
+                                            @elseif($attribute->type=='textarea')
+                                                <textarea class="form-control" name="attributes[{{$attribute->id}}]"
+                                                          rows="4" cols="50">{{json_decode($attribute->pivot->value,true)}}
+                                                    </textarea></div>
+                                        @elseif($attribute->type=='checkbox')
+                                            <br/>
+                                            @foreach(json_decode($attribute->options,true) as $keyOp => $option)
+                                                <label style="margin-left: 15px"><input type="checkbox" value="{{$keyOp}}" @foreach(json_decode($attribute->pivot->value,true) as $ckb)@if($ckb==$keyOp) checked @endif  @endforeach name="attributes[{{$attribute->id}}][]">{{$option}}
+                                                </label>
+                                            @endforeach
+                                        @elseif($attribute->type=='input')
+                                            <input class="form-control" name="attributes[{{$attribute->id}}]"
+                                                   value="{{json_decode($attribute->pivot->value,true)}}">
+                                        @endif
                                     @endforeach
-                                </ul>
+                                </div>
                             </div>
-                        @endif
+
+                        </div>
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
+
                     <div class="row " style="margin-bottom: 40px">
                         <div class="col-12">
                             <input type="submit" value="Cập nhật" class="btn btn-success float-left">
                         </div>
                     </div>
+                </div>
             </form>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 
     <!-- /.content -->
@@ -221,31 +263,6 @@
                     } else {
                         $("#attributes").html('');
                     }
-                }
-            });
-        });
-        $(document).ready(function () {
-
-            var category_id = $('#category_id').val();
-            var token = $("input[name='_token']").val();
-            $.ajax({
-                url: '{{route('getAttributes')}}',
-                method: 'GET',
-                data: {
-                    category_id: category_id,
-                    _token: token,
-                },
-                success: function (data) {
-                    console.log(data)
-                    $("select[name='address']").html('');
-                    $.each(data, function (key, value) {
-                        $("select[name='ward']").append(
-                            "<option value=" + value.xaid + ">" + value.name + "</option>"
-                        );
-
-                    });
-                    var ward = $('#wardPost').val();
-                    $('#ward option[value=' + ward + ']').attr('selected', true)
                 }
             });
         });

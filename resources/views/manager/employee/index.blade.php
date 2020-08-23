@@ -8,6 +8,16 @@
     .delete:hover {
         color: indianred;
     }
+    .img {
+        transition: -webkit-transform 0.25s ease;
+        transition: transform 0.25s ease;
+
+    }
+
+    .img:active {
+        -webkit-transform: scale(8);transform-origin: 0 25%;
+        transform: scale(8) ;
+    }
 </style>
 @section('content')
     <!-- Content Header (Page header) -->
@@ -17,12 +27,7 @@
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Danh sách người giúp việc</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Danh sách</li>
-                    </ol>
-                </div><!-- /.col -->
+               <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -59,7 +64,7 @@
                             <div class="form-group" style="margin-left: 20px;width: 200px">
                                 <select class="form-control orderByStatus" name="status">
                                     <option value="">Trạng thái</option>
-                                    @foreach(listStatus() as $status)
+                                    @foreach(employeeStatus() as $status)
                                         <option
                                             {{Request::get('status')==$status['value']&&Request::get('status')!=null ?"selected='selected'":''}} value="{{$status['value']}}">{{$status['name']}}</option>
                                     @endforeach
@@ -76,7 +81,7 @@
                                      <button type="submit" class="btn btn-info btn-flat">Go!</button>
                                      </span>
                                     <span class="input-group-append">
-                                     <a href="{{route('manager.post.index')}}"  class="btn btn-secondary btn-flat"><i class="fas fa-redo" style="padding-top: 3px"></i></a>
+                                     <a href="{{route('manager.employee.index')}}"  class="btn btn-secondary btn-flat"><i class="fas fa-redo" style="padding-top: 3px"></i></a>
                                      </span>
                                 </div>
                             </div>
@@ -92,19 +97,20 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Trạng thái</th>
+                                    <th>Avatar</th>
                                     <th>Tên</th>
                                     <th>Email</th>
-                                    <th>Số điện thoại</th>
+                                    <th style="width: 10%">Số điện thoại</th>
                                     <th>Địa chỉ</th>
-                                    <th>Đánh giá</th>
-                                    <th style="width: 40px">Action</th>
+                                    <th style="width: 10%">Đánh giá trung bình</th>
+                                    <th>Trạng thái</th>
+                                    <th style="width: 8%">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @forelse($helpers as $helper)
                                     <tr>
-                                        <td></td>
+                                        <td><img class="img" src="{{$helper->avatar}}" style="width: 40px;height: 40px"></td>
                                         <td>{{$helper->name}}</td>
                                         <td>{{$helper->email}}</td>
                                         <td>{{$helper->phone}}</td>
@@ -112,12 +118,15 @@
                                             @if($helper->district_id)
                                                 {{$helper->ward->district->name}}
                                             @endif
-                                            @if($helper->ward_id)
+                                            @if($helper->ward_id),
                                                 {{$helper->ward->name}}
                                             @endif
                                         </td>
                                         <td></td>
+                                        <td></td>
                                         <td>
+                                            <a href="{{ route('manager.employee.details',['id' => $helper->id])}}"
+                                               class=" btn-xs btn-default" style="background-color: lightgrey"><i class="far fa-eye"></i></a>
                                             <a class="edit"
                                                href="{{route('manager.employee.edit',['id'=>$helper->id])}}"><i
                                                     class="fas fa-edit"></i></a>
@@ -152,13 +161,20 @@
     <!-- /.content -->
 @endsection
 @section('script')
-    <script src="{{asset("js/getAddress.js")}}"></script>
     <script>
-        $(function () {
-            $('.orderByStatus').change(function () {
-                $('.form').submit(
-                )
-            })
-        })
+        document.addEventListener('DOMContentLoaded', function(){
+            var imgs = document.querySelectorAll('.img');
+            Array.prototype.forEach.call(imgs, function(el, i) {
+                if (el.tabIndex <= 0) el.tabIndex = 10000;
+            });
+        });
     </script>
+{{--    <script type="text/javascript">--}}
+{{--        $('img').each(function(){--}}
+{{--            $(this).click(function(){--}}
+{{--                $(this).width($(this).width()+$(this).width())--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
+    <script src="{{asset("js/getAddress.js")}}"></script>
 @endsection

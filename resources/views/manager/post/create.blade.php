@@ -1,5 +1,13 @@
 @extends('manager.layout.layout')
-
+@section('style')
+    <style>
+        .errorCustom {
+            margin-left: 5px;
+            font-style: italic;
+            color: firebrick;
+        }
+    </style>
+@endsection
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -8,12 +16,7 @@
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Tạo bài đăng</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('customer.index')}}"></a>Danh sách</li>
-                    </ol>
-                </div><!-- /.col -->
+                <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -39,90 +42,55 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="inputName">Tiêu đề</label>
-                                    <input type="text" name="title" class="form-control">
+                                    <input type="text" name="title"
+                                           class="form-control @if($errors->has('title'))  border border-info @endif">
+                                    @if($errors->has('title'))
+                                        <span class="errorCustom">{{$errors->first('title')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Mô tả chi tiết</label>
-
                                     <div id="description"
+                                         class="@if($errors->has('description'))  border border-info @endif"
                                          style="background-color: whitesmoke; border-radius: 10px; height: 150px">
                                     </div>
+                                    @if($errors->has('description'))
+                                        <span class="errorCustom">{{$errors->first('description')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-info" data-toggle="modal"
-                                            data-target="#fullHeightModalRight">
-                                        Chọn người thuê
-                                    </button>
-                                </div>
-                                <div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog"
-                                     aria-labelledby="myModalLabel"
-                                     aria-hidden="true">
-
-                                    <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
-                                    <div class="modal-dialog modal-full-height modal-right modal-lg" role="document">
-
-
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title w-100" id="myModalLabel">Chọn người thuê</h4>
-                                                <input value="{{Request::get('search')}}" id="findCustomer"
-                                                       placeholder="Tìm kiếm" type="text" class="form-control"
-                                                       name="search">
-                                                <span class="input-group-append">
-                                                 <button type="button"
-                                                         onclick="chooseCustomer(document.getElementById('findCustomer').value)"
-                                                         class="btn btn-info btn-flat">Go!</button>
-                                                </span>
-                                                <span class="input-group-append">
-                                                    <button type="button" onclick="chooseCustomer('')"
-                                                            class="btn btn-secondary btn-flat"><i class="fas fa-redo"
-                                                                                                  style="padding-top: 3px"></i></button>
-                                                    </span>
-
-                                            </div>
-                                            <div class="modal-body">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Chọn</th>
-                                                        <th>Ảnh</th>
-                                                        <th>Tên</th>
-                                                        <th>Email</th>
-                                                        <th>Số điện thoại</th>
-                                                        {{--                                                        <th>Địa chỉ</th>--}}
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @foreach($customers as $customer)
-                                                        <tr>
-                                                            <td><input type="radio" name="customer_id"
-                                                                       value="{{$customer->id}}"></td>
-                                                            @if($customer->avatar)
-                                                                <td><img src="{{$post->avatar}}"></td>
-                                                            @else
-                                                                <td><img src="{{asset('images/avt.jpeg')}}"
-                                                                         style="width:40px;height: 40px"></td>
-                                                            @endif
-                                                            <td>{{ $customer->name}}</td>
-                                                            <td>{{$customer->email}}</td>
-                                                            <td>{{$customer->phone}}</td>
-                                                            {{--                                                                <td>{{$customer->getAddress->name}}</td>--}}
-                                                        </tr>
-                                                    @endforeach
-                                                    </tbody>
-                                                    {{$customers->appends(request()->query())->links()}}
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer justify-content-center">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Lưu
-                                                </button>
-                                            </div>
+                                    <label>Thời gian bắt đầu</label>
+                                    <div class="input-group">
+                                        <div class="input-group-append" data-target="#timepicker"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
                                         </div>
+                                        <input type="text" name="time"
+                                               class="form-control datetimepicker-input @if($errors->has('time'))  border border-info @endif"
+                                                data-target="#timepicker" id="timepicker">
+
                                     </div>
+                                    @if($errors->has('time'))
+                                        <span class="errorCustom">{{$errors->first('time')}}</span>
+                                    @endif
+                                <!-- /.input group -->
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="inputStatus">Địa chỉ</label>
+                                    <label>Chọn người thuê</label>
+                                    <select class="chzn-select " data-placeholder="Chọn người thuê...."  name="customer_id" style="width:100%">
+                                        <option value="" selected disabled >Chọn</option>
+                                        @foreach($customers as $customer)
+                                        <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @if($errors->has('customer_id'))
+                                        <br/><span class="errorCustom">{{$errors->first('customer_id')}}</span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputStatus">Quận huyện</label>
                                     <select class="form-control custom-select option" name="district"
                                             type="text">
                                         <option value="">Hà Nội</option>
@@ -130,16 +98,25 @@
                                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
                                     </select>
+                                    @if($errors->has('district'))
+                                        <br/><span class="errorCustom">{{$errors->first('district')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
-                                    <label>Chọn phường :</label>
+                                    <label>Xã phường :</label>
                                     <select class="form-control" name="ward">
                                     </select>
+                                    @if($errors->has('ward'))
+                                        <span class="errorCustom">{{$errors->first('ward')}}</span>
+                                    @endif
                                 </div>
 
                                 <div class="form-group">
                                     <label for="inputName">Giá</label>
-                                    <input type="text" name="price" id="inputName" class="form-control">
+                                    <input type="text" name="price" id="inputName" class="form-control @if($errors->has('time'))  border border-info @endif">
+                                    @if($errors->has('price'))
+                                        <span class="errorCustom">{{$errors->first('price')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Danh mục</label>
@@ -149,7 +126,13 @@
                                             <option value="{{$cat->id}}">{{$cat->name}}</option>
                                         @endforeach
                                     </select>
+                                    @if($errors->has('category_id'))
+                                        <span class="errorCustom">{{$errors->first('category_id')}}</span>
+                                    @endif
                                 </div>
+                                @if($errors->has('attributes.*'))
+                                    <span class="errorCustom">{{$errors->first('attributes.*')}}</span>
+                                @endif
                                 <div id="attributes">
                                 </div>
 
@@ -160,19 +143,9 @@
                     <!-- /.card -->
                 </div>
 
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        There were some errors with your request.
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
                 <div class="row " style="margin-bottom: 40px">
                     <div class="col-12">
-                        <input type="submit" value="Create post" class="btn btn-success float-left">
+                        <input type="submit" value="Tạo bài đăng" class="btn btn-success float-left">
                     </div>
                 </div>
             </form>
@@ -194,79 +167,78 @@
 
         });
         $(function () {
-            $('#datetimepicker1').datetimepicker();
+
         });
     </script>
     <script type="text/javascript">
-        function chooseCustomer(customer) {
-            var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
-            window.history.pushState({}, '', url);
-            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
-        }
-
+        $(function() {
+            $(".chzn-select").chosen();
+        });
+    </script>
+    <script type="text/javascript">
         $("select[name='category_id']").change(function () {
             var category_id = $(this).val();
             console.log(category_id)
-                var token = $("input[name='_token']").val();
-                $.ajax({
-                    url: '{{route('getAttributes')}}',
-                    method: 'GET',
-                    data: {
-                        category_id: category_id,
-                        _token: token,
-                    },
-                    success: function (data) {
-                        if (data != null) {
-                            var html = ''
-                            for (i = 0; i < data.length; i++) {
-                                html += '<div class="form-group">'
-                                html += '<label>' + data[i]['name'] + '</label>'
-                                var options = JSON.parse(data[i]['options'])
-                                if (data[i]['type'] === 'select') {
-                                    html += '<select name="attributes[' + data[i]['id'] + ']" class="form-control" >'
-                                    for (var j in options) {
-                                        html += '<option value="' + j + '">' + options[j] + '</option>'
-                                    }
-                                    html += '</select>'
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: '{{route('getAttributes')}}',
+                method: 'GET',
+                data: {
+                    category_id: category_id,
+                    _token: token,
+                },
+                success: function (data) {
+                    if (data != null) {
+                        var html = ''
+                        for (i = 0; i < data.length; i++) {
+                            html += '<div class="form-group">'
+                            html += '<label>' + data[i]['name'] + '</label>'
+                            var options = JSON.parse(data[i]['options'])
+                            if (data[i]['type'] === 'select') {
+                                html += '<select name="attributes[' + data[i]['id'] + ']" class="form-control" >'
+                                for (var j in options) {
+                                    html += '<option value="' + j + '">' + options[j] + '</option>'
                                 }
-                                if (data[i]['type'] === 'radio') {
-                                    html += '<div class="row">'
-                                    for (var j in options) {
-                                        html += '<label style="margin-left: 15px" ><input type="radio" value="' + j + '"  name="attributes[' + data[i]['id'] + ']"  >' + options[j] + '</label>'
-                                    }
-                                    html += '</div>'
-                                    html += '</select>'
-                                }
-                                if (data[i]['type'] === 'input') {
-                                    html += '<div class="row">'
-                                    html += '<input type="text" placeholder="" class="form-control" name="attributes[' + data[i]['id'] + ']"  >'
-                                    html += '</div>'
-                                    html += '</select>'
-                                }
-                                if (data[i]['type'] === 'checkbox') {
-                                    html += '<div class="row">'
-                                    for (var j in options) {
-                                        html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][value][]"  >' + options[j] + '</label>'
-                                    }
-                                    html += '</div>'
-                                    html += '</select>'
-                                }
-                                if (data[i]['type'] === 'textarea') {
-                                    html += '<div class="row">'
-                                    html += '<textarea class="form-control" name="attributes[' + data[i]['id'] + ']" rows="4" cols="50">'
-                                    html += '</textarea>'
-                                    html += '</div>'
-                                    html += '</select>'
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'radio') {
+                                html += '<div class="row">'
+                                for (var j in options) {
+                                    html += '<label style="margin-left: 15px" ><input type="radio" value="' + j + '"  name="attributes[' + data[i]['id'] + ']"  >' + options[j] + '</label>'
                                 }
                                 html += '</div>'
+                                html += '</select>'
                             }
-                            $('#attributes').html(html);
-                        } else {
-                            $("#attributes").html('');
+                            if (data[i]['type'] === 'input') {
+                                html += '<div class="row">'
+                                html += '<input type="text" placeholder="" class="form-control" name="attributes[' + data[i]['id'] + ']"  >'
+                                html += '</div>'
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'checkbox') {
+                                html += '<div class="row">'
+                                for (var j in options) {
+                                    html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][]"  >' + options[j] + '</label>'
+                                }
+                                html += '</div>'
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'textarea') {
+                                html += '<div class="row">'
+                                html += '<textarea class="form-control" name="attributes[' + data[i]['id'] + ']" rows="4" cols="50">'
+                                html += '</textarea>'
+                                html += '</div>'
+                                html += '</select>'
+                            }
+                            html += '</div>'
                         }
+                        $('#attributes').html(html);
+                    } else {
+                        $("#attributes").html('');
                     }
-                });
-            })
+                }
+            });
+        })
 
         function chooseCustomer(customer) {
             var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;

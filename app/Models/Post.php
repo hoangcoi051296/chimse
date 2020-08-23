@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 class Post extends Model
 {
     protected $table = 'post';
-    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id', 'category_id', 'helper_id', 'customer_id', 'time'];
+    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id', 'category_id', 'employee_id', 'customer_id', 'time'];
     const DaHuy = 0;
     const ChoDuyet = 1;
     const DaDuyet = 2;
@@ -17,10 +17,14 @@ class Post extends Model
     const NGVBatDau = 5;
     const NGVKetThuc = 6;
     const NTXacNhan = 7;
+    const PerPage = 10;
 
     public function getData($condition)
     {
         $posts = $this->query()->orderBy('created_at', 'desc');
+        if (!$condition) {
+            return $posts->paginate(isset($condition['per_page']) ? $condition['per_page'] : $this->perPage);
+        }
 
         if (isset($condition['status']) && $condition['status'] !== null) {
             $posts = $posts->where('status', $condition['status']);
@@ -58,7 +62,7 @@ class Post extends Model
         if (isset($condition['customer_id']) && $condition['customer_id'] !== null) {
             $posts->where('customer_id', $condition['customer_id']);
         }
-        return $posts->paginate(isset($condition['per_page']) ? $condition['per_page'] : 10);
+        return $posts->paginate(isset($condition['per_page']) ? $condition['per_page'] : $this->perPage);
     }
 
     public function customer()
@@ -75,7 +79,6 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
-
 
     public function ward()
     {
@@ -97,42 +100,87 @@ class Post extends Model
         return $this->rating()->avg('rating');
     }
 
-    public function rules()
+    public function rules($id = null)
     {
         $validate = [
-            'title' => "required",
-            'description' => "required",
+            'title' => "required| string",
+            'description' => "required|string",
             'price' => "required",
-            'category_id' => "required",
-//            'customer_id' => "required",
         ];
+        if ($id) {
+            return $validate;
+        }
         return array_merge($validate, ['district' => 'required',
-            'ward' => "required"]);
+            'ward' => "required", 'customer_id' => "required", 'category_id' => "required", 'time' => 'required',]);
 
+    }
+
+    public function messages()
+    {
+        return [
+            'title.required' => 'Nhập tiêu đề',
+            'description.required' => 'Nhập mô tả',
+            'price.required' => 'Nhập giá',
+            'district.required' => 'Chọn quận huyện',
+            'ward.required' => 'Chọn xã phường',
+            'category_id.required' => 'Chọn danh mục',
+            'customer_id.required' => "Chọn người thuê",
+            'time.required' => "Chọn thời gian bắt đầu",
+            'attributes.*.required' => "Thuộc tính không được bỏ trống",
+
+        ];
+    }
+
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class, 'post_attribute', 'post_id', 'attribute_id')->withPivot('value');
     }
 
     public function createData($data)
     {
-        $data['time'] = date('Y-m-d H:i:s', strtotime($data['time']));
-        $data['ward_id'] = $data['ward'];
+        $attribute = $data['attributes'];
         $data['district_id'] = $data['district'];
+        $data['ward_id'] = $data['ward'];
         $data = array_filter($data);
-        return $this->fill($data)->save();
+        $this->fill($data)->save();
+        foreach ($attribute as $key => $value) {
+            $value = json_encode($value);
+            $this->attributes()->attach($key, ['value' => $value]);
+        }
     }
 
     public function updateData($data, $id)
     {
-        if ($data['district'] && $data['ward']) {
-            $data['address'] = $data['ward'];
+        if (isset($data['attributes'])) {
+            $attribute = $data['attributes'];
+            foreach ($attribute as $key => $value) {
+                $value = json_encode($value);
+                $attr[$key] = ['value' => $value];
+            }
+            $this->find($id)->attributes()->sync($attr);
         }
-
         $data['status'] = Post::ChoDuyet;
-        $data = array_filter($data);
         $data['district_id'] = $data['district'];
         $data['ward_id'] = $data['ward'];
-        $data['attributes'] = json_encode($data['attributes']);
-        $data['status'] = Post::ChoDuyet;
         $data = array_filter($data);
+
         $this->find($id)->fill($data)->save();
+    }
+
+    public function updateStatus($data, $id)
+    {
+        $data = array_filter($data);
+        if (isset($data['employee_id'])) {
+            $data['status'] = Post::TimDuocNGV;
+
+        } else {
+            if (isset($data['statusPost'])) {
+                $data['status'] = $data['statusPost'];
+                $data['employee_id'] = null;
+            } else {
+                $data['status'] = Post::DaHuy;
+            }
+        }
+        $this->find($id)->fill($data)->update();
     }
 }

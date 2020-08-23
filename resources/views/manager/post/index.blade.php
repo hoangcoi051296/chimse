@@ -15,12 +15,7 @@
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Danh sách công việc</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('manager.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="#"></a>Danh sách</li>
-                    </ol>
-                </div><!-- /.col -->
+                <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -63,12 +58,13 @@
                                     @endforeach
                                 </select>
                             </div>
+                                @include("manager.components.notified")
                         </div>
                         <div class="card">
                             <div class="input-group input-group-sm">
                                 <div class="input-group input-group-sm">
                                     <input value="{{Request::get('search')}}" placeholder="Tìm kiếm" type="text"
-                                           class="form-control" name="search">
+                                           class="form-control typeahead" name="search" id="search">
                                     <span class="input-group-append">
                                      <button type="submit" class="btn btn-info btn-flat">Go!</button>
                                      </span>
@@ -80,14 +76,12 @@
                             </div>
                         </div>
                     </form>
-
-                    <a href="{{route('manager.post.create')}}" class="btn btn-success float-right "
-                       style="margin-bottom: 10px">Tạo bài đăng</a>
+                    <a  href="{{route('manager.post.create')}}" class="btn btn-success float-right " style="margin-bottom: 10px">Tạo bài đăng</a>
                 </div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" >
                                 <thead>
                                 <tr>
                                     <th>Tiêu đề</th>
@@ -130,17 +124,29 @@
                                                 {{--                                            @endif--}}
                                             </td>
                                             <td class="align-self-center">
-                                                <a href="{{ route('manager.post.details',['id' => $post->id])}}"
+                                                <a href="{{ route('manager.post.details',['id' => $post->id])}}" data-toggle="tooltip" title="Xem chi tiết"
                                                    class="btn btn-info btn-xs"><i class="far fa-eye"></i></a>
                                                 @if($post->status==1)
-                                                    <a id="{{$post->id}}"
-                                                       class="btn btn-primary btn-xs changeStatus"><i
+                                                <a id="{{$post->id}}"  data-toggle="tooltip" title="Duyệt bài"
+                                                   class="btn btn-primary btn-xs changeStatus"><i class="fas fa-exchange-alt"></i></a>
+                                                @else
+                                                    <a
+                                                       class="btn btn-primary btn-xs disabled"><i
                                                                 class="fas fa-exchange-alt"></i></a>
                                                 @endif
+{{--                                                @if($post->status==1||$post->status==2)--}}
+{{--                                                <a href="{{ route('manager.post.edit',['id' => $post->id])}}" data-toggle="tooltip" title="Sửa bài"--}}
+{{--                                                   class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>--}}
+{{--                                                @else--}}
+{{--                                                    <a href="#" data-toggle="tooltip"--}}
+{{--                                                       class="btn btn-primary btn-xs disabled"><i class="fa fa-edit"></i></a>--}}
+{{--                                                @endif--}}
 
-                                                <a href="{{ route('manager.post.edit',['id' => $post->id])}}"
+                                                @if(Gate::forUser(Auth::guard('manager')->user())->allows('editPost',$post))
+                                                <a href="{{ route('manager.post.edit',['id' => $post->id])}}" data-toggle="tooltip" title="Sửa bài"
                                                    class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                                                <a href="{{ route('manager.post.delete',['id'=> $post->id])}}"
+                                                @endif
+                                                <a href="{{ route('manager.post.delete',['id'=> $post->id])}}" data-toggle="tooltip" title="Xoá bài"
                                                    onclick="return confirm('Bạn muốn xóa không?');"
                                                    class="btn btn-danger btn-xs "><i
                                                             class="fa fa-trash"></i></a>
@@ -165,11 +171,17 @@
     </section>
 @endsection
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
     <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
         var urlStatus = "{{ url('manager/post/changeStatus') }}";
         $(".changeStatus").click(function () {
             var id = this.id;
             var token = $("input[name='_token']").val();
+
             $.ajax({
                 url: urlStatus,
                 method: 'POST',
@@ -182,8 +194,5 @@
                 }
             });
         });
-
     </script>
-    <script src="{{asset("js/getAddress.js")}}"></script>
-
 @endsection

@@ -17,8 +17,6 @@ class AttributeController extends Controller
     public function index(){
 
         $attributes=Attribute::all();
-//        unset($options[$a]);
-//        dd($options);
         return view('manager.category.attribute.index',compact('attributes'));
     }
     public function create(){
@@ -27,13 +25,13 @@ class AttributeController extends Controller
     }
     public function store(Request $request){
         $data=$request->all();
-        $request->validate($this->attribute->rules());
+        $request->validate($this->attribute->rules(),$this->attribute->message());
         try {
             $this->attribute->saveData($data);
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.attribute.index')->with("success", "Create Success");
+        return redirect()->route('manager.attribute.index')->with("success", "Tạo thuộc tính thành công");
     }
     public function edit($id){
         $attribute=Attribute::find($id);
@@ -41,15 +39,20 @@ class AttributeController extends Controller
     }
     public function update(Request $request ,$id){
         $data=$request->all();
-        $request->validate($this->attribute->rules($id));
+        $request->validate($this->attribute->rules($id),$this->attribute->message());
         try {
             $this->attribute->updateData($data,$id);
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.attribute.index')->with("success", "Create Success");
+        return redirect()->route('manager.attribute.index')->with("success", "Cập nhật thành công");
     }
     public  function delete($id){
-
+        try {
+            $this->attribute->deleteData($id);
+        } catch (\Exception $e) {
+            return redirect()->back()->with("error", $e->getMessage());
+        }
+        return redirect()->route('manager.attribute.index')->with("success", "Xoá thành công");
     }
 }

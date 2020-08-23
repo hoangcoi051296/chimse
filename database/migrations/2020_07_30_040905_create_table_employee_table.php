@@ -18,6 +18,7 @@ class CreateTableEmployeeTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('avatar')->nullable();
+            $table->tinyInteger('status')->nullable();
             $table->string('phone');
             $table->string('password');
             $table->unsignedBigInteger('ward_id')->nullable();
@@ -25,6 +26,7 @@ class CreateTableEmployeeTable extends Migration
             $table->unsignedBigInteger('district_id')->nullable();
             $table->foreign('district_id')->references('maqh')->on('devvn_quanhuyen');
             $table->timestamps();
+            $table->timestamp('banned_until')->nullable();
         });
     }
 

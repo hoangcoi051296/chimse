@@ -21,10 +21,12 @@ class Employee extends Model implements Authenticatable
         'password',
         'remember_token',
     ];
-
-    public function getData($condition, $request)
+    const ChoViec =0 ;
+    const XacNhanCV = 1;
+    const BatDau = 2;
+    const HoanThanh = 3;
+    public function getData($condition)
     {
-
         $helpers = $this->query()->orderBy('created_at', 'desc');
         if (!$condition) {
             return $helpers;
@@ -42,8 +44,7 @@ class Employee extends Model implements Authenticatable
                        where('xaid',$wardFilter);
                 });
             }
-
-        if (isset($condition['search'])) {
+            if (isset($condition['search'])) {
             $search = $condition['search'];
            $helpers->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', '%' . $search . '%')
@@ -83,6 +84,20 @@ class Employee extends Model implements Authenticatable
         }
         return Arr::add($validate,  'password', 'sometimes|nullable|min:6|confirmed');
 
+    }
+    public function messages()
+    {
+        return [
+            'name.required' => 'Nhập tên tài khoản',
+            'phone.required' => 'Nhập số điện thoại',
+            'phone.unique' => 'Số điện thoại đã tồn tại',
+            'email.required' => 'Nhập địa chỉ email',
+            'email.regex' => 'Email không đúng định dạng',
+            'district.required' => 'Chọn quận huyện',
+            'ward.required' => 'Chọn xã phường',
+            'password.required' => 'Nhập mật khẩu',
+            'password.confirmed'=>"Xác nhận mật khẩu không khớp",
+        ];
     }
 
     public $perPage = 10;

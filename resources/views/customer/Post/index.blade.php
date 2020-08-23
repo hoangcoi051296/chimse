@@ -2,12 +2,6 @@
 $listStatus = listStatus();
 ?>
 @extends('customer.layout.layout')
-<style>
-    tr#lamthon>th{
-
-        width: 120px;
-    }
-</style>
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -98,12 +92,12 @@ $listStatus = listStatus();
                 <div class="card-body">
                     <table class="table table-bordered table-responsive-xs">
                         <thead>
-                        <tr id="lamthon">
+                        <tr>
                             <th style="width: 10px">#</th>
                             <th>Tên</th>
                             <th>Mô tả</th>
                             <th>Giá</th>
-                            <th>Địa chỉ</th>
+                            <th class="customer-address">Địa chỉ</th>
                             <th>Trạng thái</th>
                             <th>Thời gian</th>
                             <th>Danh mục</th>

@@ -17,7 +17,9 @@ class CreateTableManagerTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('avatar')->nullable();
-            $table->string('email');
+            $table->string('email',191);
+            $table->unsignedBigInteger("role_id")->nullable();
+            $table->foreign('role_id')->references('id')->on('role');
             $table->string('password');
             $table->timestamps();
         });

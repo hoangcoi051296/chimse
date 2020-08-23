@@ -26,6 +26,7 @@ class CreateTableCustomerTable extends Migration
             $table->unsignedBigInteger('district_id')->nullable();
             $table->foreign('district_id')->references('maqh')->on('devvn_quanhuyen');
             $table->timestamps();
+            $table->timestamp('banned_until')->nullable();
         });
     }
 

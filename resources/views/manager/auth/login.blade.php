@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Manager Login </title>
+    <title>Đăng nhập</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -20,6 +20,13 @@
     <link rel="stylesheet" type="text/css" href="{{asset("loginManager/css/util.css")}}">
     <link rel="stylesheet" type="text/css" href="{{asset("loginManager/css/main.css")}}">
     <!--===============================================================================================-->
+    <style>
+        .errorCustom {
+            margin-left: 10px;
+            font-style: italic;
+            color: firebrick;
+        }
+    </style>
 </head>
 <body>
 
@@ -33,12 +40,12 @@
             <form method="post" action="{{route('manager.postLogin')}}" class="login100-form validate-form">
                 @csrf
 					<span class="login100-form-title">
-						Manager Login
+						Manager
 
 					</span>
 
                 <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-                    <input class="input100" type="text" name="email" placeholder="Email">
+                    <input class="input100 @if($errors->has('email'))  border border-info @endif" type="text" name="email" placeholder="Email">
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -46,7 +53,7 @@
                 </div>
 
                 <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                    <input class="input100" type="password" name="password" placeholder="Password">
+                    <input class="input100 @if($errors->has('password'))  border border-info @endif" type="password" name="password" placeholder="Mật khẩu">
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
@@ -55,7 +62,7 @@
 
                 <div class="container-login100-form-btn">
                     <button type="submit" class="login100-form-btn">
-                        Login
+                        Đăng nhập
                     </button>
                 </div>
 
@@ -67,12 +74,8 @@
 
                     </a>
                 </div>
-                @if (session()->has('error'))
-                    <div class="alert alert-danger">
-                        <ul>
-                            {{session('error')}}
-                        </ul>
-                    </div>
+                @if($errors->has('email'))
+                    <span class="errorCustom">Thông tin xác thực không chính xác</span>
                 @endif
 
                 <div class="text-center p-t-136">
