@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], function () {
-    Route::get('/', 'ManagerController@index')->name('manager.index')->middleware(['can:editPost']);
+    Route::get('/', 'ManagerController@index')->name('manager.index');
     Route::get('/edit', 'ManagerController@editAccount')->name('manager.account.edit');
     Route::post('/edit/{id}', 'ManagerController@updateAccount')->name('manager.account.update');
     Route::group(['prefix' => 'employee'], function () {

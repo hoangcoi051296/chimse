@@ -44,11 +44,14 @@ class PostController extends Controller
     }
     public function create(Request $request)
     {
+        $condition=$request->all();
         $customers=  $this->customer->data($request);
-        return view('manager.post.create',compact('customers'));
+        $employees = $this->employee->getData($condition)->paginate(15);
+        return view('manager.post.create',compact('customers','employees'));
     }
     public function store(Request  $request){
         $data=$request->all();
+        dd($data);
         $request->validate($this->post->rules(),$this->post->messages());
         try {
             $this->post->createData($data);

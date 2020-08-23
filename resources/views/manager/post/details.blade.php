@@ -30,11 +30,11 @@
                             <div class="col-12">
                                 <h4>
                                     <i class="fas fa-globe"></i> AdminLTE, Inc.
-                                    @if($post->status==1||$post->status==2)
+                                    @if($post->status==\App\Models\Post::ChoDuyet||$post->status==\App\Models\Post::DaDuyet)
                                     <small class="float-right"><button type="button"   data-toggle="modal" class="btn btn-secondary"
                                                               data-target="#fullHeightModalRight"> Chọn người giúp việc
                                         </button></small>
-                                    @elseif($post->status==3)
+                                    @elseif($post->status==\App\Models\Post::TimDuocNGV)
                                         <small class="float-right"><button type="button"   data-toggle="modal" class="btn btn-secondary"
                                                                            data-target="#fullHeightModalRight"> Thay đổi người giúp việc
                                             </button></small>

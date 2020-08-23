@@ -92,6 +92,7 @@ class Employee extends Model implements Authenticatable
             'phone.required' => 'Nhập số điện thoại',
             'phone.unique' => 'Số điện thoại đã tồn tại',
             'email.required' => 'Nhập địa chỉ email',
+            'email.unique'=>'Email đã tồn tại',
             'email.regex' => 'Email không đúng định dạng',
             'district.required' => 'Chọn quận huyện',
             'ward.required' => 'Chọn xã phường',

@@ -21,7 +21,7 @@ class CategoryController extends Controller
     }
     public function store(Request $request){
         $data=$request->all();
-        $this->validate($this->category->rules(),$this->category->message());
+        $request->validate($this->category->rules(),$this->category->message());
         try {
             $this->category->createData($data);
         }catch (\Exception $e){
@@ -35,7 +35,7 @@ class CategoryController extends Controller
     }
     public function update(Request $request, $id){
         $data=$request->all();
-        $this->validate($this->category->rules($id),$this->category->message());
+        $request->validate($this->category->rules($id),$this->category->message());
         try {
             $this->category->updateData($data,$id);
         }catch (\Exception $e){
