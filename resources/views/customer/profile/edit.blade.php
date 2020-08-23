@@ -62,6 +62,11 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="tab-content">
+                                <div class="form-group row">
+                                    <div class="offset-sm-2 col-sm-10">
+                                        <button type="submit" class="btn btn-success">Thông tin tài khoản</button>
+                                    </div>
+                                </div>
                                 <div class="tab-pane active" id="settings">
                                     <form class="form-horizontal" style="height: 325px" method="post"
                                           action="{{route('customer.profile.update',['id'=>$user->id])}}">
@@ -72,9 +77,6 @@
                                                 <input type="text" name="name" value="{{$user->name}}"
                                                        class="form-control" id="inputName">
                                             </div>
-                                            @if($errors->has('name'))
-                                                {{$errors->first('name')}}
-                                            @endif
                                         </div>
                                         <div class="form-group row">
                                             <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
@@ -90,39 +92,32 @@
                                                 <input type="text" name="phone" class="form-control" id="inputSkills"
                                                        value="{{$user->phone}}">
                                             </div>
-                                            @if($errors->has('phone'))
-                                                {{$errors->first('phone')}}
-                                            @endif
                                         </div>
-                                        <button type="button" class="btn btn-info" data-toggle="modal"
-                                                data-target="#myModal" style="float: right">Thay đổi mật khẩu
-                                        </button>
-                                        <div class="modal fade" id="myModal" role="dialog">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-body">
-                                                        <p>Mật khẩu mới</p>
-                                                        <input type="password" name="password" id="inputClientCompany"
-                                                               class="form-control">
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>Nhập lại mật khẩu</p>
-                                                        <input type="password" name="password_confirmation"
-                                                               id="inputClientCompany" class="form-control">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default"
-                                                                data-dismiss="modal">Close
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="offset-sm-2 col-sm-10">
-                                                <button type="submit" class="btn btn-success">Cập nhật</button>
-                                            </div>
-                                        </div>
+
+                                        {{--<button type="button" class="btn btn-info" data-toggle="modal"--}}
+                                                {{--data-target="#myModal" style="float: right">Thay đổi mật khẩu--}}
+                                        {{--</button>--}}
+                                        {{--<div class="modal fade" id="myModal" role="dialog">--}}
+                                            {{--<div class="modal-dialog modal-lg">--}}
+                                                {{--<div class="modal-content">--}}
+                                                    {{--<div class="modal-body">--}}
+                                                        {{--<p>Mật khẩu mới</p>--}}
+                                                        {{--<input type="password" name="password" id="inputClientCompany"--}}
+                                                               {{--class="form-control">--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="modal-body">--}}
+                                                        {{--<p>Nhập lại mật khẩu</p>--}}
+                                                        {{--<input type="password" name="password_confirmation"--}}
+                                                               {{--id="inputClientCompany" class="form-control">--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="modal-footer">--}}
+                                                        {{--<button type="button" class="btn btn-default"--}}
+                                                                {{--data-dismiss="modal">Close--}}
+                                                        {{--</button>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
                                     </form>
                                 </div>
                                 <!-- /.tab-pane -->

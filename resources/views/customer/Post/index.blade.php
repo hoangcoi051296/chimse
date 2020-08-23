@@ -2,6 +2,12 @@
 $listStatus = listStatus();
 ?>
 @extends('customer.layout.layout')
+<style>
+    tr#lamthon>th{
+
+        width: 120px;
+    }
+</style>
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -12,7 +18,7 @@ $listStatus = listStatus();
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('customer.post.index')}}">Danh sách</a></li>
                         <li class="breadcrumb-item active"><a href="{{route('customer.logout')}}">Đăng xuất</a></li>
                     </ol>
                 </div><!-- /.col -->
@@ -24,10 +30,16 @@ $listStatus = listStatus();
     <section class="content">
         <div class="container-fluid">
             <div class="row">
+                    @if(Session::has('success'))
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>{{Session::get('success')}}</strong>
+                        </div>
+                    @endif
                 <div class="col-md-12">
                     <form action="{{route('customer.post.index')}}" method="GET">
                         <div class="row">
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <select class="form-control" name="status">
                                     <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
                                         thái
@@ -39,7 +51,7 @@ $listStatus = listStatus();
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <select class="form-control" name="district">
                                     <option value="">District</option>
                                     @foreach($address as $a)
@@ -48,7 +60,7 @@ $listStatus = listStatus();
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <select class="form-control" name="ward">
                                     <option value="">Ward</option>
                                 </select>
@@ -63,39 +75,41 @@ $listStatus = listStatus();
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group input-group-sm">
                                 <input class="form-control" placeholder="Search" aria-label="Search" name="search"
                                        id="search">
+                                <span class="input-group-append">
+                                     <button type="submit" class="btn btn-info btn-flat">Go!</button>
+                                     </span>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-success">Go!</button>
-                            </div>
+
                         </div>
                     </form>
                 </div>
-                <div class="col-md-12" style="text-align: end;">
+                <div class="col-md-12" style="text-align: end; margin-top: 15px;">
                     <a href="{{route('customer.post.create')}}" class="btn btn-success">Tạo Bài Đăng</a>
                 </div>
-            </div>
         </div>
         <br>
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-responsive-xs">
                         <thead>
-                        <tr>
+                        <tr id="lamthon">
                             <th style="width: 10px">#</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Address</th>
-                            <th>Status</th>
-                            <th>Time</th>
-                            <th>Category</th>
-                            <th>Customer</th>
-                            <th>Review</th>
-                            <th style="width: 113px">Action</th>
+                            <th>Tên</th>
+                            <th>Mô tả</th>
+                            <th>Giá</th>
+                            <th>Địa chỉ</th>
+                            <th>Trạng thái</th>
+                            <th>Thời gian</th>
+                            <th>Danh mục</th>
+                            <th>Khách hàng</th>
+                            <th>Đánh giá</th>
+                            <th style="width: 113px">Hoạt động</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -123,7 +137,9 @@ $listStatus = listStatus();
                                     @endforeach
                                 </td>
                                 <td>{{$post->time}}</td>
-                                <td>{{$post->category->name}}</td>
+                                <td>@if($post->category)
+                                        {{$post->category->name}}
+                                    @endif</td>
                                 <td>{{$post->customer->name }}</td>
                                 <td style="width: 13%;">
                                     <span id="number_rating" data-value="{{$post->rating->avg('rating')}}">
@@ -139,11 +155,14 @@ $listStatus = listStatus();
                                 </td>
                                 <td>
                                     <a href="{{ route('customer.post.edit',['id' => $post->id])}}"
-                                       class="btn btn-primary btn-xsmax"><i class="fa fa-edit"></i></a>
+                                       class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
                                     <a href="{{ route('customer.post.delete',['id'=> $post->id])}}"
                                        onclick="return confirm('Bạn muốn xóa không?');"
-                                       class="btn btn-danger btn-xsmax"><i
+                                       class="btn btn-danger btn-xs"><i
                                                 class="fa fa-trash"></i></a>
+                                        <a id="{{route('customer.post.changeStatus')}}"
+                                           class="btn btn-primary btn-xs changeStatus"><i
+                                                    class="fas fa-exchange-alt"></i></a>
                                 </td>
 
                             </tr>
@@ -153,7 +172,7 @@ $listStatus = listStatus();
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    {{--{{$posts->links()}}--}}
+                    {{-- {{$posts->links()}} --}}
                 </div>
             </div>
             <!-- /.card -->
@@ -187,6 +206,22 @@ $listStatus = listStatus();
                             "<option value=" + value.xaid + ">" + value.name + "</option>"
                         );
                     });
+                }
+            });
+        });
+        var urlStatus = "{{ url('customer/post/changeStatus') }}";
+        $(".changeStatus").click(function () {
+            var id = this.id;
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: urlStatus,
+                method: 'POST',
+                data: {
+                    id: id,
+                    _token: token,
+                },
+                success: function (data) {
+                    location.reload();
                 }
             });
         });

@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
-class Post extends Model
+class Poss extends Model
 {
-    protected $table = 'post';
+    protected $table = 'poss';
     protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id', 'category_id', 'helper_id', 'customer_id', 'time'];
     const DaHuy = 0;
     const ChoDuyet = 1;
@@ -17,49 +17,49 @@ class Post extends Model
     const NGVBatDau = 5;
     const NGVKetThuc = 6;
     const NTXacNhan = 7;
-
     public function getData($condition)
     {
         $posts = $this->query()->orderBy('created_at', 'desc');
 
-        if (isset($condition['status']) && $condition['status'] !== null) {
-            $posts = $posts->where('status', $condition['status']);
-        }
-        if (isset($condition['time']) && $condition['time'] !== null) {
-            $posts = $posts->where('time', date('Y-m-d H:i:s', strtotime($condition['time'])));
-        }
-        if (isset($condition['district']) && $condition['district'] !== null) {
-            $posts = $posts->where('district_id', $condition['district']);
-        }
-        if (isset($condition['ward']) && $condition['ward'] !== null) {
-            $posts = $posts->where('ward_id', $condition['ward']);
-        }
-        if (isset($condition['search']) && $condition['search'] !== null) {
-            $search = $condition['search'];
-            $posts->where(function ($q) use ($search) {
-                $q->where('title', 'LIKE', '%' . $search . '%')
-                    ->orwhere('description', 'LIKE', '%' . $search . '%')
-                    ->orWhereHas('ward', function ($query) use ($search) {
-                        $query->whereHas('district', function ($q) use ($search) {
-                            $q->where('name', 'like', '%' . $search . '%');
-                        });
-                    })
-                    ->orWhereHas('customer', function ($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%');
-                    })
-                    ->orWhereHas('employee', function ($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%');
-                    })
-                    ->orWhereHas('category', function ($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%');
-                    });
-            });
-        }
-        if (isset($condition['customer_id']) && $condition['customer_id'] !== null) {
-            $posts->where('customer_id', $condition['customer_id']);
-        }
-        return $posts->paginate(isset($condition['per_page']) ? $condition['per_page'] : 10);
-    }
+         if ($condition['status'] !== null) {
+             $posts = $posts->where('status', $condition['status']);
+         }
+         if ($condition['time'] !== null) {
+             $posts = $posts->where('time', $condition['time']);
+         }
+         if ($condition['district'] !== null) {
+             $posts = $posts->where('district_id', $condition['district']);
+         }
+         if ($condition['ward'] !== null) {
+             $posts = $posts->where('ward_id', $condition['ward']);
+         }
+         if ($condition['search'] !== null) {
+             $search = $condition['search'];
+             $posts->where(function ($q) use ($search) {
+                 $q->where('title', 'LIKE', '%' . $search . '%')
+                     ->orwhere('description', 'LIKE', '%' . $search . '%')
+                     ->orWhereHas('ward', function ($query) use ($search) {
+                         $query->whereHas('district', function ($q) use ($search) {
+                             $q->where('name', 'like', '%' . $search . '%');
+                         });
+                     })
+                     ->orWhereHas('customer', function ($query) use ($search) {
+                         $query->where('name', 'like', '%' . $search . '%');
+                     })
+                     ->orWhereHas('employee', function ($query) use ($search) {
+                         $query->where('name', 'like', '%' . $search . '%');
+                     })
+                     ->orWhereHas('category', function ($query) use ($search) {
+                         $query->where('name', 'like', '%' . $search . '%');
+                     });
+             });
+         }
+         if ($condition['customer_id'] !== null)
+         {
+             $posts->where('customer_id', $condition['customer_id']);
+         }
+         return $posts->paginate(10);
+     }
 
     public function customer()
     {

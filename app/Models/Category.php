@@ -11,11 +11,9 @@ class Category extends Model
 
     public function data($request = null){
         $data = $this->query();
-
         $data = $data->paginate($request->get('per_page',15));
         return $data;
     }
-
     public function properties()
     {
         $data = array();
