@@ -118,7 +118,7 @@ class Post extends Model
             'title' => "required| string",
             'description' => "required|string",
             'price' => "required",
-            'attribute.*'=>'required',
+
         ];
         if ($id) {
             return $validate;
@@ -126,7 +126,6 @@ class Post extends Model
         return array_merge($validate, [
             'district_id' => 'required',
             'ward_id' => "required",
-            'customer_id' => "required",
             'category_id' => "required",
             'time' => 'required',
             'addressDetails'=>"required",

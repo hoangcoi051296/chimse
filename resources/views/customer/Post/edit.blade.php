@@ -55,23 +55,25 @@
                                     <label>Thời gian:</label>
 
                                     <div class="input-group">
-                                        <div class="input-group-append" data-target="#timepicker"
-                                             data-toggle="datetimepicker">
+                                        <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="far fa-clock"></i></div>
                                         </div>
-                                        <input type="text" name="time" class="form-control datetimepicker-input"
-                                               data-target="#timepicker" id="timepicker"value="{{$post->time}}">
-
+                                        <input type="text" name="time" class="form-control @if($errors->has('title')) error-input @endif datetimepicker-input" data-target="#timepicker" id="timepicker">
                                     </div>
                                     <!-- /.input group -->
+                                    @if($errors->has('time'))
+                                        <div class="messages-error">
+                                            {{$errors->first('time')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Quận huyện:</label>
                                     @if($post->district_id)
                                         <input id="districtPost" value="{{$post->ward->district->maqh}}" hidden>
                                     @endif
-                                    <select class="form-control @if($errors->has('description')) error-input @endif custom-select option" name="district"
-                                            type="text">
+                                    <select class="form-control @if($errors->has('description')) error-input @endif custom-select option" name="district_id"
+                                            type="text" id="district">
                                         <option value="">Hà Nội</option>
                                         @foreach($address as $a)
                                             <option
@@ -84,8 +86,18 @@
                                     @if($post->ward_id)
                                         <input id="wardPost" value="{{$post->ward->xaid}}" hidden>
                                     @endif
-                                    <select class="form-control @if($errors->has('description')) error-input @endif" name="ward" id="ward">
+                                    <select class="form-control @if($errors->has('description')) error-input @endif" name="ward_id" id="ward">
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Địa chỉ chi tiết</label>
+                                    <input type="text" name="addressDetails" value="{{$post->addressDetails}}"
+                                           class="form-control @if($errors->has('addressDetails')) error-input @endif">
+                                    @if($errors->has('addressDetails'))
+                                        <div class="messages-error">
+                                            {{$errors->first('addressDetails')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Giá</label>
@@ -131,81 +143,6 @@
         tinymce.init({
             selector: '#description1'
         });
-        function chooseCustomer(customer) {
-            var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
-            window.history.pushState({}, '', url);
-            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
-        }
-
-        $("select[name='category_id']").change(function () {
-            var category_id = $(this).val();
-            console.log(category_id)
-            var token = $("input[name='_token']").val();
-            $.ajax({
-                url: '{{route('getAttributes')}}',
-                method: 'GET',
-                data: {
-                    category_id: category_id,
-                    _token: token,
-                },
-                success: function (data) {
-                    if (data != null) {
-                        var html = ''
-                        for (i = 0; i < data.length; i++) {
-                            html += '<div class="form-group">'
-                            html += '<label>' + data[i]['name'] + '</label>'
-                            var options = JSON.parse(data[i]['options'])
-                            if (data[i]['type'] === 'select') {
-                                html += '<select name="attributes[' + data[i]['id'] + ']" class="form-control" >'
-                                for (var j in options) {
-                                    html += '<option value="' + j + '">' + options[j] + '</option>'
-                                }
-                                html += '</select>'
-                            }
-                            if (data[i]['type'] === 'radio') {
-                                html += '<div class="row">'
-                                for (var j in options) {
-                                    html += '<label style="margin-left: 15px" ><input type="radio" value="' + j + '"  name="attributes[' + data[i]['id'] + ']"  >' + options[j] + '</label>'
-                                }
-                                html += '</div>'
-                                html += '</select>'
-                            }
-                            if (data[i]['type'] === 'input') {
-                                html += '<div class="row">'
-                                html += '<input type="text" placeholder="" class="form-control" name="attributes[' + data[i]['id'] + ']"  >'
-                                html += '</div>'
-                                html += '</select>'
-                            }
-                            if (data[i]['type'] === 'checkbox') {
-                                html += '<div class="row">'
-                                for (var j in options) {
-                                    html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][value][]"  >' + options[j] + '</label>'
-                                }
-                                html += '</div>'
-                                html += '</select>'
-                            }
-                            if (data[i]['type'] === 'textarea') {
-                                html += '<div class="row">'
-                                html += '<textarea class="form-control" name="attributes[' + data[i]['id'] + ']" rows="4" cols="50">'
-                                html += '</textarea>'
-                                html += '</div>'
-                                html += '</select>'
-                            }
-                            html += '</div>'
-                        }
-                        $('#attributes').html(html);
-                    } else {
-                        $("#attributes").html('');
-                    }
-                }
-            });
-        })
-
-        function chooseCustomer(customer) {
-            var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
-            window.history.pushState({}, '', url);
-            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
-        }
     </script>
 @endsection
 

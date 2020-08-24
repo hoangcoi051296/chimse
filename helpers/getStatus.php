@@ -2,6 +2,7 @@
 use App\Models\Post;
 use App\Models\Attribute;
 use Illuminate\Support\Facades\DB;
+use App\Models\Employee;
 /**
  * Created by PhpStorm.
  * User: Duc Thang
@@ -100,13 +101,16 @@ if (!function_exists("employeeStatus")) {
 }if (!function_exists("statusEmployee")) {
     function statusEmployee($status_id)
     {
-        if ($status_id==Post::ChoDuyet){
+        if ($status_id==Employee::ChoViec){
+            $status='Chờ việc';
+            }
+        elseif ($status_id==Employee::ChoXacNhan){
             $status='Chờ xác nhận';
-        }elseif ($status_id==Post::NGVXacNhanCV){
+        }elseif ($status_id==Employee::XacNhanCV){
             $status='Xác nhận công việc';
-        }elseif ($status_id==Post::NGVBatDau){
+        }elseif ($status_id==Employee::BatDau){
             $status='Bắt đầu';
-        }elseif ($status_id==Post::NGVKetThuc){
+        }elseif ($status_id==Employee::HoanThanh){
             $status='Kết thúc';
         }
         return $status;
