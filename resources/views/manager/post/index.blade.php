@@ -15,7 +15,9 @@
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Danh sách công việc</h1>
                 </div><!-- /.col -->
-                <!-- /.col -->
+                <div class="col-sm-6">
+                    @include('manager.components.notified')
+                </div>
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -33,7 +35,7 @@
                                 @if(Request::get('district'))
                                     <input id="districtPost" value="{{Request::get('district')}}" hidden>
                                 @endif
-                                <select class="form-control" name="district">
+                                <select class="form-control" name="district" id="district">
                                     <option value="">Quận huyện</option>
                                     @foreach($address as $a)
                                         <option {{Request::get('district')==$a->maqh?"selected='selected":''}} value="{{$a->maqh}}">{{$a->name}}</option>
@@ -58,7 +60,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                                @include("manager.components.notified")
+
                         </div>
                         <div class="card">
                             <div class="input-group input-group-sm">
@@ -111,7 +113,17 @@
                                                     {{getStatus($post->status)}}</div>
                                             </td>
                                             <td>{{$post->customer->name}}</td>
-                                            <td>{{$post->category->name}}<br/>
+                                            <td>@if($post->category)
+                                                    {{$post->category->name}}
+                                                @endif</td>
+                                                {{--                                        @if($post->attributes)--}}
+
+                                                {{--                                           @foreach( json_decode($post->attributes,true) as $key => $attribute )--}}
+                                                {{--                                               <div class="row">--}}
+                                                {{--                                                   <span>{{getAttributes($key)->name}}</span> : <p>{{json_decode(getAttributes($key)->options,true)[$attribute]}}</p>--}}
+                                                {{--                                               </div>--}}
+                                                {{--                                                @endforeach--}}
+                                                {{--                                            @endif--}}
                                             </td>
                                             <td class="align-self-center">
                                                 <a href="{{ route('manager.post.details',['id' => $post->id])}}" data-toggle="tooltip" title="Xem chi tiết"

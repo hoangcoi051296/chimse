@@ -18,7 +18,7 @@ class CreateAttributeTable extends Migration
             $table->string('name');
             $table->unsignedBigInteger('category_id');
             $table->string('type');
-            $table->foreign('category_id')->references('id')->on('category');
+            $table->foreign('category_id')->references('id')->on('category')->onDelete("cascade");
             $table->string('options')->nullable();
             $table->timestamps();
         });

@@ -30,6 +30,9 @@ Route::group(['namespace' => 'Customer', 'middleware' => 'checkLoginCustomer'], 
         Route::get('edit/{id}', 'PostController@edit')->name('customer.post.edit');
         Route::post('update/{id}', 'PostController@update')->name('customer.post.update');
         Route::get('delete/{id}', 'PostController@delete')->name('customer.post.delete');
+        Route::get('complete/{id}', 'PostController@complete')->name('customer.post.complete');
+        Route::post('complete', 'PostController@feedback')->name('customer.post.feedback');
+        Route::post('changeStatus', 'PostController@changeStatus')->name('customer.post.changeStatus');
         Route::get('showWard', 'PostController@showWardInDistrict')->name('customer.get.showWard');
     });
     Route::group(['prefix' => 'feedback'], function () {

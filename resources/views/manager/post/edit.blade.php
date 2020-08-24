@@ -87,7 +87,7 @@
                                     @if($post->district_id)
                                         <input id="districtPost" value="{{$post->ward->district->maqh}}" hidden>
                                     @endif
-                                    <select class="form-control custom-select option" name="district"
+                                    <select class="form-control custom-select option" name="district" id="district"
                                             type="text">
                                         <option value="">Hà Nội</option>
                                         @foreach($address as $a)
@@ -104,10 +104,20 @@
                                     @if($post->ward_id)
                                         <input id="wardPost" value="{{$post->ward->xaid}}" hidden>
                                     @endif
-                                    <select class="form-control" name="ward" id="ward">
+                                    <select class="form-control" name="ward_id" id="ward">
                                     </select>
-                                    @if($errors->has('ward'))
+                                    @if($errors->has('ward_id'))
                                         <span class="errorCustom">{{$errors->first('ward')}}</span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label>Địa chỉ chi tiết</label>
+                                    <input type="text" name="addressDetails" value="{{$post->addressDetails}}"
+                                           class="form-control @if($errors->has('addressDetails')) error-input @endif">
+                                    @if($errors->has('addressDetails'))
+                                        <div class="messages-error">
+                                            {{$errors->first('addressDetails')}}
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="form-group">
@@ -197,7 +207,6 @@
             inline: true
         });
     </script>
-    <script src="{{asset("js/getAddress.js")}}"></script>
     <script type="text/javascript">
         function chooseCustomer(customer) {
             var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;

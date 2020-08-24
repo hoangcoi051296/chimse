@@ -46,4 +46,8 @@ class Customer extends Model implements Authenticatable
     {
         return $this->belongsTo(District::class, 'district_id', 'maqh');
     }
+
+    public function employee(){
+        return $this->belongsToMany(Employee::class,'feedback','customer_id','employee_id')->withPivot('comment','rating')->withTimestamps();
+    }
 }

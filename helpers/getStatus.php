@@ -1,6 +1,7 @@
 <?php
 use App\Models\Post;
 use App\Models\Attribute;
+use Illuminate\Support\Facades\DB;
 /**
  * Created by PhpStorm.
  * User: Duc Thang
@@ -80,17 +81,35 @@ if (!function_exists("employeeStatus")) {
             ],
             [
                 'value' => 1,
-                'name' => 'Xác nhận CV'
+                'name' => 'Chờ xác nhận'
             ],
             [
                 'value' => 2,
-                'name' => 'Bắt đầu'
+                'name' => 'Xác nhận CV'
             ],
             [
                 'value' => 3,
+                'name' => 'Bắt đầu'
+            ],
+            [
+                'value' => 4,
                 'name' => 'Hoàn thành CV'
             ],
         ];
+    }
+}if (!function_exists("statusEmployee")) {
+    function statusEmployee($status_id)
+    {
+        if ($status_id==Post::ChoDuyet){
+            $status='Chờ xác nhận';
+        }elseif ($status_id==Post::NGVXacNhanCV){
+            $status='Xác nhận công việc';
+        }elseif ($status_id==Post::NGVBatDau){
+            $status='Bắt đầu';
+        }elseif ($status_id==Post::NGVKetThuc){
+            $status='Kết thúc';
+        }
+        return $status;
     }
 }
 if (!function_exists("employeePostStatus")) {
@@ -170,5 +189,16 @@ if (!function_exists("getAttributes")) {
     {
         $attribute =Attribute::find($key);
         return $attribute;
+    }
+}
+if (!function_exists("avgRate")) {
+    function avgRate($employee)
+    {
+       $a =DB::table('feedback')->where('employee_id',$employee->id)->get();
+        $avgRate =  $a->avg('rating');
+         if ($avgRate==null){
+             return "Chưa có đánh giá";
+         }
+         return  $avgRate.'( '.$a->count().' đánh giá ) ';
     }
 }

@@ -51,7 +51,7 @@ class CustomerController extends Controller
             'ward_id' => $request->ward,
             'district_id' => $request->district
         ]);
-        return redirect()->route('manager.customer.index')->with("success", "Create Success");
+        return redirect()->route('manager.customer.index')->withSuccess("Tạo mới thành công");
     }
 
     public function edit($id, Request $request)
@@ -74,7 +74,7 @@ class CustomerController extends Controller
            'ward_id' => $request->ward,
            'district_id' => $request->district
        ]);
-        return redirect()->route('manager.customer.index');
+        return redirect()->route('manager.customer.index')->withSuccess("Sửa thành công");
     }
 
     public function delete($id)
@@ -83,7 +83,7 @@ class CustomerController extends Controller
         if($customer){
             $customer->delete();
         }
-        return redirect()->back();
+        return redirect()->back()->withSuccess("Xóa thành công");
     }
 
     public function posts($id,Request $request)

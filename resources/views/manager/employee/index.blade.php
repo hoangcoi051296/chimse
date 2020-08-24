@@ -18,6 +18,9 @@
         -webkit-transform: scale(8);transform-origin: 0 25%;
         transform: scale(8) ;
     }
+    .filterData {
+        margin-right: 20px;
+    }
 </style>
 @section('content')
     <!-- Content Header (Page header) -->
@@ -26,7 +29,10 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Danh sách người giúp việc</h1>
-                </div><!-- /.col -->
+                </div>
+                <div class="col-sm-6">
+                    @include('manager.components.notified')
+                </div>
                <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -41,24 +47,23 @@
                     <form class=" ml-3 form">
 
                         <div class="input-group input-group-sm">
-                            <div class="form-group">
+                            <div class="form-group filterData">
                                 @if(Request::get('district'))
                                     <input id="districtPost" value="{{Request::get('district')}}" hidden>
                                 @endif
-                                <select class="form-control" name="district">
+                                <select class="form-control" name="district" id="district">
                                     <option value="">Quận huyện</option>
                                     @foreach($address as $a)
-                                        <option
-                                            {{Request::get('district')==$a->maqh ?"selected='selected'":''}}  value="{{$a->maqh}}">{{$a->name}}</option>
+                                        <option {{Request::get('district')==$a->maqh?"selected='selected":''}} value="{{$a->maqh}}">{{$a->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-left: 20px;width: 200px">
+                            <div class="form-group filterData" style="width: 200px">
                                 @if(Request::get('ward'))
                                     <input id="wardPost" value="{{Request::get('ward')}}" hidden>
                                 @endif
                                 <select class="form-control" name="ward" id="ward">
-                                    <option value="">Xã phường</option>
+                                    <option selected="selected" value="">Xã phường</option>
                                 </select>
                             </div>
                             <div class="form-group" style="margin-left: 20px;width: 200px">
@@ -110,7 +115,13 @@
                                 <tbody>
                                 @forelse($helpers as $helper)
                                     <tr>
-                                        <td><img class="img" src="{{$helper->avatar}}" style="width: 40px;height: 40px"></td>
+                                        <td>
+                                            @if($helper->avatar)
+                                                <img class="img" src="{{$helper->avatar}}" style="width: 40px;height: 40px">
+                                            @else
+                                                <img class="img" src="{{asset('images/avt.jpeg')}}" style="width: 40px;height: 40px">
+                                            @endif
+                                        </td>
                                         <td>{{$helper->name}}</td>
                                         <td>{{$helper->email}}</td>
                                         <td>{{$helper->phone}}</td>
@@ -122,11 +133,15 @@
                                                 {{$helper->ward->name}}
                                             @endif
                                         </td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{avgRate($helper)}}</td>
+                                        @if($helper->status)
+                                        <td>{{statusEmployee($helper->status)}}</td>
+                                        @else
+                                            <td></td>
+                                        @endif
                                         <td>
-                                            <a href="{{ route('manager.employee.details',['id' => $helper->id])}}"
-                                               class=" btn-xs btn-default" style="background-color: lightgrey"><i class="far fa-eye"></i></a>
+{{--                                            <a href="{{ route('manager.employee.details',['id' => $helper->id])}}"--}}
+{{--                                               class=" btn-xs btn-default" style="background-color: lightgrey"><i class="far fa-eye"></i></a>--}}
                                             <a class="edit"
                                                href="{{route('manager.employee.edit',['id'=>$helper->id])}}"><i
                                                     class="fas fa-edit"></i></a>
@@ -176,5 +191,5 @@
 {{--            });--}}
 {{--        });--}}
 {{--    </script>--}}
-    <script src="{{asset("js/getAddress.js")}}"></script>
+
 @endsection

@@ -48,6 +48,7 @@ $factory->define(\App\Models\Post::class, function (Faker $faker) {
         'status'=>rand(0,7),
         'ward_id'=>null,
         'district_id'=>null,
+        'addressDetails'=>null,
         'category_id'=>rand(1,10),
         'employee_id'=>rand(2,10),
         'customer_id'=>rand(2,10),

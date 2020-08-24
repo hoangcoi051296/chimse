@@ -22,9 +22,9 @@
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3>{{$post->count()}}</h3>
 
-                            <p>New Orders</p>
+                            <p>Bài đăng</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-bag"></i>
@@ -37,9 +37,9 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>53<sup style="font-size: 20px">%</sup></h3>
+                            <h3>{{$postDay->count()}}</h3>
 
-                            <p>Bounce Rate</p>
+                            <p>Bài đăng mới</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
@@ -52,14 +52,14 @@
                     <!-- small box -->
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>44</h3>
+                            <h3>{{$employee->count()}}</h3>
 
-                            <p>User Registrations</p>
+                            <p>Người giúp việc</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer"><i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -67,14 +67,14 @@
                     <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>65</h3>
+                            <h3>{{$customer->count()}}</h3>
 
-                            <p>Unique Visitors</p>
+                            <p>Khách hàng</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer"><i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -86,6 +86,7 @@
                 <section class="col-lg-7 connectedSortable ui-sortable">
                     <!-- Custom tabs (Charts with tabs)-->
                     <div class="card">
+
                         <div class="card-header ui-sortable-handle" style="cursor: move;">
                             <h3 class="card-title">
                                 <i class="fas fa-chart-pie mr-1"></i>
@@ -589,4 +590,6 @@
             <!-- /.row (main row) -->
         </div><!-- /.container-fluid -->
     </section>
+@endsection
+@section('script')
 @endsection

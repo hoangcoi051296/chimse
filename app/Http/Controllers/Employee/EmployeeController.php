@@ -17,23 +17,42 @@ class EmployeeController extends Controller
         Employee $employee
     ) {
         $this->employee = $employee;
+        $address = District::where('matp', 01)->get();
+        view()->share(compact('address'));
     }
     public function index(){
         return view('employee.dashboard');
     }
-    public function editAccount(){
-            $user=Auth::guard('employee')->user();
-            $address = District::where('matp', 01)->get();
-        return view('employee.account.edit',compact('user','address'));
+    public function feedback(){
+        $employee=Auth::guard('employee')->user();
+
+        return view('employee.feedback.index',compact('employee'));
     }
-    public function updateAccount($id,Request $request){
+    public function editAccount(){
+        $employee=Auth::guard('employee')->user();
+        return view('employee.account.edit',compact('employee'));
+    }
+    public function updateAccount(Request $request ,$id){
+        $request->validate([
+            "name"=> "sometimes|string|unique:employee,name,".$id,
+            'avatar' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
         $data=$request->all();
-        $request->validate($this->employee->rules($id));
+        $employee=Employee::find($id);
         try {
-            $this->employee->updateData($data, $id);
-        } catch (\Exception $e) {
-            return redirect()->back()->with("error", $e->getMessage());
+            $image = null;
+            if($request->hasFile("image")){
+                $file = $request->file("image");
+                $file_name = time()."_".$file->getClientOriginalName();
+                $file->move("upload/avatar/employee/",$file_name);
+                $image = "upload/avatar/employee/".$file_name;
+            }
+            $data['avatar']=$image;
+            $data= array_filter($data);
+            $employee->fill($data)->save();
+        }catch (\Exception $e){
+            return redirect()->back();
         }
-        return redirect()->route('employee.account.edit')->with("success", "Cập nhật thành công");
+        return redirect()->route('employee.account.edit')->with("success","Cập nhật thành công");
     }
 }

@@ -1,15 +1,24 @@
 <?php
 
 namespace App\Http\Controllers\Manager;
+use App\Models\Customer;
+use App\Models\Employee;
 use App\Models\Manager;
 use App\Http\Controllers\Controller;
+use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ManagerController extends Controller
 {
     public function index(){
-        return view('manager.dashboard');
+        $customer=Customer::all();
+        $employee=Employee::all();
+        $range=Carbon::now()->subDay(1);
+        $post=new Post();
+        $postDay =$post->where('created_at','>=',$range)->get();
+        return view('manager.dashboard',compact('customer','employee','postDay','post'));
     }
     public function editAccount(){
        $manager=Auth::guard('manager')->user();
@@ -27,8 +36,8 @@ class ManagerController extends Controller
             if($request->hasFile("image")){
                 $file = $request->file("image");
                 $file_name = time()."_".$file->getClientOriginalName();
-                    $file->move("upload/avatar",$file_name);
-                    $image = "upload/avatar/".$file_name;
+                    $file->move("upload/avatar/manager/",$file_name);
+                    $image = "upload/avatar/manager/".$file_name;
             }
             $data['avatar']=$image;
             $data= array_filter($data);

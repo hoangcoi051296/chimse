@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -27,7 +28,7 @@ class CategoryController extends Controller
         }catch (\Exception $e){
             return back()->with("error","Tạo danh mục thất bại");
         }
-        return redirect()->route('manager.category.index')->with('success','Tạo danh mục thành công');
+        return redirect()->route('manager.category.index')->with('success','Tạo  thành công');
     }
     public function edit($id){
         $category=Category::find($id);
@@ -43,7 +44,17 @@ class CategoryController extends Controller
         }
         return redirect()->route('manager.category.index')->with('success','Cập nhật thành công');
     }
-    public  function delete(){
+    public  function delete($id){
+        $category=Category::find($id);
+        DB::beginTransaction();
+        try {
 
+            $category->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Xoá thất bại');
+        }
+        return redirect()->route('manager.category.index')->with('error', 'Xoá thành công');
     }
 }

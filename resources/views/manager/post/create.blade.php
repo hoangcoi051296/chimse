@@ -91,23 +91,32 @@
 
                                 <div class="form-group">
                                     <label for="inputStatus">Quận huyện</label>
-                                    <select class="form-control custom-select option" name="district"
-                                            type="text">
+                                    <select class="form-control custom-select option" name="district_id"
+                                            id="district"
+                                            >
                                         <option value="">Hà Nội</option>
                                         @foreach($address as $a)
                                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
                                     </select>
-                                    @if($errors->has('district'))
-                                        <br/><span class="errorCustom">{{$errors->first('district')}}</span>
+                                    @if($errors->has('district_id'))
+                                        <br/><span class="errorCustom">{{$errors->first('district_id')}}</span>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Xã phường :</label>
-                                    <select class="form-control" name="ward">
+                                    <select class="form-control" name="ward_id" id="ward">
                                     </select>
-                                    @if($errors->has('ward'))
-                                        <span class="errorCustom">{{$errors->first('ward')}}</span>
+                                    @if($errors->has('ward_id'))
+                                        <span class="errorCustom">{{$errors->first('ward_id')}}</span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label>Nhập địa chỉ chi tiết :</label>
+                                    <input class="form-control" name="addressDetails">
+
+                                    @if($errors->has('addressDetails'))
+                                        <span class="errorCustom">{{$errors->first('addressDetails')}}</span>
                                     @endif
                                 </div>
                                 <div class="form-group">
@@ -130,7 +139,7 @@
                                                     @if(Request::get('district'))
                                                         <input id="districtPost" value="{{Request::get('district')}}" hidden>
                                                     @endif
-                                                    <select class="form-control" name="district" id="district">
+                                                    <select class="form-control" name="district" id="districtFind">
                                                         <option value="">Quận huyện</option>
                                                         @foreach($address as $a)
                                                             <option {{Request::get('district')==$a->maqh?"selected='selected":''}} value="{{$a->maqh}}">{{$a->name}}</option>
@@ -254,7 +263,6 @@
 @section('script')
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="{{asset("js/getAddress.js")}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.4/tinymce.min.js" referrerpolicy="origin"></script>
     <script type="text/javascript">
         tinymce.init({
@@ -358,7 +366,7 @@
             $('#employee').html(html)
         }
         function chooseEmployee() {
-            var district =$('#district').val()
+            var district =$('#districtFind').val()
             var status =$('#status').val()
             var search =$('#findEmployee').val()
             var url = "{!! route('manager.post.create') !!}";

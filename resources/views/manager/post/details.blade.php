@@ -60,10 +60,11 @@
                             </div>
                             <div class="col-sm-4 invoice-col">
                               <b>Công việc</b>   <br>
+                                <ins><i>{{$post->category->name}}</i></ins><br>
                                 @if($post->attributes)
                                     @foreach ($post->attributes as $attribute)
                                     @if($attribute->type=="select"||$attribute->type=="radio")
-                                        {{$attribute->name}} :  {{json_decode($attribute['options'],true)[$value]}}
+                                        {{$attribute->name}} :  {{json_decode($attribute['options'],true)[json_decode($attribute->pivot->value,true)]}}
                                         <br/>
                                     @elseif($attribute->type=="checkbox")
                                             {{$attribute->name}} :
@@ -73,18 +74,6 @@
                                     @elseif($attribute->type=='input'||$attribute->type=='textarea')
                                             {{$attribute->name}} :  {{json_decode($attribute->pivot->value,true)}}<br/>
                                     @endif
-                                    @endforeach
-                                @endif
-
-                                <ins><i>{{$post->category->name}}</i></ins><br>
-                                @if($post->attributes)
-                                    @foreach( json_decode($post->attributes,true) as $key => $attribute )
-                                        @if(getAttributes($key)->type=="select"||getAttributes($key)->type=="radio")
-                                            {{getAttributes($key)->name}}
-                                            : {{json_decode(getAttributes($key)->options,true)[$attribute]}}<br/>
-                                        @elseif(getAttributes($key)->type=="textarea"||getAttributes($key)->type=="input")
-                                            {{getAttributes($key)->name}} : {{$attribute}}<br/>
-                                        @endif
                                     @endforeach
                                 @endif
                             </div>
@@ -149,6 +138,20 @@
 
                                         </tr>
                                         <tr>
+                                            <th>Địa chỉ :
+                                            </th>
+                                            <td>
+                                                @if($post->addressDetails)
+                                                    {{$post->addressDetails}}
+                                                @endif
+                                                @if($post->district_id),
+                                                    {{$post->ward->district->name}}
+                                                @endif
+                                                @if($post->ward_id),
+                                                {{$post->ward->name}}
+                                                @endif</td>
+                                        </tr>
+                                        <tr>
                                             <th>Thời gian thuê :
                                                </th>
                                             <td> @if($post->time)<span>{{$post->time}}</span> @endif</td>
@@ -197,7 +200,7 @@
                                                     @if(Request::get('district'))
                                                         <input id="districtPost" value="{{Request::get('district')}}" hidden>
                                                     @endif
-                                                    <select class="form-control" name="district" id="district">
+                                                    <select class="form-control" name="district" id="districtFind">
                                                         <option value="">Quận huyện</option>
                                                         @foreach($address as $a)
                                                             <option {{Request::get('district')==$a->maqh?"selected='selected":''}} value="{{$a->maqh}}">{{$a->name}}</option>
@@ -329,7 +332,7 @@
        }
         function chooseEmployee() {
             var id=$('#post_id').val();
-                var district =$('#district').val()
+                var district =$('#districtFind').val()
                 var status =$('#status').val()
                 var search =$('#findEmployee').val()
             var url = "{!! route('manager.post.details',[':id']) !!}";

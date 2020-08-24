@@ -21,7 +21,7 @@
                     <div class="callout callout-info">
                         <h3><i class="fas fa-info"></i> Bài đăng : #{{$post->id}}</h3>
                         <input id="postID" value="{{$post->id}}" hidden>
-                        <h5>Trạng thái : {{employeeGetStatus($post->status)}}</h5>
+                        <h5>Trạng thái : {{getStatus($post->status)}}</h5>
                     </div>
 
 
@@ -51,12 +51,13 @@
                                     Email: {{$post->customer->email}}
                                 </address>
                             </div>
-                            <div class="col-sm-6 invoice-col">
+                            <div class="col-sm-4 invoice-col">
                                 <b>Công việc</b>   <br>
+                                <ins><i>{{$post->category->name}}</i></ins><br>
                                 @if($post->attributes)
                                     @foreach ($post->attributes as $attribute)
                                         @if($attribute->type=="select"||$attribute->type=="radio")
-                                            {{$attribute->name}} :  {{json_decode($attribute['options'],true)[$value]}}
+                                            {{$attribute->name}} :  {{json_decode($attribute['options'],true)[json_decode($attribute->pivot->value,true)]}}
                                             <br/>
                                         @elseif($attribute->type=="checkbox")
                                             {{$attribute->name}} :
@@ -65,18 +66,6 @@
                                             @endforeach<br/>
                                         @elseif($attribute->type=='input'||$attribute->type=='textarea')
                                             {{$attribute->name}} :  {{json_decode($attribute->pivot->value,true)}}<br/>
-                                        @endif
-                                    @endforeach
-                                @endif
-
-                                <ins><i>{{$post->category->name}}</i></ins><br>
-                                @if($post->attributes)
-                                    @foreach( json_decode($post->attributes,true) as $key => $attribute )
-                                        @if(getAttributes($key)->type=="select"||getAttributes($key)->type=="radio")
-                                            {{getAttributes($key)->name}}
-                                            : {{json_decode(getAttributes($key)->options,true)[$attribute]}}<br/>
-                                        @elseif(getAttributes($key)->type=="textarea"||getAttributes($key)->type=="input")
-                                            {{getAttributes($key)->name}} : {{$attribute}}<br/>
                                         @endif
                                     @endforeach
                                 @endif

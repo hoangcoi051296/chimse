@@ -22,7 +22,6 @@
         <div class="container-fluid">
             <form method="post" action="{{route('customer.post.store')}}">
                 @csrf
-                <div class="row">
                     <div class="col-md-12">
                         <div class="card card-primary">
                             <div class="card-header">
@@ -36,7 +35,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="inputName">Title</label>
+                                    <label for="inputName">Tên</label>
                                     <input type="text" name="title" id="inputName"
                                            class="form-control @if($errors->has('title')) error-input @endif">
                                     @if($errors->has('title'))
@@ -46,7 +45,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputName">Description</label>
+                                    <label for="inputName">Mô tả</label>
                                     <textarea class="form-control" name="description" id="description1" rows="3"></textarea>
                                     @if($errors->has('description'))
                                         <div class="messages-error">
@@ -55,44 +54,58 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label>Date and time:</label>
+                                    <label>Thời gian:</label>
 
                                     <div class="input-group">
                                         <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="far fa-clock"></i></div>
                                         </div>
-                                        <input type="text" name="time" class="form-control datetimepicker-input" data-target="#timepicker" id="timepicker">
-
+                                        <input type="text" name="time" class="form-control @if($errors->has('title')) error-input @endif datetimepicker-input" data-target="#timepicker" id="timepicker">
                                     </div>
                                     <!-- /.input group -->
+                                    @if($errors->has('time'))
+                                        <div class="messages-error">
+                                            {{$errors->first('time')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputStatus">District</label>
-                                    <select class="form-control @if($errors->has('district')) error-input @endif custom-select option"
-                                            name="district" type="text">
+                                    <label for="inputStatus">Quận huyện</label>
+                                    <select class="form-control @if($errors->has('district_id')) error-input @endif custom-select option"
+                                            name="district_id" type="text" id="district">
                                         @foreach($address as $a)
                                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
                                     </select>
-                                    @if($errors->has('district'))
+                                    @if($errors->has('district_id'))
                                         <div class="messages-error">
-                                            {{$errors->first('district')}}
+                                            {{$errors->first('district_id')}}
                                         </div>
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label>Ward</label>
-                                    <select class="form-control @if($errors->has('ward')) error-input @endif"
-                                            name="ward">
+                                    <label>Xã phường</label>
+                                    <select class="form-control @if($errors->has('ward_id')) error-input @endif"
+                                            name="ward_id" id="ward">
                                     </select>
-                                    @if($errors->has('ward'))
+                                    @if($errors->has('ward_id'))
                                         <div class="messages-error">
-                                            {{$errors->first('ward')}}
+                                            {{$errors->first('ward_id')}}
                                         </div>
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputName">Price</label>
+                                    <label>Địa chỉ chi tiết</label>
+                                    <input type="text" name="addressDetails"
+                                           class="form-control @if($errors->has('addressDetails')) error-input @endif">
+                                    @if($errors->has('addressDetails'))
+                                        <div class="messages-error">
+                                            {{$errors->first('addressDetails')}}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputName">Giá</label>
                                     <input type="text" name="price" id="inputName"
                                            class="form-control @if($errors->has('price')) error-input @endif">
                                     @if($errors->has('price'))
@@ -101,8 +114,9 @@
                                         </div>
                                     @endif
                                 </div>
+                                <input name="customer_id" value="{{\Illuminate\Support\Facades\Auth::guard('customer')->user()->id}}" hidden>
                                 <div class="form-group">
-                                    <label for="inputName">Category</label>
+                                    <label for="inputName">Danh mục</label>
                                     <select name="category_id"
                                             class="form-control @if($errors->has('category')) error-input @endif"
                                             id="category_id">
@@ -124,7 +138,6 @@
                         </div>
                         <!-- /.card -->
                     </div>
-                </div>
                 <div class="row " style="margin-bottom: 40px">
                     <div class="col-12">
                         <input type="submit" value="Create post" class="btn btn-success float-left">

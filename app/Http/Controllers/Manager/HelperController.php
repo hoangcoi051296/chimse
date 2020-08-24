@@ -50,7 +50,7 @@ class HelperController extends Controller
         }
 //        $employee =$request->all();
 //        Mail::to($request->email)->send( new AccountHelperCreated($employee));
-        return redirect()->route('manager.employee.index')->with("success", "Create Success");
+        return redirect()->route('manager.employee.index')->with("success", "Tạo thành công");
     }
 
     public function edit($id)
@@ -68,7 +68,7 @@ class HelperController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.employee.index')->with("success", "Update Success");
+        return redirect()->route('manager.employee.index')->with("success", "Cập nhật thành công");
     }
 
     public function delete($id)
@@ -78,6 +78,6 @@ class HelperController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.employee.index')->with("success", "Delete Success");
+        return redirect()->route('manager.employee.index')->with("success", "Xoá thành công");
     }
 }
