@@ -22,111 +22,119 @@
         <div class="container-fluid">
             <form method="post" action="{{route('customer.post.store')}}">
                 @csrf
-                    <div class="col-md-12">
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">General</h3>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"
-                                            title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">General</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                        title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
                             </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="inputName">Tên</label>
-                                    <input type="text" name="title" id="inputName"
-                                           class="form-control @if($errors->has('title')) error-input @endif">
-                                    @if($errors->has('title'))
-                                        <div class="messages-error">
-                                            {{$errors->first('title')}}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Mô tả</label>
-                                    <textarea class="form-control" name="description" id="description1" rows="3"></textarea>
-                                    @if($errors->has('description'))
-                                        <div class="messages-error">
-                                            {{$errors->first('description')}}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label>Thời gian:</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
-                                        </div>
-                                        <input type="text" name="time" class="form-control @if($errors->has('title')) error-input @endif datetimepicker-input" data-target="#timepicker" id="timepicker">
-                                    </div>
-                                    <!-- /.input group -->
-                                    @if($errors->has('time'))
-                                        <div class="messages-error">
-                                            {{$errors->first('time')}}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputStatus">Quận huyện</label>
-                                    <select class="form-control @if($errors->has('district')) error-input @endif custom-select option"
-                                            name="district" type="text">
-                                        @foreach($address as $a)
-                                            <option value="{{$a->maqh}}">{{$a->name}}</option>
-                                        @endforeach
-                                    </select>
-                                    @if($errors->has('district'))
-                                        <div class="messages-error">
-                                            {{$errors->first('district')}}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label>Xã phường</label>
-                                    <select class="form-control @if($errors->has('ward')) error-input @endif"
-                                            name="ward">
-                                    </select>
-                                    @if($errors->has('ward'))
-                                        <div class="messages-error">
-                                            {{$errors->first('ward')}}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Giá</label>
-                                    <input type="text" name="price" id="inputName"
-                                           class="form-control @if($errors->has('price')) error-input @endif">
-                                    @if($errors->has('price'))
-                                        <div class="messages-error">
-                                            {{$errors->first('price')}}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Danh mục</label>
-                                    <select name="category_id"
-                                            class="form-control @if($errors->has('category')) error-input @endif"
-                                            id="category_id">
-                                        <option value="">Chọn loại</option>
-                                        @foreach ($categories as $cat)
-                                            <option value="{{$cat->id}}">{{$cat->name}}</option>
-                                        @endforeach
-                                    </select>
-                                    @if($errors->has('category_id'))
-                                        <div class="messages-error">
-                                            {{$errors->first('category_id')}}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div id="attributes">
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card -->
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="inputName">Tên</label>
+                                <input type="text" name="title" id="inputName"
+                                       class="form-control @if($errors->has('title')) error-input @endif">
+                                @if($errors->has('title'))
+                                    <div class="messages-error">
+                                        {{$errors->first('title')}}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName">Mô tả</label>
+                                <textarea class="form-control" name="description" id="description1" rows="3"></textarea>
+                                @if($errors->has('description'))
+                                    <div class="messages-error">
+                                        {{$errors->first('description')}}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label>Thời gian:</label>
+
+                                <div class="input-group">
+                                    <div class="input-group-append" data-target="#timepicker"
+                                         data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                    </div>
+                                    <input type="text" name="time"
+                                           class="form-control @if($errors->has('title')) error-input @endif datetimepicker-input"
+                                           data-target="#timepicker" id="timepicker">
+                                </div>
+                                <!-- /.input group -->
+                                @if($errors->has('time'))
+                                    <div class="messages-error">
+                                        {{$errors->first('time')}}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="inputStatus">Quận huyện</label>
+                                <select class="form-control @if($errors->has('district')) error-input @endif custom-select option"
+                                        name="district" type="text">
+                                    <option value="">Chọn quận huyện</option>
+                                    @foreach($address as $a)
+                                        <option value="{{$a->maqh}}">{{$a->name}}</option>
+                                    @endforeach
+                                </select>
+                                @if($errors->has('district'))
+                                    <div class="messages-error">
+                                        {{$errors->first('district')}}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label>Xã phường</label>
+                                <select class="form-control @if($errors->has('ward')) error-input @endif"
+                                        name="ward">
+                                </select>
+                                @if($errors->has('ward'))
+                                    <div class="messages-error">
+                                        {{$errors->first('ward')}}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName">Giá</label>
+                                <input type="number" name="price" id="inputName"
+                                       class="form-control @if($errors->has('price')) error-input @endif">
+                                @if($errors->has('price'))
+                                    <div class="messages-error">
+                                        {{$errors->first('price')}}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName">Danh mục</label>
+                                <select name="category_id"
+                                        class="form-control @if($errors->has('category')) error-input @endif"
+                                        id="category_id">
+                                    <option value="">Chọn loại</option>
+                                    @foreach ($categories as $cat)
+                                        <option value="{{$cat->id}}">{{$cat->name}}</option>
+                                    @endforeach
+                                </select>
+                                @if($errors->has('category_id'))
+                                    <div class="messages-error">
+                                        {{$errors->first('category_id')}}
+                                    </div>
+                                @endif
+                            </div>
+                            <div id="attributes">
+                                @if($errors->has('attributes'))
+                                    <div class="messages-error">
+                                        {{$errors->first('attributes')}}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
                 <div class="row " style="margin-bottom: 40px">
                     <div class="col-12">
@@ -147,6 +155,7 @@
         tinymce.init({
             selector: '#description1'
         });
+
         function chooseCustomer(customer) {
             var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
             window.history.pushState({}, '', url);

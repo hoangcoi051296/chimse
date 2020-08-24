@@ -98,10 +98,10 @@ $listStatus = listStatus();
                             <th>Mô tả</th>
                             <th>Giá</th>
                             <th class="customer-address">Địa chỉ</th>
-                            <th>Trạng thái</th>
-                            <th>Thời gian</th>
-                            <th>Danh mục</th>
-                            <th>Khách hàng</th>
+                            <th class="customer-status">Trạng thái</th>
+                            <th class="customer-time">Thời gian</th>
+                            <th class="customer-category">Danh mục</th>
+                            <th class="customer">Khách hàng</th>
                             <th>Đánh giá</th>
                             <th style="width: 113px">Hoạt động</th>
                         </tr>

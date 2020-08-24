@@ -30,13 +30,13 @@ class PostController extends Controller
         $request['customer_id'] = $user->id;
         $posts = $this->post->getData($request);
         $category = Category::all();
-        return view('customer.post.index', compact('posts','category'));
+        return view('customer.post.index', compact('posts', 'category'));
     }
 
     public function showWardInDistrict(Request $request)
     {
-            $wards = Ward::Where('maqh', $request->address)->get();
-            return response()->json($wards);
+        $wards = Ward::Where('maqh', $request->address)->get();
+        return response()->json($wards);
     }
 //    public function changeStatus(Request $request){
 //        if ($request->ajax()) {
@@ -52,7 +52,7 @@ class PostController extends Controller
         $user->status = $request->status;
         $user->save();
 
-        return response()->json(['success'=>'User status change successfully.']);
+        return response()->json(['success' => 'User status change successfully.']);
     }
 
     public function create()
@@ -63,12 +63,14 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-            $data = $request->all();
-            $request->validate($this->post->rules());
-            $data['status'] = Post::ChoDuyet;
-            $data['customer_id'] = Auth::guard('customer')->user()->id;
-            $this->post->createData($data);
+        $data = $request->all();
+        $rules = $this->post->rules();
+        $messages = $this->post->messages();
+        $request->validate($rules, $messages);
 
+        $data['status'] = Post::ChoDuyet;
+        $data['customer_id'] = Auth::guard('customer')->user()->id;
+        $this->post->createData($data);
         return redirect()->route('customer.post.index')->withSuccess("Tạo mới thành công");
     }
 
@@ -83,11 +85,9 @@ class PostController extends Controller
     {
         $data = $request->all();
         $request->validate($this->post->rules());
-
         $data['status'] = Post::ChoDuyet;
         $data['customer_id'] = Auth::guard('customer')->user()->id;
         $this->post->updateData($data, $id);
-
         return redirect()->route('customer.post.index')->withSuccess("Sửa thành công");
     }
 

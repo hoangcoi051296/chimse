@@ -41,6 +41,11 @@
                                     <label for="inputName">Tên</label>
                                     <input type="text" name="title" id="inputName" value="{{$post->title}}"
                                            class="form-control @if($errors->has('description')) error-input @endif">
+                                    @if($errors->has('title'))
+                                        <div class="messages-error">
+                                            {{$errors->first('title')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Mô tả</label>
@@ -64,6 +69,11 @@
 
                                     </div>
                                     <!-- /.input group -->
+                                    @if($errors->has('time'))
+                                        <div class="messages-error">
+                                            {{$errors->first('time')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Quận huyện:</label>
@@ -78,6 +88,11 @@
                                                     {{$post->district_id?$post->district->maqh==$a->maqh?"selected='selected'":'':''}} value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
                                     </select>
+                                    @if($errors->has('district'))
+                                        <div class="messages-error">
+                                            {{$errors->first('district')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Xã phường:</label>
@@ -86,6 +101,11 @@
                                     @endif
                                     <select class="form-control @if($errors->has('description')) error-input @endif" name="ward" id="ward">
                                     </select>
+                                    @if($errors->has('ward'))
+                                        <div class="messages-error">
+                                            {{$errors->first('ward')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Giá</label>
@@ -105,6 +125,11 @@
                                             <option value="{{$cat->id}}">{{$cat->name}}</option>
                                         @endforeach
                                     </select>
+                                    @if($errors->has('category'))
+                                        <div class="messages-error">
+                                            {{$errors->first('category')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div id="attributes">
                                 </div>

@@ -65,8 +65,7 @@ $listStatus = listStatus();
                                             <td>{{$fb->rating}}</td>
                                             <td>
                                                 <a href="{{ route('customer.feedback.edit',['id' => $fb->id])}}"
-                                                   class="btn btn-primary btn-xsmax"><i
-                                                            class="fas fa-user-edit"></i></a>
+                                                   class="btn btn-primary btn-xsmax"><i class="fa fa-edit"></i></a>
                                             </td>
 
                                         </tr>

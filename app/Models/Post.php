@@ -103,16 +103,17 @@ class Post extends Model
     public function rules($id = null)
     {
         $validate = [
-            'title' => "required| string",
+            'title' => "required|string",
             'description' => "required|string",
-            'price' => "required",
+            'price' => "required|numeric|min:1000",
+            'district' => "required",
+            'ward' => "required",
+            'category_id' => "required",
+            'time' => "required",
+            'attributes' => "required",
         ];
-        if ($id) {
-            return $validate;
-        }
-        return array_merge($validate, ['district' => 'required',
-            'ward' => "required", 'customer_id' => "required", 'category_id' => "required", 'time' => 'required',]);
 
+        return $validate;
     }
 
     public function messages()
@@ -126,7 +127,7 @@ class Post extends Model
             'category_id.required' => 'Chọn danh mục',
             'customer_id.required' => "Chọn người thuê",
             'time.required' => "Chọn thời gian bắt đầu",
-            'attributes.*.required' => "Thuộc tính không được bỏ trống",
+            'attributes.required' => "Thuộc tính không được bỏ trống",
 
         ];
     }
