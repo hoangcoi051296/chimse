@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
@@ -26,6 +27,17 @@ class Post extends Model
             return $posts->paginate(isset($condition['per_page']) ? $condition['per_page'] : $this->perPage);
         }
 
+        if (isset($condition['timeFilter'])){
+            if ($condition['timeFilter']=='day'){
+                $posts->where('created_at','>=',Carbon::now()->subDay(1));
+            }
+            elseif ($condition['timeFilter']=='week'){
+                $posts->where('created_at','>=',Carbon::now()->subWeek(1));
+            }
+            else{
+            $posts->where('created_at','>=',Carbon::now()->subMonth(1));
+            }
+        }
         if (isset($condition['status']) && $condition['status'] !== null) {
             $posts = $posts->where('status', $condition['status']);
         }
