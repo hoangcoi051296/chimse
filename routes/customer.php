@@ -35,8 +35,6 @@ Route::group(['namespace' => 'Customer', 'middleware' => 'checkLoginCustomer'], 
     });
     Route::group(['prefix' => 'feedback'], function () {
         Route::get('/', 'FeedbackController@index')->name('customer.feedback.index');
-        Route::get('create','FeedbackController@create')->name('customer.feedback.create');
-        Route::post('update', 'FeedbackController')->name('');
         Route::get('edit/{id}', 'FeedbackController@edit')->name('customer.feedback.edit');
         Route::post('edit/{id}', 'FeedbackController@update')->name('customer.feedback.update');
     });
