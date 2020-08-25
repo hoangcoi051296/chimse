@@ -61,22 +61,24 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputStatus">Quận huyện</label>
-                                <select  class="form-control custom-select" name="district">
-                                    <option value="" disabled="" selected >Hà Nội</option>
+                                <select class="form-control custom-select option" name="district_id"
+                                        id="district"
+                                >
+                                    <option value="">Hà Nội</option>
                                     @foreach($address as $a)
                                         <option value="{{$a->maqh}}">{{$a->name}}</option>
                                     @endforeach
                                 </select>
-                                @if($errors->has('district'))
-                                    <span class="errorCustom">{{$errors->first('district')}}</span>
+                                @if($errors->has('district_id'))
+                                    <br/><span class="errorCustom">{{$errors->first('district_id')}}</span>
                                 @endif
                             </div>
                             <div class="form-group">
-                                <label for="inputStatus">Xã phường</label>
-                                <select class="form-control custom-select" name="ward">
+                                <label>Xã phường :</label>
+                                <select class="form-control" name="ward_id" id="ward">
                                 </select>
-                                @if($errors->has('ward'))
-                                    <span class="errorCustom">{{$errors->first('ward')}}</span>
+                                @if($errors->has('ward_id'))
+                                    <span class="errorCustom">{{$errors->first('ward_id')}}</span>
                                 @endif
                             </div>
                             <div class="form-group">

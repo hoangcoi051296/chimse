@@ -91,24 +91,129 @@
 
                                 <div class="form-group">
                                     <label for="inputStatus">Quận huyện</label>
-                                    <select class="form-control custom-select option" name="district"
-                                            type="text">
+                                    <select class="form-control custom-select option" name="district_id"
+                                            id="district"
+                                            >
                                         <option value="">Hà Nội</option>
                                         @foreach($address as $a)
                                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
                                     </select>
-                                    @if($errors->has('district'))
-                                        <br/><span class="errorCustom">{{$errors->first('district')}}</span>
+                                    @if($errors->has('district_id'))
+                                        <br/><span class="errorCustom">{{$errors->first('district_id')}}</span>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Xã phường :</label>
-                                    <select class="form-control" name="ward">
+                                    <select class="form-control" name="ward_id" id="ward">
                                     </select>
-                                    @if($errors->has('ward'))
-                                        <span class="errorCustom">{{$errors->first('ward')}}</span>
+                                    @if($errors->has('ward_id'))
+                                        <span class="errorCustom">{{$errors->first('ward_id')}}</span>
                                     @endif
+                                </div>
+                                <div class="form-group">
+                                    <label>Nhập địa chỉ chi tiết :</label>
+                                    <input class="form-control" name="addressDetails">
+
+                                    @if($errors->has('addressDetails'))
+                                        <span class="errorCustom">{{$errors->first('addressDetails')}}</span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <button type="button"   data-toggle="modal" class="btn btn-secondary"
+                                                                       data-target="#fullHeightModalRight"> Chọn người giúp việc
+                                        </button>
+                                </div>
+                                <div id="employee" style="margin-left: 10px"></div>
+                                <div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel"
+                                     aria-hidden="true">
+
+                                    <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
+                                    <div class="modal-dialog modal-full-height modal-right modal-lg" role="document">
+
+
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div class="form-group filterData">
+                                                    @if(Request::get('district'))
+                                                        <input id="districtPost" value="{{Request::get('district')}}" hidden>
+                                                    @endif
+                                                    <select class="form-control" name="district" id="districtFind">
+                                                        <option value="">Quận huyện</option>
+                                                        @foreach($address as $a)
+                                                            <option {{Request::get('district')==$a->maqh?"selected='selected":''}} value="{{$a->maqh}}">{{$a->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group filterData ">
+                                                    <select class="form-control" name="status" id="status">
+                                                        <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
+                                                            thái
+                                                        </option>
+                                                        @foreach(employeeStatus() as $status)
+                                                            <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="filterData" style="width: 45%">
+                                                    <input value="{{Request::get('search')}}" id="findEmployee"
+                                                           placeholder="Tìm kiếm" type="text" class="form-control"
+                                                           name="search">
+                                                </div>
+                                                <span class="input-group-append">
+                                                 <button type="button" onclick="chooseEmployee()"
+                                                         class="btn btn-info btn-flat">Go!</button>
+
+                                                </span>
+                                                <span class="input-group-append">
+                                                    <button type="button" onclick="refresh()"
+                                                            class="btn btn-secondary btn-flat"><i class="fas fa-redo"
+                                                                                                  style="padding-top: 3px"></i></button>
+                                                    </span>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Chọn</th>
+                                                        <th>Ảnh</th>
+                                                        <th>Tên</th>
+                                                        <th>Email</th>
+                                                        <th>Số điện thoại</th>
+                                                        <th>Địa chỉ</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($employees as $employee)
+                                                        <tr>
+                                                            <td><input type="radio" name="employee_id" data-employee="{{$employee}}"
+                                                                       value="{{$employee->id}}"></td>
+                                                            @if($employee->avatar)
+                                                                <td><img style="width: 40px;height: 40px" src="{{asset($employee->avatar)}}"></td>
+                                                            @else
+                                                                <td><img src="{{asset('images/avt.jpeg')}}"
+                                                                         style="width:40px;height: 40px"></td>
+                                                            @endif
+                                                            <td>{{ $employee->name}}</td>
+                                                            <td>{{$employee->email}}</td>
+                                                            <td>{{$employee->phone}}</td>
+                                                            <td>
+                                                                @if($employee->ward_id && $employee->district_id)
+                                                                    {{$employee->ward->name}} , {{$employee->district->name}}
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer justify-content-center">
+                                                <button type="button" class="btn btn-primary" onclick="saveData()" id="save" data-dismiss="modal">Lưu
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -158,7 +263,6 @@
 @section('script')
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="{{asset("js/getAddress.js")}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.4/tinymce.min.js" referrerpolicy="origin"></script>
     <script type="text/javascript">
         tinymce.init({
@@ -242,6 +346,37 @@
 
         function chooseCustomer(customer) {
             var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
+            window.history.pushState({}, '', url);
+            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
+        }
+    </script>
+    <script type="text/javascript">
+        function saveData(){
+            $('#changeStatusPost').attr("disabled",true)
+            var html =''
+            $('#employee').html('')
+            var x = $('input[name="employee_id"]:checked').data('employee');
+            var y= JSON.parse(document.querySelector('input[name="employee_id"]').getAttribute('data-employee'))
+            console.log(y)
+            html+=    "<address>"
+            html+=    "<ins><i>"+x.name+"</i></ins><br>"
+            html+=    "Phone: "+x.phone+"<br>"
+            html+= "Email: "+x.email+""
+            html+= "</address>"
+            $('#employee').html(html)
+        }
+        function chooseEmployee() {
+            var district =$('#districtFind').val()
+            var status =$('#status').val()
+            var search =$('#findEmployee').val()
+            var url = "{!! route('manager.post.create') !!}";
+            url = url+'?district='+district +'&status='+status +'&search='+search ;
+            window.history.pushState({}, '', url);
+            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
+            $("#employee").load(" #employee > * ");
+        }
+        function refresh() {
+            var url = "{!! route('manager.post.create') !!}";
             window.history.pushState({}, '', url);
             $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
         }

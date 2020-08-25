@@ -86,8 +86,11 @@
                 @endif
             </div>
             <div class="row " style="margin-bottom: 40px">
-                <div class="col-12">
-                    <input type="submit" value="Update" class="btn btn-success float-left">
+                <div class="col-6">
+                    <input type="submit" value="Cập nhật" class="btn btn-success float-left">
+                </div>
+                <div class="col-6">
+                    <a type="button" href="{{route('manager.attribute.delete',['id'=>$attribute->id])}}" onclick="return confirm('Xoá thuộc tính')" class="btn btn-danger " style="margin-left: 660px">Xoá</a>
                 </div>
             </div>
             </div>
@@ -112,7 +115,7 @@
                 htmlAttribute += ' <input type="text" name="value[]" class="form-control " value="'+option[j]+'" placeholder="value">';
                 htmlAttribute += '</div>';
                 htmlAttribute += '<div class="input-group-append col-md-3">';
-                htmlAttribute += '<button  type="button" class="btn btn-danger removeRow">Xoá</button>';
+                htmlAttribute += '<button  type="button" class="btn btn-danger removeRow">Xoá giá trị</button>';
                 htmlAttribute += '</div>';
                 htmlAttribute += '</div>';
             }

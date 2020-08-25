@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputStatus">Quận huyện</label>
-                                    <select  class="form-control custom-select option" name="district"
+                                    <select  class="form-control custom-select option" name="district" id="district"
                                              type="text">
                                         <option value="" >Hà Nội</option>
                                         @foreach($address as $a)
@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Xã phường</label>
-                                    <select class="form-control" name="ward">
+                                    <select class="form-control" name="ward" id="ward">
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -75,7 +75,7 @@
                 </div>
                 <div class="row " style="margin-bottom: 40px" >
                     <div class="col-12">
-                        <input type="submit" value="Create new Porject" class="btn btn-success float-left">
+                        <input type="submit" value="Tạo người thuê" class="btn btn-success float-left">
                     </div>
                 </div>
             </form>

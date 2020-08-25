@@ -1,5 +1,5 @@
 var url = "../../../showWard";
-    $("select[name='district']").change(function(){
+    $("#district").change(function(){
     var address = $(this).val();
     var token = $("input[name='_token']").val();
     $.ajax({
@@ -10,9 +10,9 @@ var url = "../../../showWard";
     _token: token,
 },
     success: function(data) {
-    $("select[name='ward']").html('<option selected="selected" value="">Xã phường</option>');
+    $("#ward").html('<option selected="selected" value="">Xã phường</option>');
     $.each(data, function(key, value){
-    $("select[name='ward']").append(
+    $("#ward").append(
     "<option  value=" + value.xaid + ">" + value.name + "</option>"
     );
 });
@@ -32,11 +32,11 @@ var url = "../../../showWard";
     _token: token,
 },
     success: function (data) {
-    $("select[name='address']").html(
+    $("#ward").html(
         '<option selected="selected" value="">Xã phường</option>');
 
     $.each(data, function (key, value) {
-    $("select[name='ward']").append(
+    $("#ward").append(
     "<option value=" + value.xaid + ">" + value.name + "</option>"
     );
 

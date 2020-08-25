@@ -65,7 +65,7 @@
                                             <div class="input-group-text"><i class="far fa-clock"></i></div>
                                         </div>
                                         <input type="text" name="time" class="form-control datetimepicker-input"
-                                               data-target="#timepicker" id="timepicker"value="{{$post->time}}">
+                                               data-target="#   timepicker" id="timepicker"value="{{$post->time}}">
 
                                     </div>
                                     <!-- /.input group -->

@@ -57,19 +57,21 @@
                     <input class="input100" type="text" name="phone" placeholder="Enter phone">
                     <span class="focus-input100"></span>
                 </div>
-                <div class="form-group" data-validate="Address is required">
-                    <label for="inputStatus">District</label>
-                    <select class="form-control custom-select option" name="district" type="text">
+                <div class="wrap-input100 validate-input m-b-26" data-validate="Address is required">
+                    <span class="label-input100">District</span>
+                    <select class="form-control custom-select option" name="district" type="text" id="district">
                         <option value="">Hà Nội</option>
                         @foreach($address as $a)
                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                         @endforeach
                     </select>
+                    <span class="focus-input100"></span>
                 </div>
-                <div class="form-group" style="width: 190px;">
-                    <label>Ward</label>
-                    <select class="form-control" name="ward">
+                <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
+                    <span class="label-input100">Ward</span>
+                    <select class="form-control" name="ward" id="ward">
                     </select>
+                    <span class="focus-input100"></span>
                 </div>
 
                 <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
@@ -116,30 +118,7 @@
 <!--===============================================================================================-->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="js/main.js"></script>
-<script>
-    var url = "{{ url('customer/post/showWard') }}";
-    $("select[name='district']").change(function () {
-        var address = $(this).val();
-        var token = $("input[name='_token']").val();
-        $.ajax({
-            url: url,
-            method: 'GET',
-            data: {
-                address: address,
-                _token: token,
-            },
-            success: function (data) {
-                console.log(data)
-                $("select[name='ward']").html('');
-                $.each(data, function (key, value) {
-                    console.log(value)
-                    $("select[name='ward']").append(
-                        "<option value=" + value.xaid + ">" + value.name + "</option>"
-                    );
-                });
-            }
-        });
-    });
+<script src="{{asset('js/getAddress.js')}}">
 </script>
 
 </body>

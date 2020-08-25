@@ -46,6 +46,22 @@ class PostController extends Controller
 //            return response()->json($post);
 //        }
 //    }
+    public function complete($id){
+        $post=Post::find($id);
+        return view('customer.feedback.create',compact('post'));
+    }
+    public function feedback(Request $request){
+        $post=Post::find($request->post_id);
+       $customer =Auth::guard('customer')->user();
+       $customer->employee()->attach($post->employee_id,[
+           'comment'=>$request->comment,
+           'rating'=>$request->rating,
+           'post_id'=>$post->id,
+       ]);
+       $post->status =Post::NTXacNhan;
+       $post->save();
+       return redirect()->route('customer.index');
+    }
     public function changeUserStatus(Request $request)
     {
         $user = User::find($request->user_id);

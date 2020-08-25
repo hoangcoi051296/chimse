@@ -121,5 +121,8 @@
     <orderEntry type="library" name="bootstrap-3-typeahead" level="application" />
     <orderEntry type="library" name="select2" level="application" />
     <orderEntry type="library" name="chosen" level="application" />
+    <orderEntry type="library" name="highcharts" level="application" />
+    <orderEntry type="library" name="exporting" level="application" />
+    <orderEntry type="library" name="export-data" level="application" />
   </component>
 </module>

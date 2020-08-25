@@ -6,6 +6,7 @@ Route::group(['namespace'=>'Employee','middleware'=>'checkLoginEmployee'],functi
         Route::get('/edit', 'EmployeeController@editAccount')->name('employee.account.edit');
         Route::post('/edit/{id}', 'EmployeeController@updateAccount')->name('employee.account.update');
     });
+    Route::get('feedback','EmployeeController@feedback')->name('employee.feedback');
     Route::get('post','PostController@index')->name('employee.post.index');
     Route::get('post/details/{id}','PostController@details')->name('employee.post.details');
     Route::post('post/update/{id}','PostController@update')->name('employee.post.update');

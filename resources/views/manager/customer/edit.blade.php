@@ -50,7 +50,7 @@
                                     @if($customer->district_id)
                                         <input id="districtPost" value="{{$customer->ward->district->maqh}}" hidden>
                                     @endif
-                                    <select class="form-control custom-select option" name="district"
+                                    <select class="form-control custom-select option" name="district" id="district"
                                             type="text">
                                         <option value="">Hà Nội</option>
                                         @foreach($address as $a)

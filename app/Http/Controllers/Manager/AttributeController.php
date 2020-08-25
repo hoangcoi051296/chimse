@@ -31,7 +31,7 @@ class AttributeController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.attribute.index')->with("success", "Tạo thuộc tính thành công");
+        return redirect()->route('manager.attribute.index')->with("success", "Tạo thành công");
     }
     public function edit($id){
         $attribute=Attribute::find($id);

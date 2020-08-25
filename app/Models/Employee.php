@@ -16,21 +16,25 @@ class Employee extends Model implements Authenticatable
     use AuthenticableTrait;
 
     protected $table = 'employee';
-    protected $fillable = ['name', 'email', 'phone', 'password', 'district_id','ward_id'];
+    protected $fillable = ['name', 'email', 'phone','status','avatar', 'password', 'district_id','ward_id'];
     protected $hidden = [
         'password',
         'remember_token',
     ];
     const ChoViec =0 ;
-    const XacNhanCV = 1;
-    const BatDau = 2;
-    const HoanThanh = 3;
+    const ChoXacNhan=1;
+    const XacNhanCV = 2;
+    const BatDau = 3;
+    const HoanThanh = 4;
     public function getData($condition)
     {
         $helpers = $this->query()->orderBy('created_at', 'desc');
         if (!$condition) {
             return $helpers;
         }
+        if (isset($condition['status'])) {
+            $helpers->where('status',$condition['status']);
+            }
             if (isset($condition['district'])) {
             $districtFilter =$condition['district'];
             $helpers->WhereHas('district', function ($query) use ($districtFilter) {
@@ -68,13 +72,16 @@ class Employee extends Model implements Authenticatable
     {
         return $this->hasOne(District::class, 'maqh', 'district_id');
     }
+    public function customer(){
+        return $this->belongsToMany(Customer::class,'feedback','employee_id','customer_id')->withPivot('comment','rating','post_id')->withTimestamps();
+    }
     public function rules($id = null)
     {
         $validate = [
             'name' => "required| string| max:255",
             'phone' => 'required|unique:employee,phone,' . $id,
-            'ward' => 'required',
-            'district'=>'required',
+            'ward_id' => 'required',
+            'district_id'=>'required',
         ];
         if (!$id) {
            return array_merge($validate,[
@@ -92,9 +99,10 @@ class Employee extends Model implements Authenticatable
             'phone.required' => 'Nhập số điện thoại',
             'phone.unique' => 'Số điện thoại đã tồn tại',
             'email.required' => 'Nhập địa chỉ email',
+            'email.unique'=>'Email đã tồn tại',
             'email.regex' => 'Email không đúng định dạng',
-            'district.required' => 'Chọn quận huyện',
-            'ward.required' => 'Chọn xã phường',
+            'district_id.required' => 'Chọn quận huyện',
+            'ward_id.required' => 'Chọn xã phường',
             'password.required' => 'Nhập mật khẩu',
             'password.confirmed'=>"Xác nhận mật khẩu không khớp",
         ];
@@ -105,8 +113,7 @@ class Employee extends Model implements Authenticatable
     public function createData($data)
     {
         $data['password'] = bcrypt($data['password']);
-        $data['district_id']=$data['district'];
-        $data['ward_id']=$data['ward'];
+        $data['status']=0;
         return $this->fill($data)->save();
     }
 
@@ -114,8 +121,6 @@ class Employee extends Model implements Authenticatable
     {
         $data['phone'] = format_phone_number($data['phone']);
         $data = array_filter($data);
-        $data['district_id']=$data['district'];
-        $data['ward_id']=$data['ward'];
         if (isset($data['password'])) {
             $data['password'] = bcrypt($data['password']);
         }

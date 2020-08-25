@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -41,7 +42,7 @@ class PostController extends Controller
     {
         if ($request->ajax()) {
             $post = $this->post->find($request->id);
-            $post->status = $post->status + 1;
+            $post->status = Post::DaDuyet;
             $post->save();
             return response()->json($post);
         }
@@ -49,8 +50,10 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
+        $condition=$request->all();
+        $employees = $this->employee->getData($condition)->paginate(15);
         $customers = $this->customer->data($request);
-        return view('manager.post.create', compact('customers'));
+        return view('manager.post.create', compact('customers','employees'));
     }
     public function store(Request  $request){
         $data=$request->all();
@@ -60,7 +63,7 @@ class PostController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
-        return redirect()->route('manager.post.index')->with("success", "Create Success");
+        return redirect()->route('manager.post.index')->with("success", "Tạo thành công");
 
 
     }
@@ -98,13 +101,18 @@ class PostController extends Controller
         return redirect()->route('manager.post.index')->with("success", "Cập nhật thành công");
     }
 
-    public function delete($id, $post_id)
+    public function delete($id)
     {
-        $customer = $this->customer->find($id);
-        $post = $this->post->find($post_id);
-
-        $post->delete();
-
-        return redirect()->route('manager.customer.post.index', ['id' => $customer->id]);
+        $post = $this->post->find($id);
+        DB::beginTransaction();
+        try {
+            $post->attributes()->detach();
+            $post->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Xoá thất bại');
+        }
+        return redirect()->route('manager.post.index')->with("success", "Xoá thành công");
     }
 }

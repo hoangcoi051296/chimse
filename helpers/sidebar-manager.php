@@ -118,7 +118,7 @@ if (!function_exists("sidebarEmployee")) {
                     'child' => [
                         [
                             'name' => 'Danh sách',
-                            'route' => "#"
+                            'route' => route('employee.feedback')
                         ],
                     ],
                     'icon' => 'nav-icon fas fa-tachometer-alt'

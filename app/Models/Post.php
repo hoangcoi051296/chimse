@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 class Post extends Model
 {
     protected $table = 'post';
-    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id', 'category_id', 'employee_id', 'customer_id', 'time'];
+    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id','addressDetails', 'category_id', 'employee_id', 'customer_id', 'time'];
     const DaHuy = 0;
     const ChoDuyet = 1;
     const DaDuyet = 2;
@@ -122,8 +122,9 @@ class Post extends Model
             'title.required' => 'Nhập tiêu đề',
             'description.required' => 'Nhập mô tả',
             'price.required' => 'Nhập giá',
-            'district.required' => 'Chọn quận huyện',
-            'ward.required' => 'Chọn xã phường',
+            'district_id.required' => 'Chọn quận huyện',
+            'ward_id.required' => 'Chọn xã phường',
+            'addressDetails.required'=>'Nhập địa chỉ chi tiết',
             'category_id.required' => 'Chọn danh mục',
             'customer_id.required' => "Chọn người thuê",
             'time.required' => "Chọn thời gian bắt đầu",
@@ -139,14 +140,20 @@ class Post extends Model
 
     public function createData($data)
     {
-        $attribute = $data['attributes'];
-        $data['district_id'] = $data['district'];
-        $data['ward_id'] = $data['ward'];
+        if (isset($data['employee_id'])){
+            $data['status']=Post::TimDuocNGV;
+            $employee=Employee::find($data['employee_id']);
+            $employee->status=Employee::ChoXacNhan;
+            $employee->save();
+        }
         $data = array_filter($data);
         $this->fill($data)->save();
-        foreach ($attribute as $key => $value) {
-            $value = json_encode($value);
-            $this->attributes()->attach($key, ['value' => $value]);
+        if (isset($data['attributes'])){
+            $attribute = $data['attributes'];
+            foreach ($attribute as $key => $value) {
+                $value = json_encode($value);
+                $this->attributes()->attach($key, ['value' => $value]);
+            }
         }
     }
 
@@ -159,10 +166,10 @@ class Post extends Model
                 $attr[$key] = ['value' => $value];
             }
             $this->find($id)->attributes()->sync($attr);
+        }else{
+            $this->find($id)->attributes()->detach();
         }
         $data['status'] = Post::ChoDuyet;
-        $data['district_id'] = $data['district'];
-        $data['ward_id'] = $data['ward'];
         $data = array_filter($data);
 
         $this->find($id)->fill($data)->save();

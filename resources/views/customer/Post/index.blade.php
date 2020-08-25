@@ -2,6 +2,13 @@
 $listStatus = listStatus();
 ?>
 @extends('customer.layout.layout')
+<style>
+    .errorCustom {
+        margin-left: 5px;
+        font-style: italic;
+        color: firebrick;
+    }
+</style>
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -157,6 +164,11 @@ $listStatus = listStatus();
                                         <a id="{{route('customer.post.changeStatus')}}"
                                            class="btn btn-primary btn-xs changeStatus"><i
                                                     class="fas fa-exchange-alt"></i></a>
+                                       @if($post->status==\App\Models\Post::NGVKetThuc)
+                                        <a href="{{\Illuminate\Support\Facades\URL::signedRoute('customer.post.complete',['id'=>$post->id])}}"
+                                           class="btn btn-primary btn-xs "><i class="far fa-check-circle"></i></a>
+                                        @endif
+
                                 </td>
 
                             </tr>
@@ -192,8 +204,7 @@ $listStatus = listStatus();
                     $("select[name='ward']").html('');
                     $.each(data, function (key, value) {
                         console.log(value)
-                        $("select[name='ward']").html("<option value="
-                        ">Ward</option>"
+                        $("select[name='ward']").html("<option value="">Ward</option>"
                     )
                         ;
                         $("select[name='ward']").append(

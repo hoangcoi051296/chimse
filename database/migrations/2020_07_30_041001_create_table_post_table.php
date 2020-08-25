@@ -27,6 +27,7 @@ class CreateTablePostTable extends Migration
             $table->foreign('ward_id')->references('xaid')->on('devvn_xaphuongthitran');
             $table->unsignedBigInteger('district_id')->nullable();
             $table->foreign('district_id')->references('maqh')->on('devvn_quanhuyen');
+            $table->string('addressDetails')->nullable();
             $table->foreign("category_id")->references("id")->on("category");
             $table->foreign("employee_id")->references("id")->on("employee");
             $table->foreign("customer_id")->references("id")->on("customer");
