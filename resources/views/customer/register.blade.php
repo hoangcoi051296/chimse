@@ -60,7 +60,7 @@
                 <div class="wrap-input100 validate-input m-b-26" data-validate="Address is required">
                     <span class="label-input100">District</span>
                     <select class="form-control custom-select option" name="district" type="text" id="district">
-                        <option value="">Hà Nội</option>
+                        <option value="">chọn quận huyện</option>
                         @foreach($address as $a)
                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                         @endforeach

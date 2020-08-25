@@ -161,9 +161,7 @@ $listStatus = listStatus();
                                        onclick="return confirm('Bạn muốn xóa không?');"
                                        class="btn btn-danger btn-xs"><i
                                                 class="fa fa-trash"></i></a>
-                                        <a id="{{route('customer.post.changeStatus')}}"
-                                           class="btn btn-primary btn-xs changeStatus"><i
-                                                    class="fas fa-exchange-alt"></i></a>
+
                                        @if($post->status==\App\Models\Post::NGVKetThuc)
                                         <a href="{{\Illuminate\Support\Facades\URL::signedRoute('customer.post.complete',['id'=>$post->id])}}"
                                            class="btn btn-primary btn-xs "><i class="far fa-check-circle"></i></a>
@@ -185,7 +183,8 @@ $listStatus = listStatus();
         </div>
 
         </div>
-        </div><!-- /.container-fluid -->
+
+        <!-- /.container-fluid -->
     </section>
     <script>
         var url = "{{ url('customer/post/showWard') }}";
@@ -200,13 +199,10 @@ $listStatus = listStatus();
                     _token: token,
                 },
                 success: function (data) {
-                    console.log(data)
                     $("select[name='ward']").html('');
                     $.each(data, function (key, value) {
                         console.log(value)
-                        $("select[name='ward']").html("<option value="
-                        ">Ward</option>"
-                    )
+                        $("select[name='ward']").html("<option value=''>Ward</option>" )
                         ;
                         $("select[name='ward']").append(
                             "<option value=" + value.xaid + ">" + value.name + "</option>"

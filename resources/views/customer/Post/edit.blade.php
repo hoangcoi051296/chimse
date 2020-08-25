@@ -52,13 +52,15 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
+
                                     <label>Thời gian:</label>
+                                    <span>{{$post->time}}</span>
 
                                     <div class="input-group">
                                         <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="far fa-clock"></i></div>
                                         </div>
-                                        <input type="text" name="time" class="form-control @if($errors->has('title')) error-input @endif datetimepicker-input" data-target="#timepicker" id="timepicker">
+                                        <input type="text" name="time" class="form-control @if($errors->has('title')) error-input @endif datetimepicker-input" data-target="#timepicker" id="timepicker"  >
                                     </div>
                                     <!-- /.input group -->
                                     @if($errors->has('time'))
@@ -74,7 +76,6 @@
                                     @endif
                                     <select class="form-control @if($errors->has('description')) error-input @endif custom-select option" name="district_id"
                                             type="text" id="district">
-                                        <option value="">Hà Nội</option>
                                         @foreach($address as $a)
                                             <option
                                                     {{$post->district_id?$post->district->maqh==$a->maqh?"selected='selected'":'':''}} value="{{$a->maqh}}">{{$a->name}}</option>
@@ -119,7 +120,41 @@
                                     </select>
                                 </div>
                                 <div id="attributes">
+                                    @foreach($post->attributes as $attribute)
+                                        <div class="form-group">
+                                            <label>{{$attribute->name}}</label>
+                                            @if($attribute->type=='select')
+                                                <select name="attributes[{{$attribute->id}}]"
+                                                        class="form-control">
+                                                    @foreach (json_decode($attribute->options,true) as $keyOp => $option)
+                                                        <option
+                                                            {{json_decode($attribute->pivot->value,true)==$keyOp?"selected='selected'":''}} value="{{$keyOp}}">{{$option}}</option>
+                                                    @endforeach
+                                                </select>
+                                            @elseif($attribute->type=='radio')
+                                                @foreach (json_decode($attribute->options,true) as $keyOp => $option)
+                                                    <label style="margin-left: 15px"><input type="radio"
+                                                                                            {{json_decode($attribute->pivot->value,true)==$keyOp?"checked":''}} value="{{$keyOp}}"
+                                                                                            name="attributes[{{$attribute->id}}]">{{$option}}
+                                                    </label>
+                                                @endforeach
+                                            @elseif($attribute->type=='textarea')
+                                                <textarea class="form-control" name="attributes[{{$attribute->id}}]"
+                                                          rows="4" cols="50">{{json_decode($attribute->pivot->value,true)}}
+                                                    </textarea></div>
+                                        @elseif($attribute->type=='checkbox')
+                                            <br/>
+                                            @foreach(json_decode($attribute->options,true) as $keyOp => $option)
+                                                <label style="margin-left: 15px"><input type="checkbox" value="{{$keyOp}}" @foreach(json_decode($attribute->pivot->value,true) as $ckb)@if($ckb==$keyOp) checked @endif  @endforeach name="attributes[{{$attribute->id}}][]">{{$option}}
+                                                </label>
+                                            @endforeach
+                                        @elseif($attribute->type=='input')
+                                            <input class="form-control" name="attributes[{{$attribute->id}}]"
+                                                   value="{{json_decode($attribute->pivot->value,true)}}">
+                                        @endif
+                                    @endforeach
                                 </div>
+
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -142,6 +177,67 @@
     <script type="text/javascript">
         tinymce.init({
             selector: '#description1'
+        });
+        $("select[name='category_id']").change(function () {
+            var category_id = $(this).val();
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: '{{route('getAttributes')}}',
+                method: 'GET',
+                data: {
+                    category_id: category_id,
+                    _token: token,
+                },
+                success: function (data) {
+                    if (data != null) {
+                        var html = ''
+                        for (i = 0; i < data.length; i++) {
+                            html += '<div class="form-group">'
+                            html += '<label>' + data[i]['name'] + '</label>'
+                            var options = JSON.parse(data[i]['options'])
+                            if (data[i]['type'] === 'select') {
+                                html += '<select name="attributes[' + data[i]['id'] + ']" class="form-control" >'
+                                for (var j in options) {
+                                    html += '<option value="' + j + '">' + options[j] + '</option>'
+                                }
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'radio') {
+                                html += '<div class="row">'
+                                for (var j in options) {
+                                    html += '<label style="margin-left: 15px" ><input type="radio" value="' + j + '"  name="attributes[' + data[i]['id'] + ']"  >' + options[j] + '</label>'
+                                }
+                                html += '</div>'
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'input') {
+                                html += '<div class="row">'
+                                html += '<input type="text" placeholder="" class="form-control" name="attributes[' + data[i]['id'] + ']"  >'
+                                html += '</div>'
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'checkbox') {
+                                html += '<div class="row">'
+                                for (var j in options) {
+                                    html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][value][]"  >' + options[j] + '</label>'
+                                }
+                                html += '</div>'
+                                html += '</select>'
+                            }
+                            if (data[i]['type'] === 'textarea') {
+                                html += '<div class="row">'
+                                html += '<textarea class="form-control" name="attributes[' + data[i]['id'] + ']" rows="4" cols="50">'
+                                html += '</textarea>'
+                                html += '</div>'
+                            }
+                            html += '</div>'
+                        }
+                        $('#attributes').html(html);
+                    } else {
+                        $("#attributes").html('');
+                    }
+                }
+            });
         });
     </script>
 @endsection

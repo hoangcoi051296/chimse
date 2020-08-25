@@ -17,7 +17,7 @@ class Customer extends Model implements Authenticatable
     ];
 
     public function data($request = null){
-        $data = $this->query();
+        $data = $this->query()->orderBy('created_at', 'desc');
         if ($request->get('search')) {
             $search = $request->get('search');
             $data->where('name','LIKE','%'.$search.'%')
@@ -29,7 +29,7 @@ class Customer extends Model implements Authenticatable
                 });
             });
          }
-        $data = $data->paginate($request->get('per_page',15));
+        $data = $data->paginate($request->get('per_page',10));
         return $data;
     }
 

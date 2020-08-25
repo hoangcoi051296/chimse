@@ -51,7 +51,7 @@
                                     <tr>
                                         <td>{{$customer->pivot->post_id}}</td>
                                         <td>{{$customer->name}}</td>
-                                        <td>{{$customer->pivot->comment}}</td>
+                                        <td>{!! $customer->pivot->comment !!}</td>
                                         <td>
                                             @if($customer->pivot->rating==1)
                                             <i class="fas fa-star" style="color: yellowgreen"></i>

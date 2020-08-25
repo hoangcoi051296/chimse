@@ -63,6 +63,7 @@
                             <div class="form-group filterData ">
                                 <select class="form-control" name="timeFilter">
                                     <option {{Request::get('timeFilter')==null ?"selected='selected'":'' }} value="">Thời gian</option>
+                                    <option {{Request::get('timeFilter')=='hours' ?"selected='selected'":'' }} value="hours">2 tiếng</option>
                                     <option {{Request::get('timeFilter')=='day' ?"selected='selected'":'' }} value="day">Ngày</option>
                                     <option {{Request::get('timeFilter')=='week' ?"selected='selected'":'' }} value="week">Tuần</option>
                                     <option {{Request::get('timeFilter')=='month' ?"selected='selected'":'' }} value="month">Tháng</option>

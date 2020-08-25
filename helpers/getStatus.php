@@ -203,6 +203,6 @@ if (!function_exists("avgRate")) {
          if ($avgRate==null){
              return "Chưa có đánh giá";
          }
-         return  $avgRate.'( '.$a->count().' đánh giá ) ';
+         return  $avgRate.'/'.'5'.'( '.$a->count().' đánh giá ) ';
     }
 }

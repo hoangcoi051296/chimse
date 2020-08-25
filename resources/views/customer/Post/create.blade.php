@@ -73,6 +73,7 @@
                                     <label for="inputStatus">Quận huyện</label>
                                     <select class="form-control @if($errors->has('district_id')) error-input @endif custom-select option"
                                             name="district_id" type="text" id="district">
+                                        <option value="">chọn quận huyện</option>
                                         @foreach($address as $a)
                                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach

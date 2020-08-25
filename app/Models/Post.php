@@ -28,6 +28,9 @@ class Post extends Model
         }
 
         if (isset($condition['timeFilter'])){
+            if ($condition['timeFilter']=='hours'){
+                $posts->where('created_at','>=',Carbon::now()->subHour(2));
+            }
             if ($condition['timeFilter']=='day'){
                 $posts->where('created_at','>=',Carbon::now()->subDay(1));
             }
@@ -201,8 +204,13 @@ class Post extends Model
             if (isset($data['statusPost'])) {
                 $data['status'] = $data['statusPost'];
                 $data['employee_id'] = null;
+             return   $this->find($id)->fill($data)->update();
+            }elseif(isset($data['status'])){
+                $data['status']=$data['status'];
+            return    $this->find($id)->fill($data)->update();
             } else {
                 $data['status'] = Post::DaHuy;
+                return $this->find($id)->fill($data)->update();
             }
         }
         $this->find($id)->fill($data)->update();
