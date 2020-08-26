@@ -66,15 +66,15 @@
                                     <option selected="selected" value="">Xã phường</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-left: 20px;width: 200px">
-                                <select class="form-control orderByStatus" name="status">
-                                    <option value="">Trạng thái</option>
-                                    @foreach(employeeStatus() as $status)
-                                        <option
-                                            {{Request::get('status')==$status['value']&&Request::get('status')!=null ?"selected='selected'":''}} value="{{$status['value']}}">{{$status['name']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+{{--                            <div class="form-group" style="margin-left: 20px;width: 200px">--}}
+{{--                                <select class="form-control orderByStatus" name="status">--}}
+{{--                                    <option value="">Trạng thái</option>--}}
+{{--                                    @foreach(listEmployeeStatus() as $status)--}}
+{{--                                        <option--}}
+{{--                                            {{Request::get('status')==$status['value']&&Request::get('status')!=null ?"selected='selected'":''}} value="{{$status['value']}}">{{$status['name']}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
                         </div>
 
                         <div class="card">
@@ -156,7 +156,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-right">
+                            <ul class="pagination pagination-sm m-1 float-left">
 
                                 <li>
                                     <a href="" title="">{{$helpers->appends(request()->query())->links()}}  </a>

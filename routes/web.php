@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\District;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Customer;
@@ -18,12 +19,12 @@ use App\Models\Post;
 */
 
 Route::get('/test', function () {
-    $category =Category::find(2);
-    $attributes= $category->attributes;
-    var_dump($attributes);
+    $wards =District::where('matp', 01)->pluck('maqh')->toArray();
+    dd($wards);
     return view('welcome');
 });
 Route::get('showWard','HomeController@showWardInDistrict')->name('showWard');
+Route::get('showAttribute','HomeController@showAddtribute')->name('showAttribute');
 Route::get('getAttribute','HomeController@getAttribute')->name('getAttributes');
 
 

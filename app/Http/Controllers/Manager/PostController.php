@@ -28,6 +28,7 @@ class PostController extends Controller
         $this->employee=$employee;
         $address = District::where('matp', 01)->get();
         $categories = Category::all();
+        Auth::shouldUse('manager');
         view()->share(compact('address', 'categories'));
     }
 
@@ -35,6 +36,7 @@ class PostController extends Controller
     {
         $condition = $request->all();
         $posts = $this->post->getData($condition);
+        $this->authorize('view-post');
         return view('manager.post.index', compact('posts'));
     }
 

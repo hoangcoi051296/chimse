@@ -24,9 +24,11 @@ $factory->define(\App\Models\Employee::class, function (Faker $faker) {
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'phone'=>$faker->unique()->phoneNumber,
         'avatar'=>$faker->imageUrl(),
-        'ward_id'=>null,
+        'district_id'=>$district=districtSeed(),
+        'ward_id'=>wardSeed($district),
+        'avgRate'=>5,
         'status'=>0,
-        'district_id'=>null,
+
     ];
 });
 $factory->define(\App\Models\Customer::class, function (Faker $faker) {
@@ -37,22 +39,28 @@ $factory->define(\App\Models\Customer::class, function (Faker $faker) {
         'is_active'=>0,
         'avatar'=>$faker->imageUrl(),
         'phone'=>$faker->unique()->phoneNumber,
-        'ward_id'=>null,
-        'district_id'=>null,
+        'district_id'=>$district=districtSeed(),
+        'ward_id'=>wardSeed($district),
     ];
 });
 $factory->define(\App\Models\Post::class, function (Faker $faker) {
+    $status=rand(0,7);
+    if ($status>=3){
+        $employee_id=rand(1,50);
+    }else{
+        $employee_id=null;
+    }
     return [
         'title' => $faker->name,
         'description' => $faker->text,
-        'price'=>rand(1000,10000),
-        'status'=>rand(0,7),
-        'ward_id'=>null,
-        'district_id'=>null,
-        'addressDetails'=>null,
+        'price'=>rand(100,200),
+        'status'=>$status,
+        'district_id'=>$district=districtSeed(),
+        'ward_id'=>wardSeed($district),
+        'addressDetails'=>$faker->address,
         'category_id'=>rand(1,10),
-        'employee_id'=>rand(2,10),
-        'customer_id'=>rand(2,10),
+        'employee_id'=>$employee_id,
+        'customer_id'=>rand(1,50),
     ];
 });
 

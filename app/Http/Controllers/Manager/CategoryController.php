@@ -55,6 +55,6 @@ class CategoryController extends Controller
             DB::rollBack();
             return back()->with('error', 'Xoá thất bại');
         }
-        return redirect()->route('manager.category.index')->with('error', 'Xoá thành công');
+        return redirect()->route('manager.category.index')->with('success', 'Xoá thành công');
     }
 }

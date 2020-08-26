@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], function () {
-    Route::get('/', 'ManagerController@index')->name('manager.index')->middleware(['can:editPost']);
+    Route::get('/', 'ManagerController@index')->name('manager.index');
     Route::get('/edit', 'ManagerController@editAccount')->name('manager.account.edit');
     Route::post('/edit/{id}', 'ManagerController@updateAccount')->name('manager.account.update');
     Route::group(['prefix' => 'employee'], function () {
@@ -50,6 +50,15 @@ Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], f
         Route::post('update/{id}', 'PostController@update')->name('manager.post.update');
         Route::post('updateStatus/{id}', 'PostController@updateStatus')->name('manager.post.updateStatus');
         Route::get('delete/{id}', 'PostController@delete')->name('manager.post.delete');
+    });
+    Route::group(['prefix' => 'role'], function () {
+        Route::get('/', 'RoleController@index')->name('manager.role.index');
+        Route::get('create', 'RoleController@create')->name('manager.role.create');
+        Route::post('store', 'RoleController@store')->name('manager.role.store');
+        Route::get('edit/{id}', 'RoleController@edit')->name('manager.role.edit');
+        Route::post('update/{id}', 'RoleController@update')->name('manager.role.update');
+        Route::get('delete/{id}', 'RoleController@delete')->name('manager.role.delete');
+
     });
 
 });

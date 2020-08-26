@@ -4,29 +4,58 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
+
 
 class Post extends Model
 {
     protected $table = 'post';
     protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id','addressDetails', 'category_id', 'employee_id', 'customer_id', 'time'];
-    const DaHuy = 0;
-    const ChoDuyet = 1;
-    const DaDuyet = 2;
-    const TimDuocNGV = 3;
-    const NGVXacNhanCV = 4;
-    const NGVBatDau = 5;
-    const NGVKetThuc = 6;
-    const NTXacNhan = 7;
     const PerPage = 10;
 
     public function getData($condition)
     {
         $posts = $this->query()->orderBy('created_at', 'desc');
         if (!$condition) {
-            return $posts->paginate(isset($condition['per_page']) ? $condition['per_page'] : $this->perPage);
+            return $posts->paginate($this->perPage);
         }
+        $posts
+            ->time($condition)
+            ->status($condition)
+            ->category($condition)
+            ->district($condition)
+            ->ward($condition)
+            ->search($condition)
+            ->customer($condition)
+        ;
+        return $posts->paginate(isset($condition['per_page']) ? $condition['per_page'] : $this->perPage);
+    }
 
+    public function scopeStatus($posts,$condition){
+        if (isset($condition['status']) && $condition['status'] !== null) {
+            $posts = $posts->where('status', $condition['status']);
+        }
+    }
+    public function scopeCategory($posts,$condition){
+        if (isset($condition['category'])) {
+            $posts = $posts->where('category_id', $condition['category']);
+        }
+    }
+    public function scopeDistrict($posts,$condition){
+        if (isset($condition['district']) && $condition['district'] !== null) {
+            $posts = $posts->where('district_id', $condition['district']);
+        }
+    }
+    public function scopeWard($posts,$condition){
+        if (isset($condition['ward']) && $condition['ward'] !== null) {
+            $posts = $posts->where('ward_id', $condition['ward']);
+        }
+    }
+    public function scopeCustomer($posts,$condition){
+        if (isset($condition['customer_id']) && $condition['customer_id'] !== null) {
+            $posts->where('customer_id', $condition['customer_id']);
+        }
+    }
+    public function scopeTime($posts,$condition){
         if (isset($condition['timeFilter'])){
             if ($condition['timeFilter']=='hours'){
                 $posts->where('created_at','>=',Carbon::now()->subHour(2));
@@ -38,21 +67,11 @@ class Post extends Model
                 $posts->where('created_at','>=',Carbon::now()->subWeek(1));
             }
             else{
-            $posts->where('created_at','>=',Carbon::now()->subMonth(1));
+                $posts->where('created_at','>=',Carbon::now()->subMonth(1));
             }
         }
-        if (isset($condition['status']) && $condition['status'] !== null) {
-            $posts = $posts->where('status', $condition['status']);
-        }
-        if (isset($condition['time']) && $condition['time'] !== null) {
-            $posts = $posts->where('time', date('Y-m-d H:i:s', strtotime($condition['time'])));
-        }
-        if (isset($condition['district']) && $condition['district'] !== null) {
-            $posts = $posts->where('district_id', $condition['district']);
-        }
-        if (isset($condition['ward']) && $condition['ward'] !== null) {
-            $posts = $posts->where('ward_id', $condition['ward']);
-        }
+    }
+    public function scopeSearch($posts,$condition){
         if (isset($condition['search']) && $condition['search'] !== null) {
             $search = $condition['search'];
             $posts->where(function ($q) use ($search) {
@@ -74,11 +93,10 @@ class Post extends Model
                     });
             });
         }
-        if (isset($condition['customer_id']) && $condition['customer_id'] !== null) {
-            $posts->where('customer_id', $condition['customer_id']);
-        }
-        return $posts->paginate(isset($condition['per_page']) ? $condition['per_page'] : $this->perPage);
     }
+
+
+
 
     public function customer()
     {
@@ -93,6 +111,11 @@ class Post extends Model
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class, 'post_attribute', 'post_id', 'attribute_id')->withPivot('value');
     }
 
     public function ward()
@@ -152,18 +175,11 @@ class Post extends Model
         ];
     }
 
-    public function attributes()
-    {
-        return $this->belongsToMany(Attribute::class, 'post_attribute', 'post_id', 'attribute_id')->withPivot('value');
-    }
 
     public function createData($data)
     {
         if (isset($data['employee_id'])){
-            $data['status']=Post::TimDuocNGV;
-            $employee=Employee::find($data['employee_id']);
-            $employee->status=Employee::ChoXacNhan;
-            $employee->save();
+            $data['status']=3;
         }
         $data = array_filter($data);
         $this->fill($data)->save();
@@ -188,7 +204,7 @@ class Post extends Model
         }else{
             $this->find($id)->attributes()->detach();
         }
-        $data['status'] = Post::ChoDuyet;
+        $data['status'] = 1;
         $data = array_filter($data);
 
         $this->find($id)->fill($data)->save();
@@ -198,7 +214,7 @@ class Post extends Model
     {
         $data = array_filter($data);
         if (isset($data['employee_id'])) {
-            $data['status'] = Post::TimDuocNGV;
+            $data['status'] = 3;
 
         } else {
             if (isset($data['statusPost'])) {
@@ -209,7 +225,7 @@ class Post extends Model
                 $data['status']=$data['status'];
             return    $this->find($id)->fill($data)->update();
             } else {
-                $data['status'] = Post::DaHuy;
+                $data['status'] = 0;
                 return $this->find($id)->fill($data)->update();
             }
         }

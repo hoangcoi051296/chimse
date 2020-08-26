@@ -29,6 +29,7 @@ class HelperController extends Controller
 
     public function index(Request $request)
     {
+
         $condition = $request->all();
         $helpers = $this->helper->getData($condition, $request)->paginate($this->helper->perPage);
         return view('manager.employee.index', compact('helpers'));

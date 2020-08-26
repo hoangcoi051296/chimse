@@ -151,7 +151,7 @@
                                                         <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
                                                             thái
                                                         </option>
-                                                        @foreach(employeeStatus() as $status)
+                                                        @foreach(listEmployeeStatus() as $status)
                                                             <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
                                                         @endforeach
                                                     </select>
@@ -282,7 +282,6 @@
     <script type="text/javascript">
         $("select[name='category_id']").change(function () {
             var category_id = $(this).val();
-            console.log(category_id)
             var token = $("input[name='_token']").val();
             $.ajax({
                 url: '{{route('getAttributes')}}',

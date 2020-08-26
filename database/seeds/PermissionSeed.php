@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Permission;
 use Illuminate\Support\Str;
 
-class permissionSeed extends Seeder
+class PermissionSeed extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,12 @@ class permissionSeed extends Seeder
     public function run()
     {
         $permission = new Permission;
-        $permission->name = 'Super Manager';
+        $permission->name = 'Manager';
+        $permission->slug = Str::slug( $permission->name, '-');
+        $permission->save();
+
+        $permission = new Permission;
+        $permission->name = 'View Manager';
         $permission->slug = Str::slug( $permission->name, '-');
         $permission->save();
 
@@ -24,17 +29,27 @@ class permissionSeed extends Seeder
         $permission->save();
 
         $permission = new Permission;
-        $permission->name = 'CRUPost Management';
+        $permission->name = 'View Post Management';
         $permission->slug = Str::slug( $permission->name, '-');
         $permission->save();
 
         $permission = new Permission;
-        $permission->name = 'User Management';
+        $permission->name = 'CreateUpdateEdit Post Management';
         $permission->slug = Str::slug( $permission->name, '-');
         $permission->save();
 
         $permission = new Permission;
-        $permission->name = 'CRUDPost Managerment';
+        $permission->name = 'Post Management';
+        $permission->slug = Str::slug( $permission->name, '-');
+        $permission->save();
+
+        $permission = new Permission;
+        $permission->name = 'Employee Management';
+        $permission->slug = Str::slug( $permission->name, '-');
+        $permission->save();
+
+        $permission = new Permission;
+        $permission->name = 'Customer Management';
         $permission->slug = Str::slug( $permission->name, '-');
         $permission->save();
 

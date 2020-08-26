@@ -12,9 +12,9 @@ class Hseeder extends Seeder
     public function run()
     {
 
-        factory(\App\Models\Employee::class,10)->create();
-        factory(\App\Models\Customer::class,10)->create();
-        factory(\App\Models\Post::class,100)->create();
+        factory(\App\Models\Employee::class,50)->create();
+        factory(\App\Models\Customer::class,50)->create();
+        factory(\App\Models\Post::class,10000)->create();
 
     }
 }
