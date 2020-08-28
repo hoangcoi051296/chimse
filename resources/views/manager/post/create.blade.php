@@ -61,20 +61,38 @@
                                 <div class="form-group">
                                     <label>Thời gian bắt đầu</label>
                                     <div class="input-group">
-                                        <div class="input-group-append" data-target="#timepicker"
+                                        <div class="input-group-append" data-target="#timepickerStart"
                                              data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="far fa-clock"></i></div>
                                         </div>
-                                        <input type="text" name="time"
-                                               class="form-control datetimepicker-input @if($errors->has('time'))  border border-info @endif"
-                                                data-target="#timepicker" id="timepicker">
+                                        <input type="text" name="time_start"
+                                               class="form-control datetimepicker-input @if($errors->has('time_start'))  border border-info @endif"
+                                                data-target="#timepickerStart" id="timepickerStart">
 
                                     </div>
-                                    @if($errors->has('time'))
-                                        <span class="errorCustom">{{$errors->first('time')}}</span>
+                                    @if($errors->has('time_start'))
+                                        <span class="errorCustom">{{$errors->first('time_start')}}</span>
                                     @endif
                                 <!-- /.input group -->
                                 </div>
+                                <div class="form-group">
+                                    <label>Thời gian kết thúc</label>
+                                    <div class="input-group">
+                                        <div class="input-group-append" data-target="#timepickerEnd"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                        <input type="text" name="time_end"
+                                               class="form-control datetimepicker-input @if($errors->has('time_end'))  border border-info @endif"
+                                               data-target="#timepickerEnd" id="timepickerEnd">
+
+                                    </div>
+                                    @if($errors->has('time_end'))
+                                        <span class="errorCustom">{{$errors->first('time_end')}}</span>
+                                @endif
+                                <!-- /.input group -->
+                                </div>
+
 
                                 <div class="form-group">
                                     <label>Chọn người thuê</label>

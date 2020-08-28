@@ -20,6 +20,8 @@ class CreateTablePostTable extends Migration
             $table->float('price');
             $table->tinyInteger('status')->default(1);
             $table->string('review')->nullable();
+            $table->time("time_start")->nullable();
+            $table->time("time_end")->nullable();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('employee_id')->nullable();
             $table->unsignedBigInteger('customer_id');

@@ -46,7 +46,7 @@ $factory->define(\App\Models\Customer::class, function (Faker $faker) {
 $factory->define(\App\Models\Post::class, function (Faker $faker) {
     $status=rand(0,7);
     if ($status>=3){
-        $employee_id=rand(1,50);
+        $employee_id=rand(1,10);
     }else{
         $employee_id=null;
     }
@@ -60,7 +60,7 @@ $factory->define(\App\Models\Post::class, function (Faker $faker) {
         'addressDetails'=>$faker->address,
         'category_id'=>rand(1,10),
         'employee_id'=>$employee_id,
-        'customer_id'=>rand(1,50),
+        'customer_id'=>rand(1,10),
     ];
 });
 

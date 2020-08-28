@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $table = 'post';
-    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id','addressDetails', 'category_id', 'employee_id', 'customer_id', 'time'];
+    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id','addressDetails', 'category_id', 'employee_id', 'customer_id', 'time_start','time_end'];
     const PerPage = 10;
 
     public function getData($condition)
@@ -140,11 +140,15 @@ class Post extends Model
 
     public function rules($id = null)
     {
+        $now =Carbon::now();
+        $oneMonthFromNow = $now->addMonth(1);
+
         $validate = [
             'title' => "required| string",
             'description' => "required|string",
             'price' => "required",
-
+            'time_start' => 'required|before:time_end|after:tomorrow',
+            'time_end' => 'before:'.$oneMonthFromNow,
         ];
         if ($id) {
             return $validate;
@@ -153,13 +157,14 @@ class Post extends Model
             'district_id' => 'required',
             'ward_id' => "required",
             'category_id' => "required",
-            'time' => 'required',
             'addressDetails'=>"required",
             ]);
     }
 
     public function messages()
     {
+        $now =Carbon::now();
+        $oneMonthFromNow = $now->addMonth(1);
         return [
             'title.required' => 'Nhập tiêu đề',
             'description.required' => 'Nhập mô tả',
@@ -169,8 +174,11 @@ class Post extends Model
             'addressDetails.required'=>'Nhập địa chỉ chi tiết',
             'category_id.required' => 'Chọn danh mục',
             'customer_id.required' => "Chọn người thuê",
-            'time.required' => "Chọn thời gian bắt đầu",
+            'time_start.required' => "Chọn thời gian bắt đầu",
             'attributes.*.required' => "Thuộc tính không được bỏ trống",
+            'time_start.before' => "Thời gian bắt đầu phải trước thời gian kết thúc",
+            'time_start.after'=>"Thời gian bắt đầu công việc từ ngày mai",
+            'time_end.before'=>"Đăng bài trong vòng 1 tháng"
 
         ];
     }
@@ -231,4 +239,5 @@ class Post extends Model
         }
         $this->find($id)->fill($data)->update();
     }
+
 }

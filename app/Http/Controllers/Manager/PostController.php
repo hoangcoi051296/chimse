@@ -59,6 +59,8 @@ class PostController extends Controller
     }
     public function store(Request  $request){
         $data=$request->all();
+        $data['time_start']=date('Y-m-d H:i:s',strtotime($data['time_start']));
+        $data['time_end']=date('Y-m-d H:i:s',strtotime($data['time_end']));
         $request->validate($this->post->rules(),$this->post->messages());
         try {
             $this->post->createData($data);
@@ -87,6 +89,7 @@ class PostController extends Controller
 
     public function edit($id)
     {
+
         $post = $this->post->find($id);
         return view('manager.post.edit', compact('post'));
     }

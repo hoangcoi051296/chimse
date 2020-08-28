@@ -24,8 +24,8 @@ Route::get('/test', function () {
     return view('welcome');
 });
 Route::get('showWard','HomeController@showWardInDistrict')->name('showWard');
-Route::get('showAttribute','HomeController@showAddtribute')->name('showAttribute');
 Route::get('getAttribute','HomeController@getAttribute')->name('getAttributes');
+Route::get('getTimeline','HomeController@getTimeline')->name('getTimeline');
 
 
 Route::get('autocomplete','HomeController@search')->name('autocomplete');

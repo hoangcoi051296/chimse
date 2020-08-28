@@ -14,25 +14,28 @@ use App\Models\District;
 if (!function_exists("getPostStatus")) {
     function getPostStatus($status_id)
     {
-        if ($status_id==0){
-            $status='Đã huỷ';
-        }elseif ($status_id==1){
-            $status='Chờ duyệt';
-        }elseif ($status_id==2){
-            $status='Đã duyệt';
-        }elseif ($status_id==3){
-            $status='Tìm được người giúp việc';
-        }elseif ($status_id==4){
-            $status='Người giúp việc xác nhận công việc';
-        }elseif ($status_id==5){
-            $status='Người giúp việc bắt đầu';
-        }elseif ($status_id==6){
-            $status='Người giúp việc kết thúc';
+        if (isset($status_id)){
+            if ($status_id==0){
+                $status='Đã huỷ';
+            }elseif ($status_id==1){
+                $status='Chờ duyệt';
+            }elseif ($status_id==2){
+                $status='Đã duyệt';
+            }elseif ($status_id==3){
+                $status='Tìm được người giúp việc';
+            }elseif ($status_id==4){
+                $status='Người giúp việc xác nhận công việc';
+            }elseif ($status_id==5){
+                $status='Người giúp việc bắt đầu';
+            }elseif ($status_id==6){
+                $status='Người giúp việc kết thúc';
+            }
+            elseif ($status_id==7){
+            $status='Người thuê xác nhận hoàn thành';
+            };
+            return $status ;
         }
-        else ($status_id==7){
-            $status='Người thuê xác nhận hoàn thành'
-        };
-      return $status;
+        return false;
     }
 }
 if (!function_exists("listPostStatus")) {
@@ -111,17 +114,11 @@ if (!function_exists("employeeStatus")) {
 if (!function_exists("getEmployeeStatus")) {
     function statusEmployee($status_id)
     {
-        if ($status_id==Employee::ChoViec){
-            $status='Chờ việc';
+        if ($status_id==0){
+            $status='Chưa có việc';
             }
-        elseif ($status_id==Employee::ChoXacNhan){
-            $status='Chờ xác nhận';
-        }elseif ($status_id==Employee::XacNhanCV){
-            $status='Xác nhận công việc';
-        }elseif ($status_id==Employee::BatDau){
-            $status='Bắt đầu';
-        }elseif ($status_id==Employee::HoanThanh){
-            $status='Kết thúc';
+        elseif ($status_id==1) {
+            $status = 'Có việc';
         }
         return $status;
     }

@@ -16,41 +16,49 @@ class PermissionSeed extends Seeder
         $permission = new Permission;
         $permission->name = 'Manager';
         $permission->slug = Str::slug( $permission->name, '-');
+        $permission->timestamps;
         $permission->save();
 
         $permission = new Permission;
         $permission->name = 'View Manager';
         $permission->slug = Str::slug( $permission->name, '-');
+        $permission->timestamps;
         $permission->save();
 
         $permission = new Permission;
         $permission->name = 'Attribute Management';
         $permission->slug = Str::slug( $permission->name, '-');
+        $permission->timestamps;
         $permission->save();
 
         $permission = new Permission;
         $permission->name = 'View Post Management';
         $permission->slug = Str::slug( $permission->name, '-');
+        $permission->timestamps;
         $permission->save();
 
         $permission = new Permission;
         $permission->name = 'CreateUpdateEdit Post Management';
         $permission->slug = Str::slug( $permission->name, '-');
+        $permission->timestamps;
         $permission->save();
 
         $permission = new Permission;
         $permission->name = 'Post Management';
         $permission->slug = Str::slug( $permission->name, '-');
+        $permission->timestamps;
         $permission->save();
 
         $permission = new Permission;
         $permission->name = 'Employee Management';
         $permission->slug = Str::slug( $permission->name, '-');
+        $permission->timestamps;
         $permission->save();
 
         $permission = new Permission;
         $permission->name = 'Customer Management';
         $permission->slug = Str::slug( $permission->name, '-');
+        $permission->timestamps;
         $permission->save();
 
     }
