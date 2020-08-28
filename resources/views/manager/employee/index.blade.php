@@ -1,10 +1,16 @@
 @extends('manager.layout.layout')
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
 <style type="text/css">
     .delete {
         color: red;
         text-decoration: none;
     }
-
+    .fc-popover{
+        width: 400px;
+    }
+    .fc-more-popover{
+        width: 400px;
+    }
     .delete:hover {
         color: indianred;
     }
@@ -23,7 +29,7 @@
     }
 </style>
 @section('content')
-    <!-- Content Header (Page header) -->
+
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -66,15 +72,15 @@
                                     <option selected="selected" value="">Xã phường</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-left: 20px;width: 200px">
-                                <select class="form-control orderByStatus" name="status">
-                                    <option value="">Trạng thái</option>
-                                    @foreach(employeeStatus() as $status)
-                                        <option
-                                            {{Request::get('status')==$status['value']&&Request::get('status')!=null ?"selected='selected'":''}} value="{{$status['value']}}">{{$status['name']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+{{--                            <div class="form-group" style="margin-left: 20px;width: 200px">--}}
+{{--                                <select class="form-control orderByStatus" name="status">--}}
+{{--                                    <option value="">Trạng thái</option>--}}
+{{--                                    @foreach(listEmployeeStatus() as $status)--}}
+{{--                                        <option--}}
+{{--                                            {{Request::get('status')==$status['value']&&Request::get('status')!=null ?"selected='selected'":''}} value="{{$status['value']}}">{{$status['name']}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
                         </div>
 
                         <div class="card">
@@ -138,6 +144,10 @@
                                         <td>{{statusEmployee($helper->status)}}</td>
 
                                         <td>
+                                            <button type="button" onclick="timeLine({{$helper->id}})" class="btn-xs btn-default" data-toggle="modal" data-target="#modal">
+                                                <i class="far fa-eye"></i>
+                                            </button>
+
 {{--                                            <a href="{{ route('manager.employee.details',['id' => $helper->id])}}"--}}
 {{--                                               class=" btn-xs btn-default" style="background-color: lightgrey"><i class="far fa-eye"></i></a>--}}
                                             <a class="edit"
@@ -154,9 +164,12 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div id="SU">
+
+                        </div>
                         <!-- /.card-body -->
                         <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-right">
+                            <ul class="pagination pagination-sm m-1 float-left">
 
                                 <li>
                                     <a href="" title="">{{$helpers->appends(request()->query())->links()}}  </a>
@@ -167,9 +180,10 @@
                     </div>
                     <!-- /.card -->
                 </div>
-
             </div>
         </div><!-- /.container-fluid -->
+        @csrf
+
     </section>
     <!-- /.content -->
 @endsection
@@ -181,13 +195,28 @@
                 if (el.tabIndex <= 0) el.tabIndex = 10000;
             });
         });
+      function timeLine(id){
+          var token = $("input[name='_token']").val();
+          $.ajax({
+              url: "{{route('getTimeline')}}",
+              method: 'GET',
+              data: {
+                  id: id,
+                  token: token,
+              },
+              success: function (data) {
+                  console.log(data)
+                  $('#SU').append(data)
+                  $('#modal').addClass('show')
+              }
+          })}
+      function closeModal(){
+          $('#SU').empty()
+         $('#modal').removeClass('show')
+
+      }
     </script>
-{{--    <script type="text/javascript">--}}
-{{--        $('img').each(function(){--}}
-{{--            $(this).click(function(){--}}
-{{--                $(this).width($(this).width()+$(this).width())--}}
-{{--            });--}}
-{{--        });--}}
-{{--    </script>--}}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
+
 
 @endsection

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Post;
+use App\Policies\PostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -14,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        Post::class => PostPolicy::class
     ];
 
     /**
@@ -25,28 +27,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        $this->changeStatusManager();
-        $this->editPostManager();
-        Gate::define('edit-post', 'App\CustomPolicy@editPost');
+        $this->SuperAdmin();
+        Gate::define('view-post', 'App\Policies\PostPolicy@view');
     }
-
-    public function changeStatusManager()
+    public function SuperAdmin()
     {
-        Gate::define('managerChangeStatus', function ($user, $post) {
-            return $post->status==1 ||$post->status==2;
-        });
-    }
-    public function editPostManager()
-    {
-        Gate::define('editPost',function ($user,$post){
-            return true;
-        });
-
-    }
-    public function cancelPostManager()
-    {
-        Gate::define('cancelPost', function ($user, $post) {
-            return $post->status==1 ||$post->status==2 ||$post->status==3 ||$post->status==4;
-        });
+      Gate::define('superAdmin','App\Policies\PostPolicy@viewAny');
     }
 }

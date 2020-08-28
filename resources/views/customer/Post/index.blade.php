@@ -1,5 +1,5 @@
 <?php
-$listStatus = listStatus();
+//$listStatus = listStatus();
 ?>
 @extends('customer.layout.layout')
 <style>
@@ -40,15 +40,13 @@ $listStatus = listStatus();
                 <div class="col-md-12">
                     <form action="{{route('customer.post.index')}}" method="GET">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="form-group filterData ">
                                 <select class="form-control" name="status">
                                     <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
                                         thái
                                     </option>
-                                    @foreach(listStatus() as $status)
-                                        <option
-                                                {{Request::get('status')==$status['value'] && Request::get('status')!=null ?"selected='selected'":''}}
-                                                value="{{$status['value']}}">{{$status['name']}}</option>
+                                    @foreach(listPostStatus() as $status)
+                                        <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -134,11 +132,8 @@ $listStatus = listStatus();
                                         @endif
                                     </td>
                                     <td>
-                                        @foreach($listStatus as $s)
-                                            @if($post->status == $s['value'])
-                                                {{$s['name']}}
-                                            @endif
-                                        @endforeach
+                                        <div class="row postStatus" data-value="{{$post->id}}">
+                                            {{getPostStatus($post->status)}}</div>
                                     </td>
                                     <td>{{$post->time}}</td>
                                     <td>@if($post->category)
@@ -164,12 +159,7 @@ $listStatus = listStatus();
                                            onclick="return confirm('Bạn muốn xóa không?');"
                                            class="btn btn-danger btn-xs @if(in_array($post->status,[3,4,5,6,7])) hide @endif"><i
                                                     class="fa fa-trash"></i></a>
-                                        @if($post->status==\App\Models\Post::NGVKetThuc)
-                                            <a href="{{\Illuminate\Support\Facades\URL::signedRoute('customer.post.complete',['id'=>$post->id])}}"
-                                               class="btn btn-primary btn-xs "><i class="far fa-check-circle"></i></a>
-                                        @endif
                                     </td>
-
                                 </tr>
                             @endforeach
                             </tbody>

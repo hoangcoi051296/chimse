@@ -1,40 +1,45 @@
 <?php
 use App\Models\Post;
 use App\Models\Attribute;
+use App\Models\Ward;
 use Illuminate\Support\Facades\DB;
 use App\Models\Employee;
+use App\Models\District;
 /**
  * Created by PhpStorm.
  * User: Duc Thang
  * Date: 8/4/2020
  * Time: 9:53 PM
  */
-if (!function_exists("getStatus")) {
-    function getStatus($status_id)
+if (!function_exists("getPostStatus")) {
+    function getPostStatus($status_id)
     {
-        if ($status_id==Post::DaHuy){
-            $status='Đã huỷ';
-        }elseif ($status_id==Post::ChoDuyet){
-            $status='Chờ duyệt';
-        }elseif ($status_id==Post::DaDuyet){
-            $status='Đã duyệt';
-        }elseif ($status_id==Post::TimDuocNGV){
-            $status='Tìm được người giúp việc';
-        }elseif ($status_id==Post::NGVXacNhanCV){
-            $status='Người giúp việc xác nhận công việc';
-        }elseif ($status_id==Post::NGVBatDau){
-            $status='Người giúp việc bắt đầu';
-        }elseif ($status_id==Post::NGVKetThuc){
-            $status='Người giúp việc kết thúc';
+        if (isset($status_id)){
+            if ($status_id==0){
+                $status='Đã huỷ';
+            }elseif ($status_id==1){
+                $status='Chờ duyệt';
+            }elseif ($status_id==2){
+                $status='Đã duyệt';
+            }elseif ($status_id==3){
+                $status='Tìm được người giúp việc';
+            }elseif ($status_id==4){
+                $status='Người giúp việc xác nhận công việc';
+            }elseif ($status_id==5){
+                $status='Người giúp việc bắt đầu';
+            }elseif ($status_id==6){
+                $status='Người giúp việc kết thúc';
+            }
+            elseif ($status_id==7){
+            $status='Người thuê xác nhận hoàn thành';
+            };
+            return $status ;
         }
-        else ($status_id==Post::NTXacNhan){
-            $status='Người thuê xác nhận hoàn thành'
-        };
-      return $status;
+        return false;
     }
 }
-if (!function_exists("listStatus")) {
-    function listStatus()
+if (!function_exists("listPostStatus")) {
+    function listPostStatus()
     {
         return $status =[
             [
@@ -72,104 +77,8 @@ if (!function_exists("listStatus")) {
         ];
     }
 }
-if (!function_exists("employeeStatus")) {
-    function employeeStatus()
-    {
-        return $status =[
-            [
-                'value' => 0,
-                'name' => 'Chờ việc'
-            ],
-            [
-                'value' => 1,
-                'name' => 'Chờ xác nhận'
-            ],
-            [
-                'value' => 2,
-                'name' => 'Xác nhận CV'
-            ],
-            [
-                'value' => 3,
-                'name' => 'Bắt đầu'
-            ],
-            [
-                'value' => 4,
-                'name' => 'Hoàn thành CV'
-            ],
-        ];
-    }
-}if (!function_exists("statusEmployee")) {
-    function statusEmployee($status_id)
-    {
-        if ($status_id==Employee::ChoViec){
-            $status='Chờ việc';
-            }
-        elseif ($status_id==Employee::ChoXacNhan){
-            $status='Chờ xác nhận';
-        }elseif ($status_id==Employee::XacNhanCV){
-            $status='Xác nhận công việc';
-        }elseif ($status_id==Employee::BatDau){
-            $status='Bắt đầu';
-        }elseif ($status_id==Employee::HoanThanh){
-            $status='Kết thúc';
-        }
-        return $status;
-    }
-}
-if (!function_exists("employeePostStatus")) {
-    function employeePostStatus()
-    {
-        return $status =[
-            [
-                'value' => 3,
-                'name' => 'Chờ xác nhận'
-            ],
-            [
-                'value' => 4,
-                'name' => 'Xác nhận CV'
-            ],
-            [
-                'value' => 5,
-                'name' => 'Bắt đầu'
-            ],
-            [
-                'value' => 6,
-                'name' => 'Hoàn thành CV'
-            ],
-            [
-                'value' => 7,
-                'name' => 'Người thuê xác nhận hoàn thành'
-            ],
-            [
-                'value' => 0,
-                'name' => 'Đã huỷ'
-            ],
-        ];
-    }
-}
-if (!function_exists("employeeGetStatus")) {
-    function employeeGetStatus($status_id)
-    {
-        if ($status_id==Post::DaHuy){
-            $status='Đã huỷ';
-        }elseif ($status_id==Post::TimDuocNGV){
-            $status='Chờ xác nhận';
-        }elseif ($status_id==Post::NGVXacNhanCV){
-            $status='Xác nhận công việc';
-        }elseif ($status_id==Post::NGVBatDau){
-            $status='Bắt đầu';
-        }elseif ($status_id==Post::NGVKetThuc){
-            $status='Kết thúc';
-        }
-        else ($status_id==Post::NTXacNhan){
-        $status='Người thuê xác nhận hoàn thành'
-        };
-        return $status;
-    }
-}
-
-if (!function_exists("managerPostStatus")) {
-    function managerPostStatus()
+if (!function_exists("listManagerStatus")) {
+    function listManagerStatus()
     {
         return $status =[
             [
@@ -178,7 +87,7 @@ if (!function_exists("managerPostStatus")) {
             ],
             [
                 'value' => 2,
-                'name' => 'Duyệt Bài'
+                'name' => 'Đã Duyệt'
             ],
             [
                 'value' => 3,
@@ -187,12 +96,31 @@ if (!function_exists("managerPostStatus")) {
         ];
     }
 }
-
-if (!function_exists("getAttributes")) {
-    function getValueAttribute($key)
+if (!function_exists("employeeStatus")) {
+    function listEmployeeStatus()
     {
-        $attribute =Attribute::find($key);
-        return $attribute;
+        return $status =[
+            [
+                'value' => 0,
+                'name' => 'Chưa có việc'
+            ],
+            [
+                'value' => 1,
+                'name' => 'Có việc'
+            ]
+        ];
+    }
+}
+if (!function_exists("getEmployeeStatus")) {
+    function statusEmployee($status_id)
+    {
+        if ($status_id==0){
+            $status='Chưa có việc';
+            }
+        elseif ($status_id==1) {
+            $status = 'Có việc';
+        }
+        return $status;
     }
 }
 if (!function_exists("avgRate")) {
@@ -204,5 +132,23 @@ if (!function_exists("avgRate")) {
              return "Chưa có đánh giá";
          }
          return  $avgRate.'/'.'5'.'( '.$a->count().' đánh giá ) ';
+    }
+}
+
+
+if (!function_exists("wardSeed")) {
+    function wardSeed($district)
+    {
+        $wards = Ward::Where('maqh',$district)->pluck('xaid')->toArray();
+        $ward=array_rand(array_flip($wards));
+        return  $ward;
+    }
+}
+if (!function_exists("getWard")) {
+    function districtSeed()
+    {
+        $districts = District::where('matp', 01)->pluck('maqh')->toArray();
+        $district=array_rand(array_flip($districts));
+        return  $district;
     }
 }

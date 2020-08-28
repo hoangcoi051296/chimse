@@ -19,7 +19,7 @@ if (!function_exists("sidebarManager")) {
                             'route' => route('manager.employee.create')
                         ],
                     ],
-                    'icon' => 'nav-icon fas fa-tachometer-alt'
+                    'icon' => 'nav-icon fab fa-etsy'
                 ],
                 'customer' => [
                     'name' => 'Người thuê',
@@ -33,7 +33,8 @@ if (!function_exists("sidebarManager")) {
                             'route' => route('manager.customer.create')
                         ]
                     ],
-                    'icon' => 'nav-icon fas fa-tachometer-alt'
+                    'icon' => 'nav-icon fab fa-cuttlefish'
+
                 ],
                 'post' => [
                     'name' => 'Bài đăng',
@@ -47,7 +48,7 @@ if (!function_exists("sidebarManager")) {
                             'route' => route('manager.post.create')
                         ],
                     ],
-                    'icon' => 'nav-icon fas fa-tachometer-alt'
+                    'icon' => 'nav-icon fab fa-product-hunt'
                 ],
                 'category' => [
                     'name' => 'Danh mục',
@@ -61,7 +62,7 @@ if (!function_exists("sidebarManager")) {
                             'route' => route('manager.category.create')
                         ],
                     ],
-                    'icon' => 'nav-icon fas fa-tachometer-alt'
+                    'icon' => 'nav-icon fas fa-bible'
                 ],
                 'attribute' => [
                     'name' => 'Thuộc tính',
@@ -73,6 +74,21 @@ if (!function_exists("sidebarManager")) {
                         [
                             'name' => 'Tạo mới',
                             'route' => route('manager.attribute.create')
+                        ],
+                    ],
+                    'icon'=>'nav-icon fab fa-asymmetrik'
+                ],
+
+                'role' => [
+                    'name' => 'Phân quyền',
+                    'child' => [
+                        [
+                            'name' => 'Danh sách',
+                            'route' => route('manager.role.index')
+                        ],
+                        [
+                            'name' => 'Tạo mới',
+                            'route' => route('manager.role.create')
                         ],
                     ],
                     'icon'=>'nav-icon fas fa-tachometer-alt'

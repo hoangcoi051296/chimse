@@ -51,6 +51,15 @@ Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], f
         Route::post('updateStatus/{id}', 'PostController@updateStatus')->name('manager.post.updateStatus');
         Route::get('delete/{id}', 'PostController@delete')->name('manager.post.delete');
     });
+    Route::group(['prefix' => 'role'], function () {
+        Route::get('/', 'RoleController@index')->name('manager.role.index');
+        Route::get('create', 'RoleController@create')->name('manager.role.create');
+        Route::post('store', 'RoleController@store')->name('manager.role.store');
+        Route::get('edit/{id}', 'RoleController@edit')->name('manager.role.edit');
+        Route::post('update/{id}', 'RoleController@update')->name('manager.role.update');
+        Route::get('delete/{id}', 'RoleController@delete')->name('manager.role.delete');
+
+    });
 
 });
 Route::group(['namespace' => 'Auth\Manager'], function () {
