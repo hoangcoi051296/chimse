@@ -56,19 +56,8 @@ class Post extends Model
         }
     }
     public function scopeTime($posts,$condition){
-        if (isset($condition['timeFilter'])){
-            if ($condition['timeFilter']=='hours'){
-                $posts->where('created_at','>=',Carbon::now()->subHour(2));
-            }
-            if ($condition['timeFilter']=='day'){
-                $posts->where('created_at','>=',Carbon::now()->subDay(1));
-            }
-            elseif ($condition['timeFilter']=='week'){
-                $posts->where('created_at','>=',Carbon::now()->subWeek(1));
-            }
-            else{
-                $posts->where('created_at','>=',Carbon::now()->subMonth(1));
-            }
+        if (isset($condition['startTime']) && isset($condition['finishTime'])){
+            $posts->whereDate('created_at','>=',$condition['startTime'])->whereDate('updated_at','<=',$condition['finishTime']);
         }
     }
     public function scopeSearch($posts,$condition){
@@ -163,8 +152,6 @@ class Post extends Model
 
     public function messages()
     {
-        $now =Carbon::now();
-        $oneMonthFromNow = $now->addMonth(1);
         return [
             'title.required' => 'Nhập tiêu đề',
             'description.required' => 'Nhập mô tả',
@@ -186,6 +173,7 @@ class Post extends Model
 
     public function createData($data)
     {
+
         if (isset($data['employee_id'])){
             $data['status']=3;
         }

@@ -16,7 +16,7 @@ class Employee extends Model implements Authenticatable
     use AuthenticableTrait;
 
     protected $table = 'employee';
-    protected $fillable = ['name', 'email', 'phone','status','avatar','avgRate','password', 'district_id','ward_id'];
+    protected $fillable = ['name', 'email', 'phone','status','avatar','listJob','avgRate','password', 'district_id','ward_id'];
     protected $hidden = [
         'password',
         'remember_token',

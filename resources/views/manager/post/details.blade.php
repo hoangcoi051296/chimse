@@ -126,7 +126,7 @@
 
                                                     <select name="statusPost" style="width: 150px" id="changeStatusPost" >
                                                         @foreach(listManagerStatus() as $status)
-                                                            <option data-statusName="{{$status['name']}}" value="{{$status['value']}}" {{$status['value']==3?'disabled':''}} {{$status['value']==$post->status?"selected='selected'":''}} >{{$status['name']}}</option>
+                                                            <option value="{{$status['value']}}" {{$status['value']==3?'disabled':''}} {{$status['value']==$post->status?"selected='selected'":''}} >{{$status['name']}}</option>
                                                         @endforeach
                                                     </select>
                                             </td>

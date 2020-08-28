@@ -80,15 +80,11 @@
                                 </select>
                             </div>
                             <div class="form-group filterData ">
-                                <select class="form-control" name="timeFilter">
-                                    <option {{Request::get('timeFilter')==null ?"selected='selected'":'' }} value="">Thời gian</option>
-                                    <option {{Request::get('timeFilter')=='hours' ?"selected='selected'":'' }} value="hours">2 tiếng</option>
-                                    <option {{Request::get('timeFilter')=='day' ?"selected='selected'":'' }} value="day">Ngày</option>
-                                    <option {{Request::get('timeFilter')=='week' ?"selected='selected'":'' }} value="week">Tuần</option>
-                                    <option {{Request::get('timeFilter')=='month' ?"selected='selected'":'' }} value="month">Tháng</option>
-                                </select>
+                                <input type="date" class="form-control" name="startTime">
                             </div>
-
+                            <div class="form-group filterData ">
+                                <input type="date" class="form-control" name="finishTime">
+                            </div>
                         </div>
                         <div class="card">
                             <div class="input-group input-group-sm">
@@ -105,8 +101,8 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="date" name="startTime">
-                        <input type="date" name="finishDate">
+
+
 
 
                         <div class="form-group input-group-sm float-left " style="width: 120px">

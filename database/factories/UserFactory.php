@@ -26,6 +26,7 @@ $factory->define(\App\Models\Employee::class, function (Faker $faker) {
         'avatar'=>$faker->imageUrl(),
         'district_id'=>$district=districtSeed(),
         'ward_id'=>wardSeed($district),
+        'listJob'=>rand(1,3).rand(4,7).rand(8,10),
         'avgRate'=>5,
         'status'=>0,
 
@@ -50,6 +51,13 @@ $factory->define(\App\Models\Post::class, function (Faker $faker) {
     }else{
         $employee_id=null;
     }
+    $start_date = strtotime(now()->subDay(rand(0,15)));
+    $end_date = strtotime(now()->addDay(rand(0,15)));
+    $val =rand($start_date,$end_date);
+    $dateTime = new DateTime(date('Y-m-d H:i:s', $val));
+    $start=$dateTime->format('Y-m-d H:i:s');
+    $endTime=$dateTime->add(new DateInterval('PT'.rand(2,6).'H'));
+    $end=  $endTime->format('Y-m-d H:i:s');
     return [
         'title' => $faker->name,
         'description' => $faker->text,
@@ -57,6 +65,8 @@ $factory->define(\App\Models\Post::class, function (Faker $faker) {
         'status'=>$status,
         'district_id'=>$district=districtSeed(),
         'ward_id'=>wardSeed($district),
+        'time_start'=>$start,
+        'time_end' => $end,
         'addressDetails'=>$faker->address,
         'category_id'=>rand(1,10),
         'employee_id'=>$employee_id,
