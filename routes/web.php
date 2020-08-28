@@ -19,8 +19,14 @@ use App\Models\Post;
 */
 
 Route::get('/test', function () {
-    $wards =District::where('matp', 01)->pluck('maqh')->toArray();
-    dd($wards);
+    $start_date = strtotime(now()->subDay(rand(0,15)));
+    $end_date = strtotime(now()->addDay(rand(0,15)));
+    $val =rand($start_date,$end_date);
+    $dateTime = new DateTime(date('Y-m-d H:i:s', $val));
+    $start=$dateTime->format('Y-m-d H:i:s');
+    $endTime=$dateTime->add(new DateInterval('PT'.rand(2,6).'H'));
+    $end=  $endTime->format('Y-m-d H:i:s');
+    dd($start.'-'.$end);
     return view('welcome');
 });
 Route::get('showWard','HomeController@showWardInDistrict')->name('showWard');

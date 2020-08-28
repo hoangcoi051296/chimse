@@ -21,6 +21,7 @@ class CreateTableEmployeeTable extends Migration
             $table->tinyInteger('status')->nullable();
             $table->string('phone');
             $table->string('gender')->nullable();
+            $table ->string('listJob')->nullable();
             $table->integer('avgRate')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('ward_id')->nullable();
