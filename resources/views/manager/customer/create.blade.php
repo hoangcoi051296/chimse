@@ -8,6 +8,14 @@
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Tạo người thuê</h1>
                 </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{route('manager.index')}}">Trang chủ</a></li>
+                        <li class="breadcrumb-item active"><a href="{{route('manager.customer.index')}}"><i
+                                        class="zmdi zmdi-power"></i>Danh sách</a>
+                        </li>
+                    </ol>
+                </div>
                 <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -25,7 +33,8 @@
                                 <h3 class="card-title">General</h3>
 
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                            title="Collapse">
                                         <i class="fas fa-minus"></i>
                                     </button>
                                 </div>
@@ -37,24 +46,23 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputEmail">Email</label>
-                                    <input name="email" type="email"  class="form-control" >
+                                    <input name="email" type="email" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputEmail">Số điện thoại</label>
-                                    <input name="phone" type="phone"  class="form-control" >
+                                    <input name="phone" type="phone" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputStatus">Quận huyện</label>
-                                    <select  class="form-control custom-select option" name="district" id="district"
-                                             type="text">
-                                        <option value="" >Hà Nội</option>
+                                    <select class="form-control custom-select option" name="district" id="district"
+                                            type="text">
+                                        <option value="">Hà Nội</option>
                                         @foreach($address as $a)
                                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Xã phường</label>
                                     <select class="form-control" name="ward" id="ward">
                                     </select>
                                 </div>
@@ -64,7 +72,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputProjectLeader">Nhập lại mật khẩu</label>
-                                    <input type="password" name="password_confirmation" id="inputProjectLeader" class="form-control">
+                                    <input type="password" name="password_confirmation" id="inputProjectLeader"
+                                           class="form-control">
                                 </div>
 
                             </div>
@@ -73,7 +82,7 @@
                         <!-- /.card -->
                     </div>
                 </div>
-                <div class="row " style="margin-bottom: 40px" >
+                <div class="row " style="margin-bottom: 40px">
                     <div class="col-12">
                         <input type="submit" value="Tạo người thuê" class="btn btn-success float-left">
                     </div>
@@ -82,4 +91,29 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+    <script>
+        var url = "{{ route('commune.by.district') }}";
+        $("select[name='district']").change(function () {
+            var address = $(this).val();
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: {
+                    id: address,
+                    _token: token,
+                },
+                success: function (data) {
+                    console.log(data);
+                    $("select[name='ward']").html('');
+                    $.each(data.data, function (key, value) {
+                        console.log(value)
+                        $("select[name='ward']").append(
+                            "<option value=" + value.xaid + ">" + value.name + "</option>"
+                        );
+                    });
+                }
+            });
+        });
+    </script>
 @endsection

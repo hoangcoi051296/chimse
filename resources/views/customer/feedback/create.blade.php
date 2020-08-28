@@ -39,9 +39,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Đánh giá</label>
-                                    <input type="text" name="comment"  class="form-control @if($errors->has('comment'))  border border-info @endif">
+                                    <textarea class="form-control" name="comment" id="comment" rows="3"></textarea>
                                     @if($errors->has('comment'))
-                                        <span class="errorCustom">{{$errors->first('comment')}}</span>
+                                        <div class="messages-error">
+                                            {{$errors->first('comment')}}
+                                        </div>
                                     @endif
                                 </div>
                                 <input name="post_id" value="{{$post->id}}" hidden>
@@ -66,6 +68,9 @@
 @section('script')
     <script type="text/javascript" src="{{asset("js/rating.js")}}"></script>
     <script>
+        tinymce.init({
+            selector: '#comment'
+        });
         $("#review").rating({
             "value":5 ,
             "click": function (e) {

@@ -62,8 +62,7 @@
                             <div class="form-group">
                                 <label for="inputStatus">Quận huyện</label>
                                 <select class="form-control custom-select option" name="district_id"
-                                        id="district"
-                                >
+                                        id="district">
                                     <option value="">Hà Nội</option>
                                     @foreach($address as $a)
                                         <option value="{{$a->maqh}}">{{$a->name}}</option>

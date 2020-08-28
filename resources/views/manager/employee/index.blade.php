@@ -134,11 +134,9 @@
                                             @endif
                                         </td>
                                         <td>{{avgRate($helper)}}</td>
-                                        @if($helper->status)
+
                                         <td>{{statusEmployee($helper->status)}}</td>
-                                        @else
-                                            <td></td>
-                                        @endif
+
                                         <td>
 {{--                                            <a href="{{ route('manager.employee.details',['id' => $helper->id])}}"--}}
 {{--                                               class=" btn-xs btn-default" style="background-color: lightgrey"><i class="far fa-eye"></i></a>--}}

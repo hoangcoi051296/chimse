@@ -26,7 +26,8 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $customers = $this->customer->data($request);
-        return view('manager.customer.index', compact('customers'));
+        $customers1=  $this->customer->get();
+        return view('manager.customer.index', compact('customers','customers1'));
     }
 
     public function create()

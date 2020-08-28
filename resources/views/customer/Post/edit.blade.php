@@ -58,15 +58,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Thời gian:</label>
-
                                     <div class="input-group">
-                                        <div class="input-group-append" data-target="#timepicker"
-                                             data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="far fa-clock"></i></span>
                                         </div>
-                                        <input type="text" name="time" class="form-control datetimepicker-input"
-                                               data-target="#   timepicker" id="timepicker"value="{{$post->time}}">
-
+                                        <input type="text" name="time" class="form-control float-right" id="daterangepicker">
                                     </div>
                                     <!-- /.input group -->
                                     @if($errors->has('time'))
@@ -80,9 +76,8 @@
                                     @if($post->district_id)
                                         <input id="districtPost" value="{{$post->ward->district->maqh}}" hidden>
                                     @endif
-                                    <select class="form-control @if($errors->has('description')) error-input @endif custom-select option" name="district"
-                                            type="text">
-                                        <option value="">Hà Nội</option>
+                                    <select class="form-control @if($errors->has('description')) error-input @endif custom-select option" name="district_id"
+                                            type="text" id="district">
                                         @foreach($address as $a)
                                             <option
                                                     {{$post->district_id?$post->district->maqh==$a->maqh?"selected='selected'":'':''}} value="{{$a->maqh}}">{{$a->name}}</option>
@@ -99,11 +94,16 @@
                                     @if($post->ward_id)
                                         <input id="wardPost" value="{{$post->ward->xaid}}" hidden>
                                     @endif
-                                    <select class="form-control @if($errors->has('description')) error-input @endif" name="ward" id="ward">
+                                    <select class="form-control @if($errors->has('description')) error-input @endif" name="ward_id" id="ward">
                                     </select>
-                                    @if($errors->has('ward'))
+                                </div>
+                                <div class="form-group">
+                                    <label>Địa chỉ chi tiết</label>
+                                    <input type="text" name="addressDetails" value="{{$post->addressDetails}}"
+                                           class="form-control @if($errors->has('addressDetails')) error-input @endif">
+                                    @if($errors->has('addressDetails'))
                                         <div class="messages-error">
-                                            {{$errors->first('ward')}}
+                                            {{$errors->first('addressDetails')}}
                                         </div>
                                     @endif
                                 </div>
@@ -132,7 +132,41 @@
                                     @endif
                                 </div>
                                 <div id="attributes">
+                                    @foreach($post->attributes as $attribute)
+                                        <div class="form-group">
+                                            <label>{{$attribute->name}}</label>
+                                            @if($attribute->type=='select')
+                                                <select name="attributes[{{$attribute->id}}]"
+                                                        class="form-control">
+                                                    @foreach (json_decode($attribute->options,true) as $keyOp => $option)
+                                                        <option
+                                                            {{json_decode($attribute->pivot->value,true)==$keyOp?"selected='selected'":''}} value="{{$keyOp}}">{{$option}}</option>
+                                                    @endforeach
+                                                </select>
+                                            @elseif($attribute->type=='radio')
+                                                @foreach (json_decode($attribute->options,true) as $keyOp => $option)
+                                                    <label style="margin-left: 15px"><input type="radio"
+                                                                                            {{json_decode($attribute->pivot->value,true)==$keyOp?"checked":''}} value="{{$keyOp}}"
+                                                                                            name="attributes[{{$attribute->id}}]">{{$option}}
+                                                    </label>
+                                                @endforeach
+                                            @elseif($attribute->type=='textarea')
+                                                <textarea class="form-control" name="attributes[{{$attribute->id}}]"
+                                                          rows="4" cols="50">{{json_decode($attribute->pivot->value,true)}}
+                                                    </textarea></div>
+                                        @elseif($attribute->type=='checkbox')
+                                            <br/>
+                                            @foreach(json_decode($attribute->options,true) as $keyOp => $option)
+                                                <label style="margin-left: 15px"><input type="checkbox" value="{{$keyOp}}" @foreach(json_decode($attribute->pivot->value,true) as $ckb)@if($ckb==$keyOp) checked @endif  @endforeach name="attributes[{{$attribute->id}}][]">{{$option}}
+                                                </label>
+                                            @endforeach
+                                        @elseif($attribute->type=='input')
+                                            <input class="form-control" name="attributes[{{$attribute->id}}]"
+                                                   value="{{json_decode($attribute->pivot->value,true)}}">
+                                        @endif
+                                    @endforeach
                                 </div>
+
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -152,19 +186,26 @@
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{{asset("js/getAddress.js")}}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript">
         tinymce.init({
             selector: '#description1'
         });
-        function chooseCustomer(customer) {
-            var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
-            window.history.pushState({}, '', url);
-            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
-        }
-
+        $(function() {
+            $('input[name="time"]').daterangepicker({
+                timePicker: true,
+                startDate: moment().startOf('hour'),
+                endDate: moment().startOf('hour').add(32, 'hour'),
+                locale: {
+                    format: 'M/DD hh:mm A'
+                }
+            });
+        });
         $("select[name='category_id']").change(function () {
             var category_id = $(this).val();
-            console.log(category_id)
             var token = $("input[name='_token']").val();
             $.ajax({
                 url: '{{route('getAttributes')}}',
@@ -214,7 +255,6 @@
                                 html += '<textarea class="form-control" name="attributes[' + data[i]['id'] + ']" rows="4" cols="50">'
                                 html += '</textarea>'
                                 html += '</div>'
-                                html += '</select>'
                             }
                             html += '</div>'
                         }
@@ -224,13 +264,7 @@
                     }
                 }
             });
-        })
-
-        function chooseCustomer(customer) {
-            var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;
-            window.history.pushState({}, '', url);
-            $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
-        }
+        });
     </script>
 @endsection
 

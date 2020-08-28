@@ -35,11 +35,17 @@
                                     </button>
                                 </div>
                             </div>
-                                <div class="form-group">
-                                    <label for="inputName">Comment</label>
-                                    <input type="text" name="comment" id="inputName" value="{{$feedback->comment}}"
-                                           class="form-control">
-                                </div>
+                            <div class="form-group">
+                                <label for="inputName">Đánh giá</label>
+                                <textarea class="form-control" name="comment" id="comment" rows="3">
+                                    {!! $feedback->comment !!}
+                                </textarea>
+                                @if($errors->has('comment'))
+                                    <div class="messages-error">
+                                        {{$errors->first('comment')}}
+                                    </div>
+                                @endif
+                            </div>
                                 <div class="form-group">
                                     <label for="inputName">Rating</label>
                                     <input type="text" name="rating" id="inputName" value="{{$feedback->rating}}"
@@ -60,4 +66,19 @@
     </section>
 
     <!-- /.content -->
+@endsection
+@section('script')
+    <script type="text/javascript" src="{{asset("js/rating.js")}}"></script>
+    <script>
+        tinymce.init({
+            selector: '#comment'
+        });
+        $("#review").rating({
+            "value":5 ,
+            "click": function (e) {
+                console.log(e);
+                $("#starsInput").val(e.stars);
+            }
+        });
+    </script>
 @endsection

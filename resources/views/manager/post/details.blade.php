@@ -167,12 +167,12 @@
                             <!-- /.col -->
                         </div>
                         <!-- /.row -->
-
                         <!-- this row will not appear when printing -->
-
+                        <input hidden name="status" value="{{$post->status}}">
                         <div class="row no-print">
                             <div class="col-12">
                                 @if($post->status==Post::ChoDuyet||Post::DaDuyet||Post::TimDuocNGV)
+
                                 <button type="submit" onclick=" return confirm('Cập nhật ')" class="btn btn-info float-left" ><i class="fas fa-sync"></i>
                                     Cập nhật
                                 </button>
@@ -208,12 +208,12 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group filterData ">
-                                                    <select class="form-control" name="status" id="status">
-                                                        <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
+                                                    <select class="form-control" name="statusFilter" id="status">
+                                                        <option {{Request::get('statusFilter')==null ?"selected='selected'":'' }} value="">Trạng
                                                             thái
                                                         </option>
                                                         @foreach(employeeStatus() as $status)
-                                                            <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
+                                                            <option {{Request::get('statusFilter')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -316,6 +316,7 @@
             }
 
         })
+
         function saveData(){
            $('#changeStatusPost').attr("disabled",true)
            var html =''

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 class Post extends Model
 {
     protected $table = 'post';
-    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id','addressDetails', 'category_id', 'employee_id', 'customer_id', 'time'];
+    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id', 'addressDetails', 'category_id', 'employee_id', 'customer_id', 'time'];
     const DaHuy = 0;
     const ChoDuyet = 1;
     const DaDuyet = 2;
@@ -26,10 +27,23 @@ class Post extends Model
             return $posts->paginate(isset($condition['per_page']) ? $condition['per_page'] : $this->perPage);
         }
 
+        if (isset($condition['timeFilter'])) {
+            if ($condition['timeFilter'] == 'hours') {
+                $posts->where('created_at', '>=', Carbon::now()->subHour(2));
+            }
+            if ($condition['timeFilter'] == 'day') {
+                $posts->where('created_at', '>=', Carbon::now()->subDay(1));
+            } elseif ($condition['timeFilter'] == 'week') {
+                $posts->where('created_at', '>=', Carbon::now()->subWeek(1));
+            } else {
+                $posts->where('created_at', '>=', Carbon::now()->subMonth(1));
+            }
+        }
         if (isset($condition['status']) && $condition['status'] !== null) {
             $posts = $posts->where('status', $condition['status']);
         }
         if (isset($condition['time']) && $condition['time'] !== null) {
+           (date('Y-m-d H:i:s', strtotime($condition['time'])));
             $posts = $posts->where('time', date('Y-m-d H:i:s', strtotime($condition['time'])));
         }
         if (isset($condition['district']) && $condition['district'] !== null) {
@@ -105,13 +119,19 @@ class Post extends Model
         $validate = [
             'title' => "required|string",
             'description' => "required|string",
-            'price' => "required|numeric|min:1000",
-            'district' => "required",
-            'ward' => "required",
+            'price' => "required",
+
+        ];
+        if ($id) {
+            return $validate;
+        }
+        return array_merge($validate, [
+            'district_id' => 'required',
+            'ward_id' => "required",
             'category_id' => "required",
             'time' => "required",
             'attributes' => "required",
-        ];
+        ]);
 
         return $validate;
     }
@@ -124,7 +144,7 @@ class Post extends Model
             'price.required' => 'Nhập giá',
             'district_id.required' => 'Chọn quận huyện',
             'ward_id.required' => 'Chọn xã phường',
-            'addressDetails.required'=>'Nhập địa chỉ chi tiết',
+            'addressDetails.required' => 'Nhập địa chỉ chi tiết',
             'category_id.required' => 'Chọn danh mục',
             'customer_id.required' => "Chọn người thuê",
             'time.required' => "Chọn thời gian bắt đầu",
@@ -140,15 +160,15 @@ class Post extends Model
 
     public function createData($data)
     {
-        if (isset($data['employee_id'])){
-            $data['status']=Post::TimDuocNGV;
-            $employee=Employee::find($data['employee_id']);
-            $employee->status=Employee::ChoXacNhan;
+        if (isset($data['employee_id'])) {
+            $data['status'] = Post::TimDuocNGV;
+            $employee = Employee::find($data['employee_id']);
+            $employee->status = Employee::ChoXacNhan;
             $employee->save();
         }
         $data = array_filter($data);
         $this->fill($data)->save();
-        if (isset($data['attributes'])){
+        if (isset($data['attributes'])) {
             $attribute = $data['attributes'];
             foreach ($attribute as $key => $value) {
                 $value = json_encode($value);
@@ -166,7 +186,7 @@ class Post extends Model
                 $attr[$key] = ['value' => $value];
             }
             $this->find($id)->attributes()->sync($attr);
-        }else{
+        } else {
             $this->find($id)->attributes()->detach();
         }
         $data['status'] = Post::ChoDuyet;
@@ -185,8 +205,13 @@ class Post extends Model
             if (isset($data['statusPost'])) {
                 $data['status'] = $data['statusPost'];
                 $data['employee_id'] = null;
+                return $this->find($id)->fill($data)->update();
+            } elseif (isset($data['status'])) {
+                $data['status'] = $data['status'];
+                return $this->find($id)->fill($data)->update();
             } else {
                 $data['status'] = Post::DaHuy;
+                return $this->find($id)->fill($data)->update();
             }
         }
         $this->find($id)->fill($data)->update();

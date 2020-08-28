@@ -61,7 +61,7 @@ $listStatus = listStatus();
                                             <td>{{$key + 1}}</td>
                                             <td>{{ ($fb->customer) ? $fb->customer->name :'' }}</td>
                                             <td>{{($fb->employee) ? $fb->employee->name :''}}</td>
-                                            <td>{{$fb->comment}}</td>
+                                            <td>{!!$fb->comment!!}</td>
                                             <td>{{$fb->rating}}</td>
                                             <td>
                                                 <a href="{{ route('customer.feedback.edit',['id' => $fb->id])}}"

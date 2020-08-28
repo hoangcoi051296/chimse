@@ -25,6 +25,7 @@ $factory->define(\App\Models\Employee::class, function (Faker $faker) {
         'phone'=>$faker->unique()->phoneNumber,
         'avatar'=>$faker->imageUrl(),
         'ward_id'=>null,
+        'status'=>0,
         'district_id'=>null,
     ];
 });

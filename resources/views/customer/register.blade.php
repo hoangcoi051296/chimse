@@ -27,6 +27,7 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="{{asset("css/custom.css?v=1")}}">
     <!--===============================================================================================-->
 </head>
 <body>
@@ -46,21 +47,36 @@
                     <span class="label-input100">Username</span>
                     <input class="input100" type="text" name="name" placeholder="Enter username">
                     <span class="focus-input100"></span>
+                    @if($errors->has('name'))
+                        <div class="messages-error">
+                            {{$errors->first('name')}}
+                        </div>
+                    @endif
                 </div>
                 <div class="wrap-input100 validate-input m-b-26" data-validate="Email is required">
                     <span class="label-input100">Email</span>
                     <input class="input100" type="text" name="email" placeholder="Enter email">
                     <span class="focus-input100"></span>
+                    @if($errors->has('email'))
+                        <div class="messages-error">
+                            {{$errors->first('email')}}
+                        </div>
+                    @endif
                 </div>
                 <div class="wrap-input100 validate-input m-b-26" data-validate="Phone is required">
                     <span class="label-input100">Phone</span>
                     <input class="input100" type="text" name="phone" placeholder="Enter phone">
                     <span class="focus-input100"></span>
+                    @if($errors->has('phone'))
+                        <div class="messages-error">
+                            {{$errors->first('phone')}}
+                        </div>
+                    @endif
                 </div>
                 <div class="wrap-input100 validate-input m-b-26" data-validate="Address is required">
                     <span class="label-input100">District</span>
                     <select class="form-control custom-select option" name="district" type="text" id="district">
-                        <option value="">Hà Nội</option>
+                        <option value="">chọn quận huyện</option>
                         @foreach($address as $a)
                             <option value="{{$a->maqh}}">{{$a->name}}</option>
                         @endforeach
@@ -78,6 +94,11 @@
                     <span class="label-input100">Password</span>
                     <input class="input100" type="password" name="password" placeholder="Enter password">
                     <span class="focus-input100"></span>
+                    @if($errors->has('password'))
+                        <div class="messages-error">
+                            {{$errors->first('password')}}
+                        </div>
+                    @endif
                 </div>
                 <div class="wrap-input100 validate-input m-b-18" data-validate="Confirm Password is required">
                     <span class="label-input100">Confirm Password</span>

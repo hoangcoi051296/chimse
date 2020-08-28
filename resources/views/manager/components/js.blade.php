@@ -35,28 +35,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
 <script src="{{asset("js/getAddress.js")}}"></script>
-{{--<script>--}}
-{{--    var url = "{{ route('commune.by.district') }}";--}}
-{{--    $("select[name='district']").change(function () {--}}
-{{--        var address = $(this).val();--}}
-{{--        var token = $("input[name='_token']").val();--}}
-{{--        $.ajax({--}}
-{{--            url: url,--}}
-{{--            method: 'GET',--}}
-{{--            data: {--}}
-{{--                id: address,--}}
-{{--                _token: token,--}}
-{{--            },--}}
-{{--            success: function (data) {--}}
-{{--                console.log(data);--}}
-{{--                $("select[name='ward']").html('');--}}
-{{--                $.each(data.data, function (key, value) {--}}
-{{--                    console.log(value)--}}
-{{--                    $("select[name='ward']").append(--}}
-{{--                        "<option value=" + value.xaid + ">" + value.name + "</option>"--}}
-{{--                    );--}}
-{{--                });--}}
-{{--            }--}}
-{{--        });--}}
-{{--    });--}}
-{{--</script>--}}
+

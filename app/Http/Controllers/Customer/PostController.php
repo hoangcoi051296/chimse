@@ -9,7 +9,6 @@ use App\Models\Ward;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Category;
-use App\Http\Requests\PostCreated;
 
 class PostController extends Controller
 {
@@ -38,14 +37,6 @@ class PostController extends Controller
         $wards = Ward::Where('maqh', $request->address)->get();
         return response()->json($wards);
     }
-//    public function changeStatus(Request $request){
-//        if ($request->ajax()) {
-//            $post=$this->post->find($request->id);
-//            $post->status=$post->status+1;
-//            $post->save();
-//            return response()->json($post);
-//        }
-//    }
     public function complete($id){
         $post=Post::find($id);
         return view('customer.feedback.create',compact('post'));
