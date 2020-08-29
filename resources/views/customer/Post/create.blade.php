@@ -9,8 +9,8 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('customer.index')}}"></a>Danh sách</li>
+                        <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Trang chủ</a></li>
+                        <li class="breadcrumb-item active"><a href="{{route('customer.post.index')}}">Danh sách</a></li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -22,53 +22,71 @@
         <div class="container-fluid">
             <form method="post" action="{{route('customer.post.store')}}">
                 @csrf
-                    <div class="col-md-12">
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">General</h3>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"
-                                            title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">General</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                        title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
                             </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="inputName">Tên</label>
-                                    <input type="text" name="title" id="inputName"
-                                           class="form-control @if($errors->has('title')) error-input @endif">
-                                    @if($errors->has('title'))
-                                        <div class="messages-error">
-                                            {{$errors->first('title')}}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Mô tả</label>
-                                    <textarea class="form-control" name="description" id="description1" rows="3"></textarea>
-                                    @if($errors->has('description'))
-                                        <div class="messages-error">
-                                            {{$errors->first('description')}}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label>Thời gian:</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
-                                        </div>
-                                        <input type="text" name="time" class="form-control @if($errors->has('title')) error-input @endif datetimepicker-input" data-target="#timepicker" id="timepicker">
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="inputName">Tên</label>
+                                <input type="text" name="title" id="inputName"
+                                       class="form-control @if($errors->has('title')) error-input @endif">
+                                @if($errors->has('title'))
+                                    <div class="messages-error">
+                                        {{$errors->first('title')}}
                                     </div>
-                                    <!-- /.input group -->
-                                    @if($errors->has('time'))
-                                        <div class="messages-error">
-                                            {{$errors->first('time')}}
-                                        </div>
-                                    @endif
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName">Mô tả</label>
+                                <textarea class="form-control  @if($errors->has('title')) error-input @endif" name="description" id="description1" rows="3"></textarea>
+                                @if($errors->has('description'))
+                                    <div class="messages-error">
+                                        {{$errors->first('description')}}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label>Thời gian bắt đầu</label>
+                                <div class="input-group">
+                                    <div class="input-group-append" data-target="#timepickerStart"
+                                         data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                    </div>
+                                    <input type="text" name="time_start"
+                                           class="form-control datetimepicker-input @if($errors->has('time_start'))  border border-info @endif"
+                                           data-target="#timepickerStart" id="timepickerStart">
+
                                 </div>
+                                @if($errors->has('time_start'))
+                                    <span class="errorCustom">{{$errors->first('time_start')}}</span>
+                            @endif
+                            <!-- /.input group -->
+                            </div>
+                            <div class="form-group">
+                                <label>Thời gian kết thúc</label>
+                                <div class="input-group">
+                                    <div class="input-group-append" data-target="#timepickerEnd"
+                                         data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                    </div>
+                                    <input type="text" name="time_end"
+                                           class="form-control datetimepicker-input @if($errors->has('time_end'))  border border-info @endif"
+                                           data-target="#timepickerEnd" id="timepickerEnd">
+
+                                </div>
+                                @if($errors->has('time_end'))
+                                    <span class="errorCustom">{{$errors->first('time_end')}}</span>
+                            @endif
+                            <!-- /.input group -->
+                            </div>
                                 <div class="form-group">
                                     <label for="inputStatus">Quận huyện</label>
                                     <select class="form-control @if($errors->has('district_id')) error-input @endif custom-select option"
@@ -98,7 +116,7 @@
                                 <div class="form-group">
                                     <label>Địa chỉ chi tiết</label>
                                     <input type="text" name="addressDetails"
-                                           class="form-control @if($errors->has('addressDetails')) error-input @endif">
+                                           class="form-control @if($errors->has('title')) error-input @endif">
                                     @if($errors->has('addressDetails'))
                                         <div class="messages-error">
                                             {{$errors->first('addressDetails')}}
@@ -119,7 +137,7 @@
                                 <div class="form-group">
                                     <label for="inputName">Danh mục</label>
                                     <select name="category_id"
-                                            class="form-control @if($errors->has('category')) error-input @endif"
+                                            class="form-control @if($errors->has('title')) error-input @endif"
                                             id="category_id">
                                         <option value="">Chọn loại</option>
                                         @foreach ($categories as $cat)
@@ -135,10 +153,11 @@
                                 <div id="attributes">
                                 </div>
                             </div>
-                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card -->
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
+                </div>
                 <div class="row " style="margin-bottom: 40px">
                     <div class="col-12">
                         <input type="submit" value="Create post" class="btn btn-success float-left">
@@ -154,9 +173,23 @@
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{{asset("js/getAddress.js")}}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript">
         tinymce.init({
             selector: '#description1'
+        });
+        $(function() {
+            $('input[name="time"]').daterangepicker({
+                timePicker: true,
+                startDate: moment().startOf('hour'),
+                endDate: moment().startOf('hour').add(32, 'hour'),
+                locale: {
+                    format: 'M/DD hh:mm A'
+                }
+            });
         });
         function chooseCustomer(customer) {
             var url = "{!! route('manager.post.create',['search' => '']) !!}" + customer;

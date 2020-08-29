@@ -67,12 +67,12 @@
                                         </div>
                                         <input type="text" name="time_start"
                                                class="form-control datetimepicker-input @if($errors->has('time_start'))  border border-info @endif"
-                                                data-target="#timepickerStart" id="timepickerStart">
+                                               data-target="#timepickerStart" id="timepickerStart">
 
                                     </div>
                                     @if($errors->has('time_start'))
                                         <span class="errorCustom">{{$errors->first('time_start')}}</span>
-                                    @endif
+                                @endif
                                 <!-- /.input group -->
                                 </div>
                                 <div class="form-group">
@@ -96,10 +96,11 @@
 
                                 <div class="form-group">
                                     <label>Chọn người thuê</label>
-                                    <select class="chzn-select " data-placeholder="Chọn người thuê...."  name="customer_id" style="width:100%">
-                                        <option value="" selected disabled >Chọn</option>
+                                    <select class="chzn-select " data-placeholder="Chọn người thuê...."
+                                            name="customer_id" style="width:100%">
+                                        <option value="" selected disabled>Chọn</option>
                                         @foreach($customers as $customer)
-                                        <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                            <option value="{{$customer->id}}">{{$customer->name}}</option>
                                         @endforeach
                                     </select>
                                     @if($errors->has('customer_id'))
@@ -111,7 +112,7 @@
                                     <label for="inputStatus">Quận huyện</label>
                                     <select class="form-control custom-select option" name="district_id"
                                             id="district"
-                                            >
+                                    >
                                         <option value="">Hà Nội</option>
                                         @foreach($address as $a)
                                             <option value="{{$a->maqh}}">{{$a->name}}</option>
@@ -138,9 +139,9 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <button type="button"   data-toggle="modal" class="btn btn-secondary"
-                                                                       data-target="#fullHeightModalRight"> Chọn người giúp việc
-                                        </button>
+                                    <button type="button" data-toggle="modal" class="btn btn-secondary"
+                                            data-target="#fullHeightModalRight"> Chọn người giúp việc
+                                    </button>
                                 </div>
                                 <div id="employee" style="margin-left: 10px"></div>
                                 <div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog"
@@ -155,7 +156,8 @@
                                             <div class="modal-header">
                                                 <div class="form-group filterData">
                                                     @if(Request::get('district'))
-                                                        <input id="districtPost" value="{{Request::get('district')}}" hidden>
+                                                        <input id="districtPost" value="{{Request::get('district')}}"
+                                                               hidden>
                                                     @endif
                                                     <select class="form-control" name="district" id="districtFind">
                                                         <option value="">Quận huyện</option>
@@ -166,7 +168,8 @@
                                                 </div>
                                                 <div class="form-group filterData ">
                                                     <select class="form-control" name="status" id="status">
-                                                        <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
+                                                        <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">
+                                                            Trạng
                                                             thái
                                                         </option>
                                                         @foreach(listEmployeeStatus() as $status)
@@ -205,10 +208,12 @@
                                                     <tbody>
                                                     @foreach($employees as $employee)
                                                         <tr>
-                                                            <td><input type="radio" name="employee_id" data-employee="{{$employee}}"
+                                                            <td><input type="radio" name="employee_id"
+                                                                       data-employee="{{$employee}}"
                                                                        value="{{$employee->id}}"></td>
                                                             @if($employee->avatar)
-                                                                <td><img style="width: 40px;height: 40px" src="{{asset($employee->avatar)}}"></td>
+                                                                <td><img style="width: 40px;height: 40px"
+                                                                         src="{{asset($employee->avatar)}}"></td>
                                                             @else
                                                                 <td><img src="{{asset('images/avt.jpeg')}}"
                                                                          style="width:40px;height: 40px"></td>
@@ -218,7 +223,8 @@
                                                             <td>{{$employee->phone}}</td>
                                                             <td>
                                                                 @if($employee->ward_id && $employee->district_id)
-                                                                    {{$employee->ward->name}} , {{$employee->district->name}}
+                                                                    {{$employee->ward->name}}
+                                                                    , {{$employee->district->name}}
                                                                 @endif
                                                             </td>
                                                         </tr>
@@ -227,7 +233,8 @@
                                                 </table>
                                             </div>
                                             <div class="modal-footer justify-content-center">
-                                                <button type="button" class="btn btn-primary" onclick="saveData()" id="save" data-dismiss="modal">Lưu
+                                                <button type="button" class="btn btn-primary" onclick="saveData()"
+                                                        id="save" data-dismiss="modal">Lưu
                                                 </button>
                                             </div>
                                         </div>
@@ -236,7 +243,8 @@
 
                                 <div class="form-group">
                                     <label for="inputName">Giá</label>
-                                    <input type="text" name="price" id="inputName" class="form-control @if($errors->has('time'))  border border-info @endif">
+                                    <input type="text" name="price" id="inputName"
+                                           class="form-control @if($errors->has('time'))  border border-info @endif">
                                     @if($errors->has('price'))
                                         <span class="errorCustom">{{$errors->first('price')}}</span>
                                     @endif
@@ -293,7 +301,7 @@
         });
     </script>
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             $(".chzn-select").chosen();
         });
     </script>
@@ -368,30 +376,32 @@
         }
     </script>
     <script type="text/javascript">
-        function saveData(){
-            $('#changeStatusPost').attr("disabled",true)
-            var html =''
+        function saveData() {
+            $('#changeStatusPost').attr("disabled", true)
+            var html = ''
             $('#employee').html('')
             var x = $('input[name="employee_id"]:checked').data('employee');
-            var y= JSON.parse(document.querySelector('input[name="employee_id"]').getAttribute('data-employee'))
+            var y = JSON.parse(document.querySelector('input[name="employee_id"]').getAttribute('data-employee'))
             console.log(y)
-            html+=    "<address>"
-            html+=    "<ins><i>"+x.name+"</i></ins><br>"
-            html+=    "Phone: "+x.phone+"<br>"
-            html+= "Email: "+x.email+""
-            html+= "</address>"
+            html += "<address>"
+            html += "<ins><i>" + x.name + "</i></ins><br>"
+            html += "Phone: " + x.phone + "<br>"
+            html += "Email: " + x.email + ""
+            html += "</address>"
             $('#employee').html(html)
         }
+
         function chooseEmployee() {
-            var district =$('#districtFind').val()
-            var status =$('#status').val()
-            var search =$('#findEmployee').val()
+            var district = $('#districtFind').val()
+            var status = $('#status').val()
+            var search = $('#findEmployee').val()
             var url = "{!! route('manager.post.create') !!}";
-            url = url+'?district='+district +'&status='+status +'&search='+search ;
+            url = url + '?district=' + district + '&status=' + status + '&search=' + search;
             window.history.pushState({}, '', url);
             $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
             $("#employee").load(" #employee > * ");
         }
+
         function refresh() {
             var url = "{!! route('manager.post.create') !!}";
             window.history.pushState({}, '', url);

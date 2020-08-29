@@ -13,10 +13,10 @@ class CustomerSeed extends Seeder
     public function run()
     {
             DB::table('customer')->insert([
-            'name' => 'thaihoang',
-            'email' => 'thaihoangdo0512@gmail.com',
-            'phone'=>'0989942742',
-            'password' => bcrypt('123456'),
+            'name' => 'admin',
+            'email' => 'thangcon123@gmail.com',
+            'phone'=>'0346687019',
+            'password' => bcrypt('12345'),
         ]);
     }
 }

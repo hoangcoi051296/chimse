@@ -41,6 +41,11 @@
                                     <label for="inputName">Tên</label>
                                     <input type="text" name="title" id="inputName" value="{{$post->title}}"
                                            class="form-control @if($errors->has('description')) error-input @endif">
+                                    @if($errors->has('title'))
+                                        <div class="messages-error">
+                                            {{$errors->first('title')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="inputName">Mô tả</label>
@@ -52,22 +57,38 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-
-                                    <label>Thời gian:</label>
-                                    <span>{{$post->time}}</span>
-
+                                    <label>Thời gian bắt đầu</label>
                                     <div class="input-group">
-                                        <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
+                                        <div class="input-group-append" data-target="#timepickerStart"
+                                             data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="far fa-clock"></i></div>
                                         </div>
-                                        <input type="text" name="time" class="form-control @if($errors->has('title')) error-input @endif datetimepicker-input" data-target="#timepicker" id="timepicker"  >
+                                        <input type="text" name="time_start"
+                                               class="form-control datetimepicker-input @if($errors->has('time_start'))  border border-info @endif"
+                                               data-target="#timepickerStart" id="timepickerStart"value="{{$post->time_start}}">
+
                                     </div>
-                                    <!-- /.input group -->
-                                    @if($errors->has('time'))
-                                        <div class="messages-error">
-                                            {{$errors->first('time')}}
+                                    @if($errors->has('time_start'))
+                                        <span class="errorCustom">{{$errors->first('time_start')}}</span>
+                                @endif
+                                <!-- /.input group -->
+                                </div>
+                                <div class="form-group">
+                                    <label>Thời gian kết thúc</label>
+                                    <div class="input-group">
+                                        <div class="input-group-append" data-target="#timepickerEnd"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
                                         </div>
-                                    @endif
+                                        <input type="text" name="time_end"
+                                               class="form-control datetimepicker-input @if($errors->has('time_end'))  border border-info @endif"
+                                               data-target="#timepickerEnd" id="timepickerEnd"value="{{$post->time_end}}">
+
+                                    </div>
+                                    @if($errors->has('time_end'))
+                                        <span class="errorCustom">{{$errors->first('time_end')}}</span>
+                                @endif
+                                <!-- /.input group -->
                                 </div>
                                 <div class="form-group">
                                     <label>Quận huyện:</label>
@@ -81,6 +102,11 @@
                                                     {{$post->district_id?$post->district->maqh==$a->maqh?"selected='selected'":'':''}} value="{{$a->maqh}}">{{$a->name}}</option>
                                         @endforeach
                                     </select>
+                                    @if($errors->has('district'))
+                                        <div class="messages-error">
+                                            {{$errors->first('district')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Xã phường:</label>
@@ -118,6 +144,11 @@
                                             <option value="{{$cat->id}}">{{$cat->name}}</option>
                                         @endforeach
                                     </select>
+                                    @if($errors->has('category'))
+                                        <div class="messages-error">
+                                            {{$errors->first('category')}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div id="attributes">
                                     @foreach($post->attributes as $attribute)
@@ -174,9 +205,23 @@
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{{asset("js/getAddress.js")}}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript">
         tinymce.init({
             selector: '#description1'
+        });
+        $(function() {
+            $('input[name="time"]').daterangepicker({
+                timePicker: true,
+                startDate: moment().startOf('hour'),
+                endDate: moment().startOf('hour').add(32, 'hour'),
+                locale: {
+                    format: 'M/DD hh:mm A'
+                }
+            });
         });
         $("select[name='category_id']").change(function () {
             var category_id = $(this).val();

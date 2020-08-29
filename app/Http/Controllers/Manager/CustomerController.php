@@ -26,7 +26,8 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $customers = $this->customer->data($request);
-        return view('manager.customer.index', compact('customers'));
+        $customers1=  $this->customer->get();
+        return view('manager.customer.index', compact('customers','customers1'));
     }
 
     public function create()
@@ -62,13 +63,8 @@ class CustomerController extends Controller
 
     public function update($id, Request $request)
     {
-        $request->validate([
-                'name' => "required| string| max:255",
-            ]
-        );
        $customer = $this->customer->find($id);
        $customer->update([
-           'name' => $request->name,
            'email' => $request->email,
            'phone' => $request->phone,
            'ward_id' => $request->ward,

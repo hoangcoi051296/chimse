@@ -57,7 +57,7 @@ class Post extends Model
     }
     public function scopeTime($posts,$condition){
         if (isset($condition['startTime']) && isset($condition['finishTime'])){
-            $posts->whereDate('created_at','>=',$condition['startTime'])->whereDate('updated_at','<=',$condition['finishTime']);
+            $posts->whereDate('created_at','=',$condition['startTime'])->orWhereDate('updated_at','=',$condition['finishTime']);
         }
     }
     public function scopeSearch($posts,$condition){
@@ -147,7 +147,7 @@ class Post extends Model
             'ward_id' => "required",
             'category_id' => "required",
             'addressDetails'=>"required",
-            ]);
+        ]);
     }
 
     public function messages()
@@ -216,10 +216,10 @@ class Post extends Model
             if (isset($data['statusPost'])) {
                 $data['status'] = $data['statusPost'];
                 $data['employee_id'] = null;
-             return   $this->find($id)->fill($data)->update();
+                return   $this->find($id)->fill($data)->update();
             }elseif(isset($data['status'])){
                 $data['status']=$data['status'];
-            return    $this->find($id)->fill($data)->update();
+                return    $this->find($id)->fill($data)->update();
             } else {
                 $data['status'] = 0;
                 return $this->find($id)->fill($data)->update();

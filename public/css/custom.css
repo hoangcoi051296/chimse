@@ -5,5 +5,26 @@
     border: 1px solid red;
 }
 .customer-address{
-    width: 150px;
+    width: 296px;
+}
+.customer-status{
+    width: 241px;
+}
+.customer-category{
+width: 124px;
+}
+.customer-time{
+    width: 300px;
+}
+
+.customer{
+    width: 108px;
+}
+.sb__input {
+    /* outline: none; */
+    line-height: 1;
+    width: 100%;
+    padding: .65rem calc(45px + 1.5rem) .65rem 1.5rem;
+    border-radius: 3px;
+    border: 2px solid #d6d6d7;
 }

@@ -15,24 +15,35 @@ use Illuminate\Support\Facades\Validator;
 class CustomerRegisterController extends Controller
 {
     protected $active;
-    public function __construct(Activation $active){
+
+    public function __construct(Activation $active)
+    {
         $this->active = $active;
         $address = District::where('matp', 01)->get();
         view()->share(compact('address'));
     }
+
     public function getRegister()
     {
         return view('customer.register');
     }
+
     public function postRegister(Request $request)
     {
         $data = $request->all();
         $rules = [
             'email' => 'required|email|unique:customer',
             'password' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'phone' => 'required'
         ];
-        $validator = Validator::make($data, $rules);
+        $messages = [
+            'name.required' => "Không được để trống",
+            'email.required' => "Không được để trống",
+            'phone.required' => "Không được để trống",
+            'password.required' => "Không được để trống"
+        ];
+        $validator = Validator::make($data, $rules, $messages);
         if ($validator->fails()) {
             return redirect()->back()->with("error", $validator->errors())->withInput();
         }
@@ -40,17 +51,17 @@ class CustomerRegisterController extends Controller
         $user = Customer::create($data);
         $user->type = 'customer';
         $activation = $this->active->createToken($user);
-        Mail::to($user->email)->send(new AccountCreated($user,$activation));
+        Mail::to($user->email)->send(new AccountCreated($user, $activation));
         return redirect()->route('customer.login');
 
     }
 
-    public function activeAccount($id,$token)
+    public function activeAccount($id, $token)
     {
-        $check = $this->active->where('user_id',$id)
-            ->where('token',$token)
+        $check = $this->active->where('user_id', $id)
+            ->where('token', $token)
             ->first();
-        if($check){
+        if ($check) {
             $user = Customer::find($id);
             $user->is_active = 1;
             $user->save();

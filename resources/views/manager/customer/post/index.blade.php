@@ -18,7 +18,8 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('manager.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('manager.customer.index')}}">Danh sách</a></li>
+                        <li class="breadcrumb-item active"><a href="{{route('manager.customer.index')}}">Danh sách</a>
+                        </li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -30,52 +31,50 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-
                     <form class=" ml-3">
-
-                        <div class="input-group input-group-sm">
-                            <div class="form-group filterData">
-                                @if(Request::get('district'))
-                                    <input id="districtPost" value="{{Request::get('district')}}" hidden>
-                                @endif
-                                <select class="form-control" name="district">
-                                    <option value="">Quận huyện</option>
-                                    @foreach($address as $a)
-                                        <option {{Request::get('district')==$a->maqh?"selected='selected":''}} value="{{$a->maqh}}">{{$a->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group filterData" style="width: 200px">
-                                @if(Request::get('ward'))
-                                    <input id="wardPost" value="{{Request::get('ward')}}" hidden>
-                                @endif
-                                <select class="form-control" name="ward" id="ward">
-                                    <option selected="selected" value="">Xã phường</option>
-                                </select>
-                            </div>
-                            <div class="form-group filterData ">
-                                <select class="form-control" name="status">
-                                    <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
-                                        thái
-                                    </option>
-                                    @foreach(listStatus() as $status)
-                                        <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card">
+                        <div class="row">
                             <div class="input-group input-group-sm">
-                                <div class="input-group input-group-sm">
-                                    <input value="{{Request::get('search')}}" placeholder="Tìm kiếm" type="text"
-                                           class="form-control" name="search">
-                                    <span class="input-group-append">
+                                <div class="form-group filterData">
+                                    @if(Request::get('district'))
+                                        <input id="districtPost" value="{{Request::get('district')}}" hidden>
+                                    @endif
+                                    <select class="form-control" name="district" id="district">
+                                        <option value="">Quận huyện</option>
+                                        @foreach($address as $a)
+                                            <option {{Request::get('district')==$a->maqh?"selected='selected":''}} value="{{$a->maqh}}">{{$a->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group filterData" style="width: 200px">
+                                    @if(Request::get('ward'))
+                                        <input id="wardPost" value="{{Request::get('ward')}}" hidden>
+                                    @endif
+                                    <select class="form-control" name="ward" id="ward">
+                                        <option selected="selected" value="">Xã phường</option>
+                                    </select>
+                                </div>
+                                <div class="form-group filterData ">
+                                    <select class="form-control" name="status">
+                                        <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">
+                                            Trạng
+                                            thái
+                                        </option>
+                                        @foreach(listStatus() as $status)
+                                            <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group input-group-sm">
+                                            <input class="form-control" placeholder="Search" aria-label="Search"
+                                                   name="search"
+                                                   id="search" style="height: 37px">
+                                            <span class="input-group-append">
                                      <button type="submit" class="btn btn-info btn-flat">Go!</button>
                                      </span>
-                                    <span class="input-group-append">
-                                     <a href="{{route('manager.post.index')}}" class="btn btn-secondary btn-flat"><i
-                                                 class="fas fa-redo" style="padding-top: 3px"></i></a>
-                                     </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
