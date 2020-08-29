@@ -57,7 +57,7 @@ class Post extends Model
     }
     public function scopeTime($posts,$condition){
         if (isset($condition['startTime']) && isset($condition['finishTime'])){
-            $posts->whereDate('created_at','>=',$condition['startTime'])->whereDate('updated_at','<=',$condition['finishTime']);
+            $posts->whereDate('created_at','=',$condition['startTime'])->orWhereDate('updated_at','=',$condition['finishTime']);
         }
     }
     public function scopeSearch($posts,$condition){

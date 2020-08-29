@@ -75,7 +75,7 @@
                 </div>
                 <div class="wrap-input100 validate-input m-b-26" data-validate="Address is required">
                     <span class="label-input100">District</span>
-                    <select class="form-control custom-select option" name="district" type="text" id="district">
+                    <select class="form-control custom-select option" name="district_id" type="text" id="district">
                         <option value="">chọn quận huyện</option>
                         @foreach($address as $a)
                             <option value="{{$a->maqh}}">{{$a->name}}</option>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
                     <span class="label-input100">Ward</span>
-                    <select class="form-control" name="ward" id="ward">
+                    <select class="form-control" name="ward_id" id="ward">
                     </select>
                     <span class="focus-input100"></span>
                 </div>

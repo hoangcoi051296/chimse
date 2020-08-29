@@ -31,7 +31,7 @@ if (!function_exists("getPostStatus")) {
                 $status='Người giúp việc kết thúc';
             }
             elseif ($status_id==7){
-            $status='Người thuê xác nhận hoàn thành';
+                    $status='Người thuê xác nhận hoàn thành';
             };
             return $status ;
         }

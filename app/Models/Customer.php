@@ -52,7 +52,7 @@ class Customer extends Model implements Authenticatable
     public function rules()
     {
         $validate = [
-            'name' => "required",
+//            'name' => "required",
             'email' => "required",
             'phone' => "required",
             'password' => "required",

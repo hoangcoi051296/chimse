@@ -63,13 +63,8 @@ class CustomerController extends Controller
 
     public function update($id, Request $request)
     {
-        $request->validate([
-                'name' => "required| string| max:255",
-            ]
-        );
        $customer = $this->customer->find($id);
        $customer->update([
-           'name' => $request->name,
            'email' => $request->email,
            'phone' => $request->phone,
            'ward_id' => $request->ward,

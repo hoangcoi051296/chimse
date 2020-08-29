@@ -37,22 +37,27 @@ class PostController extends Controller
         $wards = Ward::Where('maqh', $request->address)->get();
         return response()->json($wards);
     }
-    public function complete($id){
-        $post=Post::find($id);
-        return view('customer.feedback.create',compact('post'));
+
+    public function complete($id)
+    {
+        $post = Post::find($id);
+        return view('customer.feedback.create', compact('post'));
     }
-    public function feedback(Request $request){
-        $post=Post::find($request->post_id);
-       $customer =Auth::guard('customer')->user();
-       $customer->employee()->attach($post->employee_id,[
-           'comment'=>$request->comment,
-           'rating'=>$request->rating,
-           'post_id'=>$post->id,
-       ]);
-       $post->status =Post::NTXacNhan;
-       $post->save();
-       return redirect()->route('customer.index');
+
+    public function feedback(Request $request)
+    {
+        $post = Post::find($request->post_id);
+        $customer = Auth::guard('customer')->user();
+        $customer->employee()->attach($post->employee_id, [
+            'comment' => $request->comment,
+            'rating' => $request->rating,
+            'post_id' => $post->id,
+        ]);
+        $post->status = 7;
+        $post->save();
+        return redirect()->route('customer.post.index');
     }
+
     public function changeUserStatus(Request $request)
     {
         $user = User::find($request->user_id);
@@ -71,11 +76,13 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        $data['time_start']=date('Y-m-d H:i:s',strtotime($data['time_start']));
+        $data['time_end']=date('Y-m-d H:i:s',strtotime($data['time_end']));
         $rules = $this->post->rules();
         $messages = $this->post->messages();
         $request->validate($rules, $messages);
 
-        $data['status'] = Post::ChoDuyet;
+        $data['status'] = 1;
         $data['customer_id'] = Auth::guard('customer')->user()->id;
         $this->post->createData($data);
         return redirect()->route('customer.post.index')->withSuccess("Tạo mới thành công");
@@ -92,7 +99,9 @@ class PostController extends Controller
     {
         $data = $request->all();
         $request->validate($this->post->rules());
-        $data['status'] = Post::ChoDuyet;
+        $data['time_start']=date('Y-m-d H:i:s',strtotime($data['time_start']));
+        $data['time_end']=date('Y-m-d H:i:s',strtotime($data['time_end']));
+        $data['status'] = 1;
         $data['customer_id'] = Auth::guard('customer')->user()->id;
         $this->post->updateData($data, $id);
         return redirect()->route('customer.post.index')->withSuccess("Sửa thành công");

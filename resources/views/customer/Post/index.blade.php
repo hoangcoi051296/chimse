@@ -40,7 +40,7 @@
                 <div class="col-md-12">
                     <form action="{{route('customer.post.index')}}" method="GET">
                         <div class="row">
-                            <div class="form-group filterData ">
+                            <div class="col-md-2 ">
                                 <select class="form-control" name="status">
                                     <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
                                         thái
@@ -64,16 +64,13 @@
                                     <option value="">Ward</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="far fa-clock"></i></span>
-                                    </div>
-                                    <input type="text" name="time" class="form-control float-right"
-                                           id="daterangepicker">
-                                </div>
+                            <div class="col-md-2">
+                                <input type="date" class="form-control" name="startTime">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
+                                <input type="date" class="form-control" name="finishTime">
+                            </div>
+                            <div class="col-md-2">
                                 <div class="input-group input-group-sm">
                                     <div class="input-group input-group-sm">
                                         <input class="form-control" placeholder="Search" aria-label="Search"
@@ -90,7 +87,7 @@
                     </form>
                 </div>
                 <div class="col-md-12" style="text-align: end; margin-top: 15px;">
-                    <a href="{{route('customer.post.create')}}" class="btn btn-success" style="margin-top: -37px">Tạo
+                    <a href="{{route('customer.post.create')}}" class="btn btn-success" style="margin-top: -10px">Tạo
                         Bài Đăng</a>
                 </div>
             </div>
@@ -102,8 +99,8 @@
                             <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
-                                <th style="width: 230px">Tên</th>
-                                <th>Mô tả</th>
+                                <th>Tên</th>
+                                {{--<th>Mô tả</th>--}}
                                 <th>Giá</th>
                                 <th class="customer-address">Địa chỉ</th>
                                 <th class="customer-status">Trạng thái</th>
@@ -119,9 +116,6 @@
                                 <tr>
                                     <td>{{$key + 1}}</td>
                                     <td>{{ $post->title}}</td>
-                                    <td>
-                                        {!! $post->description!!}
-                                    </td>
                                     <td>${{ number_format($post->price)}}</td>
                                     <td>
                                         @if($post->ward_id)
@@ -135,7 +129,7 @@
                                         <div class="row postStatus" data-value="{{$post->id}}">
                                             {{getPostStatus($post->status)}}</div>
                                     </td>
-                                    <td>{{$post->time}}</td>
+                                    <td>{{$post->time_start ." " .$post->time_end}}</td>
                                     <td>@if($post->category)
                                             {{$post->category->name}}
                                         @endif</td>
@@ -154,11 +148,16 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('customer.post.edit',['id' => $post->id])}}"
-                                           class="btn btn-primary btn-xs @if(in_array($post->status,[3,4,5,6,7])) hide @endif"><i class="fa fa-edit"></i></a>
+                                           class="btn btn-primary btn-xs @if(in_array($post->status,[3,4,5,6,7])) hide @endif"><i
+                                                    class="fa fa-edit"></i></a>
                                         <a href="{{ route('customer.post.delete',['id'=> $post->id])}}"
                                            onclick="return confirm('Bạn muốn xóa không?');"
                                            class="btn btn-danger btn-xs @if(in_array($post->status,[3,4,5,6,7])) hide @endif"><i
                                                     class="fa fa-trash"></i></a>
+                                        @if($post->status== 7)
+                                            <a href="{{\Illuminate\Support\Facades\URL::signedRoute('customer.post.complete',['id'=>$post->id])}}"
+                                               class="btn btn-primary btn-xs "><i class="far fa-check-circle"></i></a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -178,7 +177,7 @@
         <!-- /.container-fluid -->
     </section>
     <style>
-        .hide{
+        .hide {
             display: none;
         }
     </style>
@@ -199,7 +198,7 @@
         //     });
         //     $('input[name="time"]').val('');
         // });
-        $(function() {
+        $(function () {
 
             $('input[name="time"]').daterangepicker({
                 autoUpdateInput: false,
@@ -208,11 +207,11 @@
                 }
             });
 
-            $('input[name="time"]').on('apply.daterangepicker', function(ev, picker) {
+            $('input[name="time"]').on('apply.daterangepicker', function (ev, picker) {
                 $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
             });
 
-            $('input[name="time"]').on('cancel.daterangepicker', function(ev, picker) {
+            $('input[name="time"]').on('cancel.daterangepicker', function (ev, picker) {
                 $(this).val('');
             });
 
