@@ -60,9 +60,15 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group filterData ">
+                                <input type="date" value="{{Request::get('startTime')}}" class="form-control" name="startTime">
+                            </div>
+                            <div class="form-group filterData ">
+                                <input type="date" value="{{Request::get('finishTime')}}" class="form-control" name="finishTime">
+                            </div>
                             <div class="form-group filterData">
                                 @if(Request::get('category'))
-                                    <input id="districtPost" value="{{Request::get('category')}}" hidden>
+                                    <input id="categoryPost" value="{{Request::get('category')}}" hidden>
                                 @endif
                                 <select class="form-control" name="category" id="category">
                                     <option value="">Danh mục</option>
@@ -79,12 +85,13 @@
                                     <option selected="selected" value="">Thuộc tính</option>
                                 </select>
                             </div>
-                            <div class="form-group filterData ">
-                                <input type="date" class="form-control" name="startTime">
+                            <div class="form-group filterData" style="width: 200px">
+                                <input id="valueAttributePost" value="{{Request::get('valueAttribute')}}" hidden>
+                                <select class="form-control" name="valueAttribute" id="valueAttribute">
+                                    <option selected="selected" value="">Giá trị</option>
+                                </select>
                             </div>
-                            <div class="form-group filterData ">
-                                <input type="date" class="form-control" name="finishTime">
-                            </div>
+
                         </div>
                         <div class="card">
                             <div class="input-group input-group-sm">
@@ -238,7 +245,6 @@
                     _token: token,
                 },
                 success: function(data) {
-                    console.log(data)
                     $("#attribute").html('<option selected="selected" value="">Thuộc tính</option>');
                     $.each(data, function(key, value){
                         $("#attribute").append(
@@ -249,33 +255,86 @@
             });
         });
 
-        $(document).ready(function () {
-
-            var category =$('#districtPost').val();
+        var urlValueAttribute ="{{route('getValueAttributes')}}"
+        $("#attribute").change(function(){
+            var attribute_id = $(this).val();
             var token = $("input[name='_token']").val();
+            console.log(attribute_id)
             $.ajax({
-                url: urlAttribute,
+                url: urlValueAttribute,
                 method: 'GET',
                 data: {
-                    category_id: category,
+                    attribute_id: attribute_id,
                     _token: token,
                 },
-                success: function (data) {
-                    $("#attribute").html(
-                        '<option selected="selected" value="">Thuộc tính</option>');
-
-                    $.each(data, function (key, value) {
-                        $("#attribute").append(
-                            "<option value=" + value.id + ">" + value.name + "</option>"
+                success: function(data) {
+                    $("#valueAttribute").html('<option selected="selected" value="">Giá trị</option>');
+                    var options = JSON.parse(data.options)
+                    for (var i in options) {
+                        console.log(options[i])
+                        $("#valueAttribute").append(
+                            "<option  value=" + i + ">" + options[i] + "</option>"
                         );
-
-                    });
-                    var attribute =$('#attributePost').val();
-                    console.log(attribute)
-                    $('#attribute option[value='+attribute+']').attr('selected',true)
+                    }
                 }
             });
         });
+
+        var category =$('#categoryPost').val();
+        if (category!=null){
+            $(document).ready(function () {
+                var token = $("input[name='_token']").val();
+                $.ajax({
+                    url: urlAttribute,
+                    method: 'GET',
+                    data: {
+                        category_id: category,
+                        _token: token,
+                    },
+                    success: function (data) {
+                        $("#attribute").html(
+                            '<option selected="selected" value="">Thuộc tính</option>');
+
+                        $.each(data, function (key, value) {
+                            $("#attribute").append(
+                                "<option value=" + value.id + ">" + value.name + "</option>"
+                            );
+
+                        });
+                        var attribute =$('#attributePost').val();
+                        $('#attribute option[value='+attribute+']').attr('selected',true)
+                    }
+                });
+            });
+        }
+
+        var attribute =$('#attributePost').val()
+        if (attribute!=null &&category!=null){
+            $(document).ready(function () {
+                var token = $("input[name='_token']").val();
+                $.ajax({
+                    url: urlValueAttribute,
+                    method: 'GET',
+                    data: {
+                        attribute_id: attribute,
+                        _token: token,
+                    },
+                    success: function(data) {
+                        $("#valueAttribute").html('<option selected="selected" value="">Giá trị</option>');
+                        var options = JSON.parse(data.options)
+                        for (var i in options) {
+                            console.log(options[i])
+                            $("#valueAttribute").append(
+                                "<option  value=" + i + ">" + options[i] + "</option>"
+                            );
+                        }
+                        var value =$('#valueAttributePost').val();
+                        $('#valueAttribute option[value='+value+']').attr('selected',true)
+                    }
+                });
+            });
+        }
+
 
 
     </script>

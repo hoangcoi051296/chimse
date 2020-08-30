@@ -59,20 +59,35 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Thời gian bắt đầu : </label>
-                                    <span>{{$post->time}}</span>
+                                    <span>{{$post->time_start}}</span>
                                     <div class="input-group">
                                         <div class="input-group-append" data-target="#timepicker"
                                              data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="far fa-clock"></i></div>
                                         </div>
-                                        <input type="text" name="time"
-                                               class="form-control datetimepicker-input @if($errors->has('time'))  border border-info @endif"
+                                        <input type="text" name="time_start" value="{{$post->time_start}}"
+                                               class="form-control datetimepicker-input @if($errors->has('time_start'))  border border-info @endif"
                                                data-target="#timepicker" id="timepicker">
                                     </div>
-                                    @if($errors->has('time'))
-                                        <span class="errorCustom">{{$errors->first('time')}}</span>
+                                    @if($errors->has('time_start'))
+                                        <span class="errorCustom">{{$errors->first('time_start')}}</span>
                                 @endif
-                                <!-- /.input group -->
+                                </div>
+                                <div class="form-group">
+                                    <label>Thời gian kết thúc : </label>
+                                    <span>{{$post->time_end}}</span>
+                                    <div class="input-group">
+                                        <div class="input-group-append" data-target="#timepicker"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                        <input type="text" name="time_end" value="{{$post->time_end}}"
+                                               class="form-control datetimepicker-input @if($errors->has('time_end'))  border border-info @endif"
+                                               data-target="#timepicker" id="timepicker">
+                                    </div>
+                                    @if($errors->has('time_end'))
+                                        <span class="errorCustom">{{$errors->first('time_end')}}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group" style="padding-top: 10px">
                                     <label for="inputName"> Người thuê : </label>
@@ -171,7 +186,7 @@
                                         @elseif($attribute->type=='checkbox')
                                             <br/>
                                             @foreach(json_decode($attribute->options,true) as $keyOp => $option)
-                                                <label style="margin-left: 15px"><input type="checkbox" value="{{$keyOp}}" @foreach(json_decode($attribute->pivot->value,true) as $ckb)@if($ckb==$keyOp) checked @endif  @endforeach name="attributes[{{$attribute->id}}][]">{{$option}}
+                                                <label style="margin-left: 15px"><input type="checkbox" value="{{$keyOp}}" @foreach(json_decode($attribute->pivot->value,true) as $ckb) @if($ckb==$keyOp)checked  @endif  @endforeach name="attributes[{{$attribute->id}}][]">{{$option}}
                                                 </label>
                                             @endforeach
                                         @elseif($attribute->type=='input')
@@ -255,7 +270,7 @@
                             if (data[i]['type'] === 'checkbox') {
                                 html += '<div class="row">'
                                 for (var j in options) {
-                                    html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][value][]"  >' + options[j] + '</label>'
+                                    html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][]"  >' + options[j] + '</label>'
                                 }
                                 html += '</div>'
                                 html += '</select>'

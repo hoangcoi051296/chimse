@@ -1,6 +1,5 @@
 <?php
 use Illuminate\Support\Facades\Route;
-
 Route::group([ 'namespace' => 'Manager', 'middleware' => 'checkLoginManager'], function () {
     Route::get('/', 'ManagerController@index')->name('manager.index');
     Route::get('/edit', 'ManagerController@editAccount')->name('manager.account.edit');

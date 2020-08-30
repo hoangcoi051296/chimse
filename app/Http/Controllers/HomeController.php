@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Post;
@@ -43,15 +44,19 @@ class HomeController extends Controller
 
     public function getAttribute(Request $request)
     {
-
         if ($request->ajax()) {
             $category = Category::find($request->category_id);
-            $attributes = $category->attributes;
-            return response()->json($attributes);
+                $attributes = $category->attributes;
         }
-
+        return response()->json($attributes);
     }
 
+    public function getValueAttribute(Request $request){
+        if ($request->ajax()){
+            $attributes=Attribute::find($request->attribute_id);
+            return Response($attributes);
+        }
+    }
     public function search(Request $request)
     {
         if ($request->ajax()) {

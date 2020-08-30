@@ -97,6 +97,8 @@ class PostController extends Controller
     public function update($id, Request $request)
     {
         $data=$request->all();
+        $data['time_start']=date('Y-m-d H:i:s',strtotime($data['time_start']));
+        $data['time_end']=date('Y-m-d H:i:s',strtotime($data['time_end']));
         $request->validate($this->post->rules($id),$this->post->messages());
         try {
             $this->post->updateData($data, $id);

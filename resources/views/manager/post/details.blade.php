@@ -154,7 +154,7 @@
                                         <tr>
                                             <th>Thời gian thuê :
                                                </th>
-                                            <td> @if($post->time)<span>{{$post->time}}</span> @endif</td>
+                                            <td> @if($post->time_start)<span>{{$post->time_start}}</span> @endif</td>
                                         </tr>
                                         <tr>
                                             <th style="width:50%">Giá:</th>

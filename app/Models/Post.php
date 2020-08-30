@@ -9,7 +9,20 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $table = 'post';
-    protected $fillable = ['title', 'status', 'description', 'price', 'district_id', 'ward_id','addressDetails', 'category_id', 'employee_id', 'customer_id', 'time_start','time_end'];
+    protected $fillable = [
+        'title',
+        'status',
+        'description',
+        'price',
+        'district_id',
+        'ward_id',
+        'addressDetails',
+        'category_id',
+        'employee_id',
+        'customer_id',
+        'time_start',
+        'time_end'
+    ];
     const PerPage = 10;
 
     public function getData($condition)
@@ -26,41 +39,82 @@ class Post extends Model
             ->ward($condition)
             ->search($condition)
             ->customer($condition)
-        ;
+            ->attribute($condition)
+            ->valueattribute($condition);
         return $posts->paginate(isset($condition['per_page']) ? $condition['per_page'] : $this->perPage);
     }
 
-    public function scopeStatus($posts,$condition){
+    public function scopeStatus($posts, $condition)
+    {
         if (isset($condition['status']) && $condition['status'] !== null) {
             $posts = $posts->where('status', $condition['status']);
         }
     }
-    public function scopeCategory($posts,$condition){
+
+    public function scopeCategory($posts, $condition)
+    {
         if (isset($condition['category'])) {
             $posts = $posts->where('category_id', $condition['category']);
         }
     }
-    public function scopeDistrict($posts,$condition){
+
+    public function scopeDistrict($posts, $condition)
+    {
         if (isset($condition['district']) && $condition['district'] !== null) {
             $posts = $posts->where('district_id', $condition['district']);
         }
     }
-    public function scopeWard($posts,$condition){
+
+    public function scopeWard($posts, $condition)
+    {
         if (isset($condition['ward']) && $condition['ward'] !== null) {
             $posts = $posts->where('ward_id', $condition['ward']);
         }
     }
-    public function scopeCustomer($posts,$condition){
+
+    public function scopeCustomer($posts, $condition)
+    {
         if (isset($condition['customer_id']) && $condition['customer_id'] !== null) {
             $posts->where('customer_id', $condition['customer_id']);
         }
     }
-    public function scopeTime($posts,$condition){
-        if (isset($condition['startTime']) && isset($condition['finishTime'])){
-            $posts->whereDate('created_at','=',$condition['startTime'])->orWhereDate('updated_at','=',$condition['finishTime']);
+//    public function scopeTime($posts,$condition){
+//        if (isset($condition['startTime']) && isset($condition['finishTime'])){
+//            $posts->whereDate('created_at','=',$condition['startTime'])->orWhereDate('updated_at','=',$condition['finishTime']);
+//        }
+//    }
+    public function scopeTime($posts, $condition)
+    {
+        if (isset($condition['startTime']) && isset($condition['finishTime'])) {
+            $posts->whereDate('created_at', '>=', $condition['startTime'])->whereDate('updated_at', '<=',
+                $condition['finishTime']);
         }
     }
-    public function scopeSearch($posts,$condition){
+
+    public function scopeAttribute($posts, $condition)
+    {
+        if (isset($condition['attribute'])) {
+            $attribute = $condition['attribute'];
+            $posts->whereHas('attributes', function ($query) use ($attribute) {
+                $query->where('attribute_id', $attribute);
+            });
+        }
+    }
+
+    public function scopeValueAttribute($posts, $condition)
+    {
+        if (isset($condition['valueAttribute'])) {
+            $value = $condition['valueAttribute'];
+            $attribute = $condition['attribute'];
+            $posts->whereHas('attributes', function ($query) use ($attribute, $value) {
+                $query->where('attribute_id', $attribute)
+                    ->whereJsonContains('value', $value);
+            });
+        }
+    }
+
+    public function scopeSearch($posts, $condition)
+    {
         if (isset($condition['search']) && $condition['search'] !== null) {
             $search = $condition['search'];
             $posts->where(function ($q) use ($search) {
@@ -83,8 +137,6 @@ class Post extends Model
             });
         }
     }
-
-
 
 
     public function customer()
@@ -129,15 +181,15 @@ class Post extends Model
 
     public function rules($id = null)
     {
-        $now =Carbon::now();
+        $now = Carbon::now();
         $oneMonthFromNow = $now->addMonth(1);
 
         $validate = [
             'title' => "required| string",
             'description' => "required|string",
             'price' => "required",
-            'time_start' => 'required|before:time_end|after:tomorrow',
-            'time_end' => 'before:'.$oneMonthFromNow,
+//            'time_start' => 'required|before:time_end|after:tomorrow',
+            'time_end' => 'before:' . $oneMonthFromNow,
         ];
         if ($id) {
             return $validate;
@@ -147,6 +199,7 @@ class Post extends Model
             'ward_id' => "required",
             'category_id' => "required",
             'addressDetails'=>"required",
+            'addressDetails' => "required",
         ]);
     }
 
@@ -158,14 +211,14 @@ class Post extends Model
             'price.required' => 'Nhập giá',
             'district_id.required' => 'Chọn quận huyện',
             'ward_id.required' => 'Chọn xã phường',
-            'addressDetails.required'=>'Nhập địa chỉ chi tiết',
+            'addressDetails.required' => 'Nhập địa chỉ chi tiết',
             'category_id.required' => 'Chọn danh mục',
             'customer_id.required' => "Chọn người thuê",
             'time_start.required' => "Chọn thời gian bắt đầu",
             'attributes.*.required' => "Thuộc tính không được bỏ trống",
             'time_start.before' => "Thời gian bắt đầu phải trước thời gian kết thúc",
-            'time_start.after'=>"Thời gian bắt đầu công việc từ ngày mai",
-            'time_end.before'=>"Đăng bài trong vòng 1 tháng"
+            'time_start.after' => "Thời gian bắt đầu công việc từ ngày mai",
+            'time_end.before' => "Đăng bài trong vòng 1 tháng"
 
         ];
     }
@@ -174,12 +227,12 @@ class Post extends Model
     public function createData($data)
     {
 
-        if (isset($data['employee_id'])){
-            $data['status']=3;
+        if (isset($data['employee_id'])) {
+            $data['status'] = 3;
         }
         $data = array_filter($data);
         $this->fill($data)->save();
-        if (isset($data['attributes'])){
+        if (isset($data['attributes'])) {
             $attribute = $data['attributes'];
             foreach ($attribute as $key => $value) {
                 $value = json_encode($value);
@@ -197,7 +250,7 @@ class Post extends Model
                 $attr[$key] = ['value' => $value];
             }
             $this->find($id)->attributes()->sync($attr);
-        }else{
+        } else {
             $this->find($id)->attributes()->detach();
         }
         $data['status'] = 1;
@@ -216,10 +269,10 @@ class Post extends Model
             if (isset($data['statusPost'])) {
                 $data['status'] = $data['statusPost'];
                 $data['employee_id'] = null;
-                return   $this->find($id)->fill($data)->update();
-            }elseif(isset($data['status'])){
-                $data['status']=$data['status'];
-                return    $this->find($id)->fill($data)->update();
+                return $this->find($id)->fill($data)->update();
+            } elseif (isset($data['status'])) {
+                $data['status'] = $data['status'];
+                return $this->find($id)->fill($data)->update();
             } else {
                 $data['status'] = 0;
                 return $this->find($id)->fill($data)->update();
@@ -227,5 +280,4 @@ class Post extends Model
         }
         $this->find($id)->fill($data)->update();
     }
-
 }
