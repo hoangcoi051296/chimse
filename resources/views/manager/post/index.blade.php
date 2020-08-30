@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <form class=" ml-3">
+                    <form class=" ml-3" id="formPost">
 
                         <div class="input-group input-group-sm">
                             <div class="form-group filterData">
@@ -55,18 +55,40 @@
                                     <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
                                         thái
                                     </option>
-                                    @foreach(listStatus() as $status)
+                                    @foreach(listPostStatus() as $status)
                                         <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group filterData ">
-                                <select class="form-control" name="timeFilter">
-                                    <option {{Request::get('timeFilter')==null ?"selected='selected'":'' }} value="">Thời gian</option>
-                                    <option {{Request::get('timeFilter')=='hours' ?"selected='selected'":'' }} value="hours">2 tiếng</option>
-                                    <option {{Request::get('timeFilter')=='day' ?"selected='selected'":'' }} value="day">Ngày</option>
-                                    <option {{Request::get('timeFilter')=='week' ?"selected='selected'":'' }} value="week">Tuần</option>
-                                    <option {{Request::get('timeFilter')=='month' ?"selected='selected'":'' }} value="month">Tháng</option>
+                                <input type="date" value="{{Request::get('startTime')}}" class="form-control" name="startTime">
+                            </div>
+                            <div class="form-group filterData ">
+                                <input type="date" value="{{Request::get('finishTime')}}" class="form-control" name="finishTime">
+                            </div>
+                            <div class="form-group filterData">
+                                @if(Request::get('category'))
+                                    <input id="categoryPost" value="{{Request::get('category')}}" hidden>
+                                @endif
+                                <select class="form-control" name="category" id="category">
+                                    <option value="">Danh mục</option>
+                                    @foreach($categories as $category)
+                                        <option {{Request::get('category')==$category->id?"selected='selected":''}} value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group filterData" style="width: 200px">
+                                @if(Request::get('attribute'))
+                                    <input id="attributePost" value="{{Request::get('attribute')}}" hidden>
+                                @endif
+                                <select class="form-control" name="attribute" id="attribute">
+                                    <option selected="selected" value="">Thuộc tính</option>
+                                </select>
+                            </div>
+                            <div class="form-group filterData" style="width: 200px">
+                                <input id="valueAttributePost" value="{{Request::get('valueAttribute')}}" hidden>
+                                <select class="form-control" name="valueAttribute" id="valueAttribute">
+                                    <option selected="selected" value="">Giá trị</option>
                                 </select>
                             </div>
 
@@ -86,8 +108,22 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+
+                        <div class="form-group input-group-sm float-left " style="width: 120px">
+                            <select class="form-control" id="perPage" name="per_page">
+                                <option {{Request::get('per_page')==null ?"selected='selected'":'' }} value="">Hiển thị</option>
+                                <option {{Request::get('per_page')=='15' ?"selected='selected'":'' }} value="15">15 kết quả</option>
+                                <option {{Request::get('per_page')=='30' ?"selected='selected'":'' }} value="30">30 kết quả</option>
+                                <option {{Request::get('per_page')=='50' ?"selected='selected'":'' }} value="50">50 kết quả</option>
+                                <option {{Request::get('per_page')=='100' ?"selected='selected'":'' }} value="100">100 kết quả</option>
+                            </select>
+                        </div>
+                        <a  href="{{route('manager.post.create')}}" class="btn btn-success float-right " style="margin-bottom: 10px">Tạo bài đăng</a>
                     </form>
-                    <a  href="{{route('manager.post.create')}}" class="btn btn-success float-right " style="margin-bottom: 10px">Tạo bài đăng</a>
+                    </div>
                 </div>
                 <div class="col-md-12">
                     <div class="card">
@@ -119,21 +155,12 @@
                                             </td>
                                             <td>
                                                 <div class="row postStatus" data-value="{{$post->id}}">
-                                                    {{getStatus($post->status)}}</div>
+                                                    {{getPostStatus($post->status)}}</div>
                                             </td>
                                             <td>{{$post->customer->name}}</td>
                                             <td>@if($post->category)
                                                     {{$post->category->name}}
                                                 @endif</td>
-                                                {{--                                        @if($post->attributes)--}}
-
-                                                {{--                                           @foreach( json_decode($post->attributes,true) as $key => $attribute )--}}
-                                                {{--                                               <div class="row">--}}
-                                                {{--                                                   <span>{{getAttributes($key)->name}}</span> : <p>{{json_decode(getAttributes($key)->options,true)[$attribute]}}</p>--}}
-                                                {{--                                               </div>--}}
-                                                {{--                                                @endforeach--}}
-                                                {{--                                            @endif--}}
-                                            </td>
                                             <td class="align-self-center">
                                                 <a href="{{ route('manager.post.details',['id' => $post->id])}}" data-toggle="tooltip" title="Xem chi tiết"
                                                    class="btn btn-info btn-xs"><i class="far fa-eye"></i></a>
@@ -153,10 +180,10 @@
 {{--                                                       class="btn btn-primary btn-xs disabled"><i class="fa fa-edit"></i></a>--}}
 {{--                                                @endif--}}
 
-                                                @if(Gate::forUser(Auth::guard('manager')->user())->allows('editPost',$post))
+{{--                                                @if(Gate::forUser(Auth::guard('manager')->user())->allows('editPost',$post))--}}
                                                 <a href="{{ route('manager.post.edit',['id' => $post->id])}}" data-toggle="tooltip" title="Sửa bài"
                                                    class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                                                @endif
+{{--                                                @endif--}}
                                                 <a href="{{ route('manager.post.delete',['id'=> $post->id])}}" data-toggle="tooltip" title="Xoá bài"
                                                    onclick="return confirm('Bạn muốn xóa không?');"
                                                    class="btn btn-danger btn-xs "><i
@@ -205,5 +232,118 @@
                 }
             });
         });
+
+        var urlAttribute = "{{route('getAttributes')}}";
+        $("#category").change(function(){
+            var category = $(this).val();
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: urlAttribute,
+                method: 'GET',
+                data: {
+                    category_id: category,
+                    _token: token,
+                },
+                success: function(data) {
+                    $("#attribute").html('<option selected="selected" value="">Thuộc tính</option>');
+                    $.each(data, function(key, value){
+                        $("#attribute").append(
+                            "<option  value=" + value.id + ">" + value.name + "</option>"
+                        );
+                    });
+                }
+            });
+        });
+
+        var urlValueAttribute ="{{route('getValueAttributes')}}"
+        $("#attribute").change(function(){
+            var attribute_id = $(this).val();
+            var token = $("input[name='_token']").val();
+            console.log(attribute_id)
+            $.ajax({
+                url: urlValueAttribute,
+                method: 'GET',
+                data: {
+                    attribute_id: attribute_id,
+                    _token: token,
+                },
+                success: function(data) {
+                    $("#valueAttribute").html('<option selected="selected" value="">Giá trị</option>');
+                    var options = JSON.parse(data.options)
+                    for (var i in options) {
+                        console.log(options[i])
+                        $("#valueAttribute").append(
+                            "<option  value=" + i + ">" + options[i] + "</option>"
+                        );
+                    }
+                }
+            });
+        });
+
+        var category =$('#categoryPost').val();
+        if (category!=null){
+            $(document).ready(function () {
+                var token = $("input[name='_token']").val();
+                $.ajax({
+                    url: urlAttribute,
+                    method: 'GET',
+                    data: {
+                        category_id: category,
+                        _token: token,
+                    },
+                    success: function (data) {
+                        $("#attribute").html(
+                            '<option selected="selected" value="">Thuộc tính</option>');
+
+                        $.each(data, function (key, value) {
+                            $("#attribute").append(
+                                "<option value=" + value.id + ">" + value.name + "</option>"
+                            );
+
+                        });
+                        var attribute =$('#attributePost').val();
+                        $('#attribute option[value='+attribute+']').attr('selected',true)
+                    }
+                });
+            });
+        }
+
+        var attribute =$('#attributePost').val()
+        if (attribute!=null &&category!=null){
+            $(document).ready(function () {
+                var token = $("input[name='_token']").val();
+                $.ajax({
+                    url: urlValueAttribute,
+                    method: 'GET',
+                    data: {
+                        attribute_id: attribute,
+                        _token: token,
+                    },
+                    success: function(data) {
+                        $("#valueAttribute").html('<option selected="selected" value="">Giá trị</option>');
+                        var options = JSON.parse(data.options)
+                        for (var i in options) {
+                            console.log(options[i])
+                            $("#valueAttribute").append(
+                                "<option  value=" + i + ">" + options[i] + "</option>"
+                            );
+                        }
+                        var value =$('#valueAttributePost').val();
+                        $('#valueAttribute option[value='+value+']').attr('selected',true)
+                    }
+                });
+            });
+        }
+
+
+
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#perPage').change(function () {
+                $('#formPost').submit(
+                )
+            })
+        })
     </script>
 @endsection

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{bootstrap-3-typeahead, bootstrap-toggle, chosen, export-data, exporting, highcharts, jquery-ui, select2, tinymce}" />
+    <file url="PROJECT" libraries="{bootstrap-3-typeahead, bootstrap-toggle, chosen, export-data, exporting, fullcalendar, highcharts, jquery-ui, moment, select2, tinymce}" />
   </component>
 </project>

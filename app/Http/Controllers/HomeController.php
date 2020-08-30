@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attribute;
 use App\Models\Category;
+use App\Models\Employee;
 use App\Models\Post;
 use App\Models\Ward;
 use Illuminate\Http\Request;
+use LaravelFullCalendar\Calendar;
 
 class HomeController extends Controller
 {
@@ -28,25 +31,32 @@ class HomeController extends Controller
     {
         return view('home');
     }
-    public function showWardInDistrict(Request $request){
+
+    public function showWardInDistrict(Request $request)
+    {
 
         if ($request->ajax()) {
-            $wards = Ward::Where('maqh',$request->address)->get();
+            $wards = Ward::Where('maqh', $request->address)->get();
             return response()->json($wards);
         }
 
     }
 
-    public function getAttribute(Request $request){
-
+    public function getAttribute(Request $request)
+    {
         if ($request->ajax()) {
-            $category =Category::find($request->category_id);
-            $attributes= $category->attributes;
-            return response()->json($attributes);
+            $category = Category::find($request->category_id);
+                $attributes = $category->attributes;
         }
-
+        return response()->json($attributes);
     }
 
+    public function getValueAttribute(Request $request){
+        if ($request->ajax()){
+            $attributes=Attribute::find($request->attribute_id);
+            return Response($attributes);
+        }
+    }
     public function search(Request $request)
     {
         if ($request->ajax()) {
@@ -55,8 +65,8 @@ class HomeController extends Controller
             if ($posts) {
                 foreach ($posts as $post) {
                     $output .= '<tr>
-                    <td>' .  $post->title . '</td>
-                    <td>'. getStatus($post->status)  .'</td>
+                    <td>' . $post->title . '</td>
+                    <td>' . getStatus($post->status) . '</td>
                     <td>' . $post->description . '</td>
                     <td>' . $post->price . '</td>
                     </tr>';
@@ -65,5 +75,51 @@ class HomeController extends Controller
 
             return Response($output);
         }
+    }
+
+    public function getTimeline(Request $request)
+    {
+        $postEvents = Post::where('employee_id', $request->id)->where('status', '<', 5)->get();
+        $html = '';
+        $evenList = [];
+        foreach ($postEvents as $postEvent) {
+            $timeStart = new \DateTime($postEvent->created_at);
+            $timeEnd = new \DateTime($postEvent->updated_at);
+            $evenList[] = Calendar::event(
+                '+>' . $timeStart->format('H:i') . '->' . $timeEnd->format('H:i') . ' :  Làm việc tại ' . $postEvent->ward->name . ',' . $postEvent->district->name,
+                true,
+                new \DateTime($postEvent->created_at),
+                new \DateTime($postEvent->updated_at),
+                $postEvent->id,
+                [
+                    'url' => route('manager.post.details', ['id' => $postEvent->id])
+                ]
+            );
+        }
+        $calendar = \Calendar::addEvents($evenList)
+            ->setOptions([ //set fullcalendar options
+                'firstDay' => 1,
+                'height'=>400
+            ]);
+
+        $html .= '<div class="modal fade show" id="modal" tabindex="-1" role="dialog" style="display: inline" aria-labelledby="exampleModalLabel" aria-hidden="true">'
+            . '<div class="modal-dialog modal-lg" role="document">'
+            . ' <div class="modal-content">'
+            . '<div class="modal-header">'
+            . '<h5 class="modal-title" id="exampleModalLabel">'.Employee::find($request->id)->name.'</h5>'
+            . ' <button type="button" class="close" onclick=" closeModal()" data-dismiss="modal" aria-label="Close">'
+            . '  <span aria-hidden="true">&times;</span>'
+            . ' </button>'
+            . ' </div>'
+            . ' <div class="modal-body">'
+            .   $calendar->calendar() . '<br/>' .
+                $calendar->script()
+            . ' </div>'
+            . '<div class="modal-footer">'
+            . ' </div>'
+            . ' </div>'
+            . '</div>'
+            . '</div>';
+        return Response($html);
     }
 }

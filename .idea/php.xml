@@ -109,6 +109,8 @@
       <path value="$PROJECT_DIR$/vendor/league/mime-type-detection" />
       <path value="$PROJECT_DIR$/vendor/symfony/dom-crawler" />
       <path value="$PROJECT_DIR$/vendor/jacobbennett/pjax" />
+      <path value="$PROJECT_DIR$/vendor/qlick/laravel-full-calendar" />
+      <path value="$PROJECT_DIR$/vendor/laravel/helpers" />
     </include_path>
   </component>
   <component name="PhpUnit">

@@ -28,6 +28,7 @@ class PostController extends Controller
         $this->employee=$employee;
         $address = District::where('matp', 01)->get();
         $categories = Category::all();
+        Auth::shouldUse('manager');
         view()->share(compact('address', 'categories'));
     }
 
@@ -35,6 +36,7 @@ class PostController extends Controller
     {
         $condition = $request->all();
         $posts = $this->post->getData($condition);
+        $this->authorize('view-post');
         return view('manager.post.index', compact('posts'));
     }
 
@@ -57,6 +59,8 @@ class PostController extends Controller
     }
     public function store(Request  $request){
         $data=$request->all();
+        $data['time_start']=date('Y-m-d H:i:s',strtotime($data['time_start']));
+        $data['time_end']=date('Y-m-d H:i:s',strtotime($data['time_end']));
         $request->validate($this->post->rules(),$this->post->messages());
         try {
             $this->post->createData($data);
@@ -85,6 +89,7 @@ class PostController extends Controller
 
     public function edit($id)
     {
+
         $post = $this->post->find($id);
         return view('manager.post.edit', compact('post'));
     }
@@ -92,6 +97,8 @@ class PostController extends Controller
     public function update($id, Request $request)
     {
         $data=$request->all();
+        $data['time_start']=date('Y-m-d H:i:s',strtotime($data['time_start']));
+        $data['time_end']=date('Y-m-d H:i:s',strtotime($data['time_end']));
         $request->validate($this->post->rules($id),$this->post->messages());
         try {
             $this->post->updateData($data, $id);

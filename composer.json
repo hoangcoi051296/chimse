@@ -9,11 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "jacobbennett/pjax": "~1.0",
+        "ext-zip": "*",
         "fideloper/proxy": "^4.0",
+        "jacobbennett/pjax": "~1.0",
         "kjmtrue/vietnam-zone": "^1.0",
         "laravel/framework": "^6.2",
         "laravel/tinker": "^2.0",
+        "qlick/laravel-full-calendar": "^1.1",
         "swiftmailer/swiftmailer": "^6.2"
     },
     "require-dev": {
@@ -46,7 +48,8 @@
             "helpers/sidebar-manager.php",
             "helpers/format_phoneNumber.php",
             "helpers/getStatus.php",
-            "helpers/permission.php"
+            "helpers/permission.php",
+            "helpers/timelineEmployee.php"
         ]
     },
     "autoload-dev": {

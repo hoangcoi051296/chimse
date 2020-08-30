@@ -9,8 +9,10 @@ use App\Models\District;
 use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use LaravelFullCalendar\Calendar;
 
 class HelperController extends Controller
 {
@@ -29,6 +31,27 @@ class HelperController extends Controller
 
     public function index(Request $request)
     {
+        $postEvents=Post::where('employee_id',1)->where('status','<',5)->get();
+        $evenList=[];
+        foreach ($postEvents as $postEvent){
+            $timeStart=new \DateTime($postEvent->created_at);
+            $timeEnd= new \DateTime($postEvent->updated_at);
+            $evenList[]=Calendar::event(
+                '+>'.$timeStart->format('H:i').'->'.$timeEnd->format('H:i').' :  Làm việc tại '.$postEvent->ward->name.','.$postEvent->district->name,
+                true,
+                new \DateTime($postEvent->created_at),
+                new \DateTime($postEvent->updated_at),
+                $postEvent->id,
+                [
+                    'url' => route('manager.post.details',['id'=>$postEvent->id])
+                ]
+            );
+        }
+        $calendar = \Calendar::addEvents($evenList)
+            ->setOptions([ //set fullcalendar options
+                'firstDay' => 1
+            ]);
+
         $condition = $request->all();
         $helpers = $this->helper->getData($condition, $request)->paginate($this->helper->perPage);
         return view('manager.employee.index', compact('helpers'));

@@ -19,7 +19,7 @@
                     <div class="callout callout-info">
                         <h3><i class="fas fa-info"></i> Bài đăng : #{{$post->id}}</h3>
                         <input id="postID" value="{{$post->id}}" hidden>
-                        <h5>Trạng thái : {{getStatus($post->status)}}</h5>
+                        <h5>Trạng thái : {{getPostStatus($post->status)}}</h5>
                     </div>
 
 
@@ -30,11 +30,11 @@
                             <div class="col-12">
                                 <h4>
                                     <i class="fas fa-globe"></i> AdminLTE, Inc.
-                                    @if($post->status==\App\Models\Post::ChoDuyet||$post->status==\App\Models\Post::DaDuyet)
+                                    @if($post->status==1||$post->status==2)
                                     <small class="float-right"><button type="button"   data-toggle="modal" class="btn btn-secondary"
                                                               data-target="#fullHeightModalRight"> Chọn người giúp việc
                                         </button></small>
-                                    @elseif($post->status==\App\Models\Post::TimDuocNGV)
+                                    @elseif($post->status==3)
                                         <small class="float-right"><button type="button"   data-toggle="modal" class="btn btn-secondary"
                                                                            data-target="#fullHeightModalRight"> Thay đổi người giúp việc
                                             </button></small>
@@ -125,14 +125,14 @@
                                             <td>
 
                                                     <select name="statusPost" style="width: 150px" id="changeStatusPost" >
-                                                        @foreach(managerPostStatus() as $status)
-                                                            <option data-statusName="{{$status['name']}}" value="{{$status['value']}}" {{$status['value']==3?'disabled':''}} {{$status['value']==$post->status?"selected='selected'":''}} >{{$status['name']}}</option>
+                                                        @foreach(listManagerStatus() as $status)
+                                                            <option value="{{$status['value']}}" {{$status['value']==3?'disabled':''}} {{$status['value']==$post->status?"selected='selected'":''}} >{{$status['name']}}</option>
                                                         @endforeach
                                                     </select>
                                             </td>
                                                 @else
                                                 <th>Trạng thái công việc</th>
-                                                <td> {{getStatus($post->status)}}
+                                                <td> {{getPostStatus($post->status)}}
                                                     </td>
                                                 @endif
 
@@ -154,7 +154,7 @@
                                         <tr>
                                             <th>Thời gian thuê :
                                                </th>
-                                            <td> @if($post->time)<span>{{$post->time}}</span> @endif</td>
+                                            <td> @if($post->time_start)<span>{{$post->time_start}}</span> @endif</td>
                                         </tr>
                                         <tr>
                                             <th style="width:50%">Giá:</th>
@@ -171,13 +171,13 @@
                         <input hidden name="status" value="{{$post->status}}">
                         <div class="row no-print">
                             <div class="col-12">
-                                @if($post->status==Post::ChoDuyet||Post::DaDuyet||Post::TimDuocNGV)
+                                @if($post->status==1||$post->status==2||$post->status==3)
 
                                 <button type="submit" onclick=" return confirm('Cập nhật ')" class="btn btn-info float-left" ><i class="fas fa-sync"></i>
                                     Cập nhật
                                 </button>
                                 @endif
-                                @if($post->status!=Post::DaHuy)
+                                @if($post->status!=0)
                                 <button type="button" id="delete" class="btn btn-danger float-right" style="margin-right: 5px;">
                                     <i class="far fa-trash-alt"></i> Huỷ
                                 </button>
@@ -212,7 +212,7 @@
                                                         <option {{Request::get('statusFilter')==null ?"selected='selected'":'' }} value="">Trạng
                                                             thái
                                                         </option>
-                                                        @foreach(employeeStatus() as $status)
+                                                        @foreach(listEmployeeStatus() as $status)
                                                             <option {{Request::get('statusFilter')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
                                                         @endforeach
                                                     </select>
@@ -303,7 +303,7 @@
                     url: url,
                     method: 'POST',
                     data: {
-                        status: {{Post::DaHuy}},
+                        status: 0,
                         _token: token,
                     },
                     success :function (data){
@@ -322,8 +322,6 @@
            var html =''
            $('#employee').html('')
            var x = $('input[name="employee_id"]:checked').data('employee');
-           var y= JSON.parse(document.querySelector('input[name="employee_id"]').getAttribute('data-employee'))
-           console.log(y)
            html+=    "<address>"
            html+=    "<ins><i>"+x.name+"</i></ins><br>"
            html+=    "Phone: "+x.phone+"<br>"
