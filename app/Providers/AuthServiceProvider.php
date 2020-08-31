@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Post;
 use App\Policies\PostPolicy;
+use App\Models\Employee;
+use App\Policies\EmployeePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -16,7 +18,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Post::class => PostPolicy::class
+        Post::class => PostPolicy::class,
+        Employee::class=>EmployeePolicy::class
+
     ];
 
     /**
@@ -27,11 +31,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        $this->SuperAdmin();
-        Gate::define('view-post', 'App\Policies\PostPolicy@view');
+
+        Gate::define('post_manager', 'App\Policies\PostPolicy@viewAny');
+        Gate::define('employee_manager', 'App\Policies\EmployeePolicy@viewAny');
+        Gate::define('customer_manager', 'App\Policies\CustomerPolicy@viewAny');
     }
-    public function SuperAdmin()
-    {
-      Gate::define('superAdmin','App\Policies\PostPolicy@viewAny');
-    }
+
 }

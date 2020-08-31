@@ -13,8 +13,9 @@ class CategoryController extends Controller
     public function __construct(Category $category){
         $this->category=$category;
     }
-    public function index(){
-        $categories= $this->category->all();
+    public function index(Request $request){
+        $condition=$request->all();
+        $categories= $this->category->data($condition);
         return view('manager.category.index', compact('categories'));
     }
     public function create(){

@@ -129,7 +129,7 @@ if (!function_exists("avgRate")) {
        $a =DB::table('feedback')->where('employee_id',$employee->id)->get();
         $avgRate =  $a->avg('rating');
          if ($avgRate==null){
-             return "Chưa có đánh giá";
+             return  '5/5 (0 đánh giá)';
          }
          return  $avgRate.'/'.'5'.'( '.$a->count().' đánh giá ) ';
     }

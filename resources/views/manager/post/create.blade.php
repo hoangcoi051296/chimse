@@ -167,14 +167,16 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group filterData ">
-                                                    <select class="form-control" name="status" id="status">
-                                                        <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">
-                                                            Trạng
-                                                            thái
+                                                    <select class="form-control" name="rating" id="rating" >
+                                                        <option {{Request::get('rating')==null ?"selected='selected'":'' }} value="">
+                                                            Đánh giá
                                                         </option>
-                                                        @foreach(listEmployeeStatus() as $status)
-                                                            <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
-                                                        @endforeach
+                                                        <option {{Request::get('rating')=='low' ?"selected='selected'":'' }} value="low">
+                                                            Thấp đến cao
+                                                        </option>
+                                                        <option {{Request::get('rating')=='high' ?"selected='selected'":'' }} value="high">
+                                                            Cao đến thấp
+                                                        </option>
                                                     </select>
                                                 </div>
                                                 <div class="filterData" style="width: 45%">
@@ -203,6 +205,7 @@
                                                         <th>Email</th>
                                                         <th>Số điện thoại</th>
                                                         <th>Địa chỉ</th>
+                                                        <th>Rating</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -227,6 +230,8 @@
                                                                     , {{$employee->district->name}}
                                                                 @endif
                                                             </td>
+                                                            <?php $count = \Illuminate\Support\Facades\DB::table('feedback')->where('employee_id',$employee->id)->count() ?>
+                                                            <td>{{$employee->avgRate}}/5 ( {{$count}} đánh giá)</td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -393,10 +398,10 @@
 
         function chooseEmployee() {
             var district = $('#districtFind').val()
-            var status = $('#status').val()
+            var rating = $('#rating').val()
             var search = $('#findEmployee').val()
             var url = "{!! route('manager.post.create') !!}";
-            url = url + '?district=' + district + '&status=' + status + '&search=' + search;
+            url = url + '?district=' + district + '&rating=' + rating + '&search=' + search;
             window.history.pushState({}, '', url);
             $("#fullHeightModalRight").load(" #fullHeightModalRight > * ");
             $("#employee").load(" #employee > * ");

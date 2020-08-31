@@ -21,7 +21,7 @@
                     <div class="callout callout-info">
                         <h3><i class="fas fa-info"></i> Bài đăng : #{{$post->id}}</h3>
                         <input id="postID" value="{{$post->id}}" hidden>
-                        <h5>Trạng thái : {{getStatus($post->status)}}</h5>
+                        <h5>Trạng thái : {{getPostStatus($post->status)}}</h5>
                     </div>
 
 
@@ -62,7 +62,7 @@
                                         @elseif($attribute->type=="checkbox")
                                             {{$attribute->name}} :
                                             @foreach(json_decode($attribute->pivot->value,true) as $value)
-                                                {{json_decode($attribute['options'],true)[$value]}}
+                                                {{json_decode($attribute['options'],true)[$value]}} .
                                             @endforeach<br/>
                                         @elseif($attribute->type=='input'||$attribute->type=='textarea')
                                             {{$attribute->name}} :  {{json_decode($attribute->pivot->value,true)}}<br/>
@@ -98,7 +98,7 @@
                                             <tr>
                                                 <th>Thời gian bắt đầu :
                                                 </th>
-                                                <td> @if($post->time)<span>{{$post->time}}</span> @endif</td>
+                                                <td> @if($post->time_start)<span>{{$post->time_start}} đến {{$post->time_end}}</span> @endif</td>
                                             </tr>
                                             <tr>
                                                 <th style="width:50%">Giá:</th>

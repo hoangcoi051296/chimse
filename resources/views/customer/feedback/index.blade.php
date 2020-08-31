@@ -1,6 +1,4 @@
-<?php
-$listStatus = listStatus();
-?>
+
 @extends('customer.layout.layout')
 @section('content')
     <!-- Content Header (Page header) -->

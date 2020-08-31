@@ -1,11 +1,16 @@
 @extends('manager.layout.layout')
+<style type="text/css">
+    .filterData{
+        margin-right: 30px;
+    }
+</style>
 @section('content')
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Danh sách người thuê</h1>
+                <h1 class="m-0 text-dark">Danh sách danh mục</h1>
             </div>
             <div class="col-sm-6">
                 @include('manager.components.notified')
@@ -21,23 +26,34 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
+                <form class=" ml-3 form">
 
-                <form class=" ml-3" >
-                    <div class="card">
-                        <div class="input-group input-group-lg">
-                            <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                aria-label="Search" name="search">
-                            <div class="input-group-append">
-                                <button class="btn btn-navbar" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
+                    <div class="input-group input-group-sm">
+                        <div class="form-group filterData ">
+                            <input type="date" value="{{Request::get('create_from')}}" class="form-control" name="create_from">
+                        </div>
+                        <div class="form-group filterData ">
+                            <input type="date" value="{{Request::get('create_to')}}" class="form-control" name="create_to">
+                        </div>
+                        <div class="col-6">
+                                <div class="input-group ">
+                                    <input value="{{Request::get('search')}}" placeholder="Tìm kiếm" type="text"
+                                           class="form-control" name="search">
+                                    <span class="input-group-append">
+                                     <button type="submit" class="btn btn-info btn-flat">Go!</button>
+                                     </span>
+                                    <span class="input-group-append">
+                                     <a href="{{route('manager.category.index')}}"  class="btn btn-secondary btn-flat"><i class="fas fa-redo" style="padding-top: 3px"></i></a>
+                                     </span>
+                                </div>
                         </div>
                     </div>
                 </form>
-
                 <a href="{{route('manager.category.create')}}" class="btn btn-success float-right "
-                    style="margin-bottom: 10px">Tạo danh mục</a>
+                   style="margin-bottom: 10px">Tạo danh mục</a>
+            </div>
+
+
             </div>
             <div class="col-md-12">
                 <div class="card">

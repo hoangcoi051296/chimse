@@ -23,6 +23,14 @@ class Post extends Model
         'time_start',
         'time_end'
     ];
+    const DaHuy = 0;
+    const ChoDuyet = 1;
+    const DaDuyet = 2;
+    const TimDuocNGV = 3;
+    const NGVXacNhanCV = 4;
+    const NGVBatDau = 5;
+    const NGVKetThuc = 6;
+    const NTXacNhan = 7;
     const PerPage = 10;
 
     public function getData($condition)
@@ -32,7 +40,8 @@ class Post extends Model
             return $posts->paginate($this->perPage);
         }
         $posts
-            ->time($condition)
+            ->timecreate($condition)
+            ->timestart($condition)
             ->status($condition)
             ->category($condition)
             ->district($condition)
@@ -83,11 +92,24 @@ class Post extends Model
 //            $posts->whereDate('created_at','=',$condition['startTime'])->orWhereDate('updated_at','=',$condition['finishTime']);
 //        }
 //    }
-    public function scopeTime($posts, $condition)
+    public function scopeTimeCreate($posts, $condition)
     {
-        if (isset($condition['startTime']) && isset($condition['finishTime'])) {
-            $posts->whereDate('created_at', '>=', $condition['startTime'])->whereDate('updated_at', '<=',
-                $condition['finishTime']);
+        if (isset($condition['create_from']) && isset($condition['create_to'])) {
+            $posts->whereDate('created_at', '>=', $condition['create_from'])->whereDate('created_at', '<=',
+                $condition['create_to']);
+        } elseif (isset($condition['create_from'])) {
+            $posts->whereDate('created_at', '>=', $condition['create_from']);
+        } elseif (isset($condition['create_to'])) {
+            $posts->whereDate('created_at', '<=', $condition['create_to']);
+        }
+    }
+
+    public function scopeTimeStart($posts, $condition)
+    {
+        if (isset($condition['time_start_from'])&& isset($condition['time_start_to'])){
+
+            $posts->whereDate('time_start', '>=', $condition['time_start_from'])->whereDate('time_start', '<=',
+                $condition['time_start_to']);
         }
     }
 
@@ -188,7 +210,7 @@ class Post extends Model
             'title' => "required| string",
             'description' => "required|string",
             'price' => "required",
-//            'time_start' => 'required|before:time_end|after:tomorrow',
+            'time_start' => 'required|before:time_end|after:tomorrow',
             'time_end' => 'before:' . $oneMonthFromNow,
         ];
         if ($id) {
@@ -198,7 +220,6 @@ class Post extends Model
             'district_id' => 'required',
             'ward_id' => "required",
             'category_id' => "required",
-            'addressDetails'=>"required",
             'addressDetails' => "required",
         ]);
     }

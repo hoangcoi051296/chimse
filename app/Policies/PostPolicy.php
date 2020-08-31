@@ -18,7 +18,7 @@ class PostPolicy
      */
     public function viewAny()
     {
-        return true;
+        return is_permission('post-management');
     }
 
     /**

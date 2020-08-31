@@ -14,10 +14,11 @@ class AttributeController extends Controller
     public function __construct(Attribute $attribute){
         $this->attribute=$attribute;
     }
-    public function index(){
-
-        $attributes=Attribute::all();
-        return view('manager.category.attribute.index',compact('attributes'));
+    public function index(Request $request){
+        $condition =$request->all();
+        $attributes= $this->attribute->data($condition);
+        $categories=Category::all();
+        return view('manager.category.attribute.index',compact('attributes','categories'));
     }
     public function create(){
         $category=Category::all();

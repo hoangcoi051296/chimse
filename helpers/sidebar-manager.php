@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 if (!function_exists("sidebarManager")) {
     function sidebarManager()
     {
-        return [
+        $sidebar=[
             'manager' => [
                 'employee' => [
                     'name' => 'Người giúp việc',
@@ -36,6 +36,7 @@ if (!function_exists("sidebarManager")) {
                     'icon' => 'nav-icon fab fa-cuttlefish'
 
                 ],
+
                 'post' => [
                     'name' => 'Bài đăng',
                     'child' => [
@@ -111,6 +112,16 @@ if (!function_exists("sidebarManager")) {
             'report' => [
             ]
         ];
+        if(Gate::forUser(Auth::guard('manager')->user())->denies('post_manager')){
+            unset($sidebar['manager']['post']);
+        }
+        if(Gate::forUser(Auth::guard('manager')->user())->denies('employee_manager')){
+            unset($sidebar['manager']['employee']);
+        }
+        if(Gate::forUser(Auth::guard('manager')->user())->denies('customer_manager')){
+            unset($sidebar['manager']['customer']);
+        }
+        return $sidebar;
     }
 
 }

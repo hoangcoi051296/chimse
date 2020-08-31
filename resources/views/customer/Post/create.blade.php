@@ -239,7 +239,7 @@
                             if (data[i]['type'] === 'checkbox') {
                                 html += '<div class="row">'
                                 for (var j in options) {
-                                    html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][value][]"  >' + options[j] + '</label>'
+                                    html += '<label style="margin-left: 15px" ><input value="' + j + '" type="checkbox"  name="attributes[' + data[i]['id'] + '][]"  >' + options[j] + '</label>'
                                 }
                                 html += '</div>'
                                 html += '</select>'

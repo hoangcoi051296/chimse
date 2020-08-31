@@ -9,9 +9,21 @@ class Category extends Model
     protected $fillable = ['name'];
 
 
-    public function data($request = null){
+    public function data($condition){
         $data = $this->query();
-        $data = $data->paginate($request->get('per_page',15));
+        if (isset($condition['create_from']) && isset($condition['create_to'])) {
+            $data->whereDate('created_at', '>=', $condition['create_from'])->whereDate('created_at', '<=',
+                $condition['create_to']);
+        }elseif (isset($condition['create_from'])) {
+            $data->whereDate('created_at', '>=', $condition['create_from']);
+        }
+        elseif (isset($condition['create_to'])) {
+            $data->whereDate('created_at', '<=', $condition['create_to']);
+        }
+        if(isset($condition['search'])){
+            $data->where('name','like','%'.$condition['search'].'%');
+        }
+        $data = $data->paginate(15);
         return $data;
     }
     public function properties()

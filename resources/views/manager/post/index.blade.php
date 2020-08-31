@@ -1,10 +1,8 @@
-<?php
-//$listStatus = listStatus();
-?>
 @extends('manager.layout.layout')
 <style>
     .filterData {
         margin-right: 20px;
+        width: 200px;
     }
 </style>
 @section('content')
@@ -61,10 +59,10 @@
                                 </select>
                             </div>
                             <div class="form-group filterData ">
-                                <input type="date" value="{{Request::get('startTime')}}" class="form-control" name="startTime">
+                                <input type="date" value="{{Request::get('create_from')}}" class="form-control" name="create_from">
                             </div>
                             <div class="form-group filterData ">
-                                <input type="date" value="{{Request::get('finishTime')}}" class="form-control" name="finishTime">
+                                <input type="date"  value="{{Request::get('create_to')}}"  class="form-control" name="create_to">
                             </div>
                             <div class="form-group filterData">
                                 @if(Request::get('category'))
@@ -91,11 +89,8 @@
                                     <option selected="selected" value="">Giá trị</option>
                                 </select>
                             </div>
-
-                        </div>
-                        <div class="card">
-                            <div class="input-group input-group-sm">
-                                <div class="input-group input-group-sm">
+                            <div class="col-md-4">
+                                <div class="input-group ">
                                     <input value="{{Request::get('search')}}" placeholder="Tìm kiếm" type="text"
                                            class="form-control typeahead" name="search" id="search">
                                     <span class="input-group-append">
@@ -103,14 +98,11 @@
                                      </span>
                                     <span class="input-group-append">
                                      <a href="{{route('manager.post.index')}}" class="btn btn-secondary btn-flat"><i
-                                                 class="fas fa-redo" style="padding-top: 3px"></i></a>
+                                             class="fas fa-redo" style="padding-top: 3px"></i></a>
                                      </span>
                                 </div>
                             </div>
                         </div>
-
-
-
 
                         <div class="form-group input-group-sm float-left " style="width: 120px">
                             <select class="form-control" id="perPage" name="per_page">
@@ -181,8 +173,10 @@
 {{--                                                @endif--}}
 
 {{--                                                @if(Gate::forUser(Auth::guard('manager')->user())->allows('editPost',$post))--}}
-                                                <a href="{{ route('manager.post.edit',['id' => $post->id])}}" data-toggle="tooltip" title="Sửa bài"
-                                                   class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
+                                                @if(in_array($post->status,[1,2,3]))
+                                                    <a href="{{ route('manager.post.edit',['id' => $post->id])}}"  data-toggle="tooltip" title="Sửa bài"
+                                                       class="btn btn-primary btn-xs hide"><i class="fa fa-edit"></i></a>
+                                                @endif
 {{--                                                @endif--}}
                                                 <a href="{{ route('manager.post.delete',['id'=> $post->id])}}" data-toggle="tooltip" title="Xoá bài"
                                                    onclick="return confirm('Bạn muốn xóa không?');"
@@ -205,7 +199,6 @@
                 </div>
 
             </div>
-        </div><!-- /.container-fluid -->
     </section>
 @endsection
 @section('script')

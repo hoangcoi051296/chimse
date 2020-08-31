@@ -22,7 +22,7 @@ class CreateTableEmployeeTable extends Migration
             $table->string('phone');
             $table->string('gender')->nullable();
             $table ->string('listJob')->nullable();
-            $table->integer('avgRate')->nullable();
+            $table->double('avgRate')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('ward_id')->nullable();
             $table->foreign('ward_id')->references('xaid')->on('devvn_xaphuongthitran');

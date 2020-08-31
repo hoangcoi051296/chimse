@@ -16,9 +16,7 @@ Route::group(['namespace' => 'Auth\Customer'], function () {
 });
 
 Route::group(['namespace' => 'Customer', 'middleware' => 'checkLoginCustomer'], function () {
-    Route::get('/', 'CustomerController@index', function () {
-        dd("asdas");
-    })->name('customer.index');
+    Route::get('/', 'CustomerController@index')->name('customer.index');
     Route::group(['prefix' => 'profile'], function () {
         Route::get('/edit/{id}', 'CustomerController@editProfile')->name('customer.profile.edit');
         Route::post('/edit/{id}', 'CustomerController@updateProfile')->name('customer.profile.update');
@@ -32,7 +30,7 @@ Route::group(['namespace' => 'Customer', 'middleware' => 'checkLoginCustomer'], 
         Route::get('delete/{id}', 'PostController@delete')->name('customer.post.delete');
         Route::get('complete/{id}', 'PostController@complete')->name('customer.post.complete');
         Route::post('complete', 'PostController@feedback')->name('customer.post.feedback');
-        Route::post('changeStatus', 'PostController@changeStatus')->name('customer.post.changeStatus');
+        Route::post('changeStatus/{id}', 'PostController@changeStatus')->name('customer.post.changeStatus');
         Route::get('showWard', 'PostController@showWardInDistrict')->name('customer.get.showWard');
     });
     Route::group(['prefix' => 'feedback'], function () {

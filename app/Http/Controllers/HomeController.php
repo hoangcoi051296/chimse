@@ -83,13 +83,13 @@ class HomeController extends Controller
         $html = '';
         $evenList = [];
         foreach ($postEvents as $postEvent) {
-            $timeStart = new \DateTime($postEvent->created_at);
-            $timeEnd = new \DateTime($postEvent->updated_at);
+            $timeStart = new \DateTime($postEvent->time_start);
+            $timeEnd = new \DateTime($postEvent->time_end);
             $evenList[] = Calendar::event(
                 '+>' . $timeStart->format('H:i') . '->' . $timeEnd->format('H:i') . ' :  Làm việc tại ' . $postEvent->ward->name . ',' . $postEvent->district->name,
                 true,
-                new \DateTime($postEvent->created_at),
-                new \DateTime($postEvent->updated_at),
+                $timeStart,
+                $timeEnd,
                 $postEvent->id,
                 [
                     'url' => route('manager.post.details', ['id' => $postEvent->id])

@@ -26,6 +26,7 @@
     }
     .filterData {
         margin-right: 20px;
+        width: 150px;
     }
 </style>
 @section('content')
@@ -72,20 +73,28 @@
                                     <option selected="selected" value="">Xã phường</option>
                                 </select>
                             </div>
-{{--                            <div class="form-group" style="margin-left: 20px;width: 200px">--}}
-{{--                                <select class="form-control orderByStatus" name="status">--}}
-{{--                                    <option value="">Trạng thái</option>--}}
-{{--                                    @foreach(listEmployeeStatus() as $status)--}}
-{{--                                        <option--}}
-{{--                                            {{Request::get('status')==$status['value']&&Request::get('status')!=null ?"selected='selected'":''}} value="{{$status['value']}}">{{$status['name']}}</option>--}}
-{{--                                    @endforeach--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
+                            <div class="form-group filterData ">
+                                <input type="date" value="{{Request::get('create_from')}}" class="form-control" name="create_from">
+                            </div>
+                            <div class="form-group filterData ">
+                                <input type="date" value="{{Request::get('create_to')}}" class="form-control" name="create_to">
+                            </div>
+                            <div class="form-group filterData ">
+                                <select class="form-control" name="rating" id="rating" >
+                                    <option {{Request::get('rating')==null ?"selected='selected'":'' }} value="">
+                                        Đánh giá
+                                    </option>
+                                    <option {{Request::get('rating')=='low' ?"selected='selected'":'' }} value="low">
+                                        Thấp đến cao
+                                    </option>
+                                    <option {{Request::get('rating')=='higt' ?"selected='selected'":'' }} value="high">
+                                        Cao đến thấp
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-
-                        <div class="card">
-                            <div class="input-group input-group-sm">
-                                <div class="input-group input-group-sm">
+                        <div class=" col-8" style="margin-left: 50px">
+                            <div class="input-group">
                                     <input value="{{Request::get('search')}}" placeholder="Tìm kiếm" type="text"
                                            class="form-control" name="search">
                                     <span class="input-group-append">
@@ -94,7 +103,6 @@
                                     <span class="input-group-append">
                                      <a href="{{route('manager.employee.index')}}"  class="btn btn-secondary btn-flat"><i class="fas fa-redo" style="padding-top: 3px"></i></a>
                                      </span>
-                                </div>
                             </div>
                         </div>
                     </form>
@@ -114,7 +122,6 @@
                                     <th style="width: 10%">Số điện thoại</th>
                                     <th>Địa chỉ</th>
                                     <th style="width: 10%">Đánh giá trung bình</th>
-                                    <th>Trạng thái</th>
                                     <th style="width: 8%">Action</th>
                                 </tr>
                                 </thead>
@@ -140,8 +147,6 @@
                                             @endif
                                         </td>
                                         <td>{{avgRate($helper)}}</td>
-
-                                        <td>{{statusEmployee($helper->status)}}</td>
 
                                         <td>
                                             <button type="button" onclick="timeLine({{$helper->id}})" class="btn-xs btn-default" data-toggle="modal" data-target="#modal">

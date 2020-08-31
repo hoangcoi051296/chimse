@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use function Sodium\compare;
 
 class FeedbackController extends Controller
@@ -31,6 +33,11 @@ class FeedbackController extends Controller
             'rating' => $request->rating,
             'comment' => $request->comment
         ]);
+        $employee =Employee::find($feedback->employee_id);
+        $a =DB::table('feedback')->where('employee_id',$employee->id)->get();
+        $avgRate =  $a->avg('rating');
+        $employee->avgRate=$avgRate;
+        $employee->save();
         return redirect()->route('customer.feedback.index');
     }
 }

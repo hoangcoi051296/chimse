@@ -36,12 +36,13 @@ class PostController extends Controller
     {
         $condition = $request->all();
         $posts = $this->post->getData($condition);
-        $this->authorize('view-post');
+        $this->authorize('post_manager');
         return view('manager.post.index', compact('posts'));
     }
 
     public function changeStatus(Request $request)
     {
+
         if ($request->ajax()) {
             $post = $this->post->find($request->id);
             $post->status = Post::DaDuyet;
@@ -52,6 +53,7 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
+        $this->authorize('post_manager');
         $condition=$request->all();
         $employees = $this->employee->getData($condition)->paginate(15);
         $customers = $this->customer->data($request);

@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Customer;
 
 use App\Models\District;
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use App\Models\Post;
 use App\Models\Ward;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -53,6 +55,11 @@ class PostController extends Controller
             'rating' => $request->rating,
             'post_id' => $post->id,
         ]);
+        $employee =Employee::find($post->employee_id);
+        $a =DB::table('feedback')->where('employee_id',$employee->id)->get();
+        $avgRate =  $a->avg('rating');
+        $employee->avgRate=$avgRate;
+        $employee->save();
         $post->status = 7;
         $post->save();
         return redirect()->route('customer.post.index');
@@ -106,6 +113,12 @@ class PostController extends Controller
         $this->post->updateData($data, $id);
         return redirect()->route('customer.post.index')->withSuccess("Sửa thành công");
     }
+    public function changeStatus($id){
+            $post=Post::find($id);
+            $post->status=7;
+            $post->update();
+            return redirect()->back()->with('success','Xác nhận công việc thành công');
+        }
 
     public function delete($id)
     {

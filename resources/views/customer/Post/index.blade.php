@@ -1,6 +1,3 @@
-<?php
-//$listStatus = listStatus();
-?>
 @extends('customer.layout.layout')
 <style>
     .errorCustom {
@@ -106,7 +103,7 @@
                                 <th class="customer-status">Trạng thái</th>
                                 <th class="customer-time">Thời gian</th>
                                 <th class="customer-category">Danh mục</th>
-                                <th class="customer">Khách hàng</th>
+                                <th class="customer">Người giúp việc</th>
                                 <th>Đánh giá</th>
                                 <th style="width: 113px">Hoạt động</th>
                             </tr>
@@ -133,7 +130,12 @@
                                     <td>@if($post->category)
                                             {{$post->category->name}}
                                         @endif</td>
-                                    <td>{{$post->customer->name }}</td>
+                                    <td>
+                                        @if($post->employee)
+                                            {{$post->employee->name }}
+                                        @else
+                                        @endif
+                                    </td>
                                     <td style="width: 13%;">
                                     <span id="number_rating" data-value="{{$post->rating->avg('rating')}}">
                                     @for($i=1;$i<=5;$i++)
@@ -154,6 +156,13 @@
                                            onclick="return confirm('Bạn muốn xóa không?');"
                                            class="btn btn-danger btn-xs @if(in_array($post->status,[3,4,5,6,7])) hide @endif"><i
                                                     class="fa fa-trash"></i></a>
+                                        @if($post->status==6)
+                                            <form action="{{route('customer.post.changeStatus',['id'=>$post->id])}}" method="post">
+                                                @csrf
+                                                <button type="submit" class="btn btn-info"><i class="fas fa-exchange-alt"></i></button>
+                                            </form>
+                                        @endif
+
                                         @if($post->status== 7)
                                             <a href="{{\Illuminate\Support\Facades\URL::signedRoute('customer.post.complete',['id'=>$post->id])}}"
                                                class="btn btn-primary btn-xs "><i class="far fa-check-circle"></i></a>
@@ -238,22 +247,6 @@
                             "<option value=" + value.xaid + ">" + value.name + "</option>"
                         );
                     });
-                }
-            });
-        });
-        var urlStatus = "{{ url('customer/post/changeStatus') }}";
-        $(".changeStatus").click(function () {
-            var id = this.id;
-            var token = $("input[name='_token']").val();
-            $.ajax({
-                url: urlStatus,
-                method: 'POST',
-                data: {
-                    id: id,
-                    _token: token,
-                },
-                success: function (data) {
-                    location.reload();
                 }
             });
         });

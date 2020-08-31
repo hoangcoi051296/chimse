@@ -49,21 +49,14 @@
                                 </select>
                             </div>
                             <div class="form-group filterData ">
-                                <select class="form-control" name="status">
-                                    <option {{Request::get('status')==null ?"selected='selected'":'' }} value="">Trạng
-                                        thái
-                                    </option>
-                                    @foreach(employeePostStatus() as $status)
-                                        <option
-                                            {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="date" value="{{Request::get('time_start_from')}}" class="form-control" name="time_start_from">
                             </div>
-
+                            <div class="form-group filterData ">
+                                <input type="date" value="{{Request::get('time_start_to')}}" class="form-control" name="time_start_to">
+                            </div>
                         </div>
-                        <div class="card">
-                            <div class="input-group input-group-sm">
-                                <div class="input-group input-group-sm">
+                        <div class="col-6 float-right">
+                                <div class="input-group">
                                     <input value="{{Request::get('search')}}" placeholder="Tìm kiếm" type="text"
                                            class="form-control" name="search">
                                     <span class="input-group-append">
@@ -74,12 +67,11 @@
                                              class="fas fa-redo" style="padding-top: 3px"></i></a>
                                      </span>
                                 </div>
-                            </div>
                         </div>
                     </form>
 
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" style="margin-top: 20px">
                     <div class="card">
                         <div class="card-body">
                             <table class="table table-bordered">
@@ -109,13 +101,12 @@
                                                 {{$post->ward->district->name}}
                                                 @endif</td>
                                             <td>
-                                                @if($post->time)
-                                                    {{$post->time}}
+                                                @if($post->time_start)
+                                                    {{$post->time_start}} đến {{$post->time_end}}
                                                 @endif
                                             </td>
                                             <td>
-                                                <div class="row postStatus" data-value="{{$post->id}}">
-                                                    {{employeeGetStatus($post->status)}}</div>
+                                                {{getPostStatus($post->status)}}
                                             </td>
                                             <td>{{$post->price}}</td>
                                             <td>{{$post->category->name}}</td>
