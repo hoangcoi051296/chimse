@@ -59,7 +59,7 @@
                                             Trạng
                                             thái
                                         </option>
-                                        @foreach(listStatus() as $status)
+                                        @foreach(listPostStatus() as $status)
                                             <option {{Request::get('status')==$status['value'] &&Request::get('status')!=null ?"selected='selected'":''}}  value="{{$status['value']}}">{{$status['name']}}</option>
                                         @endforeach
                                     </select>
@@ -108,7 +108,7 @@
                                             </td>
                                             <td>
                                                 <div class="row postStatus" data-value="{{$post->id}}">
-                                                    {{getStatus($post->status)}}</div>
+                                                    {{getPostStatus($post->status)}}</div>
                                             </td>
                                             <td>@if($post->category)
                                                     {{$post->category->name}}

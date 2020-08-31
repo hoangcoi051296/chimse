@@ -16,6 +16,7 @@ class Post extends Model
         'price',
         'district_id',
         'ward_id',
+        'sensor',
         'addressDetails',
         'category_id',
         'employee_id',

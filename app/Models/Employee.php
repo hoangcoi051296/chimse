@@ -40,9 +40,9 @@ class Employee extends Model implements Authenticatable
 
     public function getData($condition)
     {
-        $helpers = $this->query()->orderBy('created_at', 'desc');
+        $helpers = $this->query();
         if (!$condition) {
-            return $helpers;
+            return $helpers->orderBy('created_at', 'desc');
         }
         if (isset($condition['status'])) {
             $helpers->where('status', $condition['status']);

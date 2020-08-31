@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Manager;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use LaravelFullCalendar\Calendar;
 
@@ -31,7 +32,13 @@ class HelperController extends Controller
 
     public function index(Request $request)
     {
-        $postEvents=Post::where('employee_id',1)->where('status','<',5)->get();
+        $condition = $request->all();
+        $helpers = $this->helper->getData($condition)->paginate($this->helper->perPage);
+        return view('manager.employee.index', compact('helpers'));
+    }
+    public function details($id){
+        $employee=Employee::find($id);
+        $postEvents=Post::where('employee_id',$employee->id)->where('status','<',5)->get();
         $evenList=[];
         foreach ($postEvents as $postEvent){
             $timeStart=new \DateTime($postEvent->created_at);
@@ -51,12 +58,9 @@ class HelperController extends Controller
             ->setOptions([ //set fullcalendar options
                 'firstDay' => 1
             ]);
-
-        $condition = $request->all();
-        $helpers = $this->helper->getData($condition, $request)->paginate($this->helper->perPage);
-        return view('manager.employee.index', compact('helpers'));
+        $post =Post::where('employee_id',$employee->id)->where('status',7)->get();
+        return view('manager.employee.details',compact('post','employee','calendar'));
     }
-
     public function create()
     {
         return view('manager.employee.create');

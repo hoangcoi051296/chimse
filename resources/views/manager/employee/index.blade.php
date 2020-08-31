@@ -153,9 +153,9 @@
                                                 <i class="far fa-eye"></i>
                                             </button>
 
-{{--                                            <a href="{{ route('manager.employee.details',['id' => $helper->id])}}"--}}
-{{--                                               class=" btn-xs btn-default" style="background-color: lightgrey"><i class="far fa-eye"></i></a>--}}
-                                            <a class="edit"
+                                            <a href="{{ route('manager.employee.details',['id' => $helper->id])}}"
+                                               class=" btn-xs btn-default" style="background-color: lightgrey"><i class="fas fa-info-circle"></i></a>
+                                            <a class="edit" style="margin-left: 3px"
                                                href="{{route('manager.employee.edit',['id'=>$helper->id])}}"><i
                                                     class="fas fa-edit"></i></a>
                                             <a class="delete" onclick="return confirm('Are you sure?')"

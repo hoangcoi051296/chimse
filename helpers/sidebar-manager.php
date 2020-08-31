@@ -121,6 +121,12 @@ if (!function_exists("sidebarManager")) {
         if(Gate::forUser(Auth::guard('manager')->user())->denies('customer_manager')){
             unset($sidebar['manager']['customer']);
         }
+        if(Gate::forUser(Auth::guard('manager')->user())->denies('category_manager')){
+            unset($sidebar['manager']['category']);
+        }
+        if(Gate::forUser(Auth::guard('manager')->user())->denies('attribute_manager')){
+            unset($sidebar['manager']['attribute']);
+        }
         return $sidebar;
     }
 
@@ -231,6 +237,17 @@ if (!function_exists("getUrlEdit")) {
         $url = explode('/', $url);
         $url = array_splice($url, 0, count($url) - 2);
         return $url = implode('/', $url);
+    }
+
+}
+if (!function_exists("incomeEmployeeInMonth")) {
+    function incomeEmployeeInMonth($employee_id)
+    {
+        $now=\Carbon\Carbon::now();
+        $postInmonth=\App\Models\Post::where('employee_id',$employee_id)->where('status',7)
+        ->whereTime('time_end','>=',$now->firstOfMonth())->whereTime('time_end','<=',$now->toDateString())->get()
+        ;
+        return $postInmonth->sum('price');
     }
 
 }
